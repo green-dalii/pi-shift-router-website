@@ -1,0 +1,281 @@
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/400.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/500.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/600.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/700.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/800.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/400.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/500.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/600.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/700.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/400.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/500.css');
+
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Fonts — Manrope (display) + Inter (body) + JetBrains Mono (code).
+   Served from jsdelivr CDN as @fontsource/* packages — avoids Google Fonts
+   entirely (works in regions where fonts.googleapis.com is blocked).
+   Each URL is a single weight, fetched as woff2.
+   NOTE: CSS requires @import before all other statements — these must stay
+   at the top of the file, ahead of `@import "tailwindcss"`.
+   For zero-CDN, install @fontsource/* as deps and import the CSS instead.
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* Configure Tailwind to scan source */
+@source "./src/**/*.{astro,ts,tsx,js,jsx,mdx}";
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Design tokens — straight 1:1 port from DESIGN.md
+   Reference: Wise-inspired. Lime-green CTA, sage canvas, ink dark sections.
+   ────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Brand & accent */
+  --color-primary: #9fe870;
+  --color-on-primary: #0e0f0c;
+  --color-primary-active: #cdffad;
+  --color-primary-neutral: #c5edab;
+  --color-primary-pale: #e2f6d5;
+
+  /* Surface */
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #e8ebe6;
+
+  /* Ink (text + dark sections) */
+  --color-ink: #0e0f0c;
+  --color-ink-deep: #163300;
+  --color-body: #454745;
+  --color-mute: #868685;
+
+  /* Semantic */
+  --color-positive: #2ead4b;
+  --color-positive-deep: #054d28;
+  --color-negative: #d03238;
+  --color-negative-deep: #a72027;
+
+  /* Brand tertiary (sparingly) */
+  --color-accent-orange: #ffc091;
+  --color-accent-cyan: #38c8ff;
+
+  /* Rounded scale — DESIGN.md §"Shapes" */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 9999px;
+
+  /* Font families — Manrope for display, Inter for body, JetBrains Mono for code */
+  --font-display: 'Manrope', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Display scale (DESIGN.md typography) */
+  --text-display-mega: 7.875rem;     /* 126px */
+  --text-display-mega--line-height: 6.69rem;
+  --text-display-xxl: 6rem;          /* 96px */
+  --text-display-xxl--line-height: 5.1rem;
+  --text-display-xl: 4rem;           /* 64px */
+  --text-display-xl--line-height: 3.4rem;
+  --text-display-lg: 2.9375rem;      /* 47px */
+  --text-display-md: 2.5rem;         /* 40px */
+  --text-display-md--line-height: 2.125rem;
+  --text-display-sm: 2rem;           /* 32px */
+  --text-display-sm--line-height: 2.4rem;
+  --text-display-xs: 1.5rem;         /* 24px */
+  --text-display-xs--line-height: 1.95rem;
+
+  /* Animations */
+  --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
+  --animate-fade-slide: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+@keyframes fade-slide {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Base — design system primitives as @layer
+   ────────────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-canvas-soft);
+    color: var(--color-ink);
+    line-height: 1.5;
+    letter-spacing: 0.005em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  ::selection {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cdd2cc;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-mute);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Component primitives — direct mapping to DESIGN.md `components:` block
+   ────────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* CTA pill — lime green, 24px radius (DESIGN.md button-primary) */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-xl);
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .btn-primary:hover {
+    background: var(--color-primary-active);
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  /* Tertiary outline pill */
+  .btn-tertiary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    border: 1px solid var(--color-ink);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.5;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-xl);
+    transition: background 200ms ease;
+  }
+  .btn-tertiary:hover {
+    background: var(--color-canvas-soft);
+  }
+
+  /* Surface cards */
+  .card-canvas {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+  }
+  .card-sage {
+    background: var(--color-canvas-soft);
+    color: var(--color-ink);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+  }
+  .card-green-pale {
+    background: var(--color-primary-pale);
+    color: var(--color-ink);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+  }
+  .card-dark {
+    background: var(--color-ink);
+    color: var(--color-primary);
+    border-radius: var(--radius-xl);
+    padding: 1.5rem;
+  }
+
+  /* Status pill (DESIGN.md badge-positive) */
+  .pill-positive {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: var(--color-primary-pale);
+    color: var(--color-positive-deep);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.25;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Eyebrow label (mono, uppercase) */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-body);
+    font-weight: 500;
+  }
+
+  /* Code block */
+  .code-block {
+    background: var(--color-ink);
+    color: #e8ebe6;
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .code-block .tok-key { color: #9fe870; }
+  .code-block .tok-str { color: #cdffad; }
+  .code-block .tok-num { color: #ffc091; }
+  .code-block .tok-com { color: #868685; font-style: italic; }
+  .code-block .tok-pun { color: #868685; }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Focus ring */
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}

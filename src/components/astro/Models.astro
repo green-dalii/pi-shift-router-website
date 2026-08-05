@@ -1,0 +1,131 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+
+const features = [
+  { key: 'judge', data: t.models.judge, icon: 'gauge' },
+  { key: 'window', data: t.models.window, icon: 'activity' },
+  { key: 'fallback', data: t.models.fallback, icon: 'arrow-right-circle' },
+] as const;
+---
+
+<section id="models" class="relative py-24 sm:py-32 bg-canvas-soft">
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-2xl mb-14 sm:mb-20">
+      <span class="eyebrow">{t.models.label}</span>
+      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
+        {t.models.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
+        {t.models.subtitle}
+      </p>
+    </div>
+
+    <!-- Two tier cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+
+      <!-- FAST — sage soft surface (DESIGN.md card-feature-sage) -->
+      <div class="card-sage md:p-10 reveal" data-delay="0">
+        <div class="flex items-center justify-between mb-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-canvas border border-ink/10">
+            <span class="w-1.5 h-1.5 rounded-full bg-positive"></span>
+            <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-ink">{t.models.fast.label}</span>
+          </span>
+          <span class="text-[11px] font-mono text-mute">{t.models.fast.badge}</span>
+        </div>
+        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink mb-4">
+          {t.models.fast.title}
+        </h3>
+        <p class="text-base text-body leading-relaxed mb-6">
+          {t.models.fast.desc}
+        </p>
+        <ul class="space-y-2.5">
+          {t.models.fast.bullets.map((b) => (
+            <li class="flex items-start gap-2.5 text-sm text-ink/85">
+              <svg class="w-4 h-4 mt-0.5 text-positive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- SMART — dark + lime (DESIGN.md card-feature-dark) -->
+      <div class="card-dark md:p-10 bg-ink text-primary reveal" data-delay="2">
+        <div class="flex items-center justify-between mb-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-canvas/10 border border-canvas-soft/15">
+            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+            <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-canvas-soft">{t.models.smart.label}</span>
+          </span>
+          <span class="text-[11px] font-mono text-canvas-soft/60">{t.models.smart.badge}</span>
+        </div>
+        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-canvas mb-4">
+          {t.models.smart.title}
+        </h3>
+        <p class="text-base text-canvas-soft/85 leading-relaxed mb-6">
+          {t.models.smart.desc}
+        </p>
+        <ul class="space-y-2.5">
+          {t.models.smart.bullets.map((b) => (
+            <li class="flex items-start gap-2.5 text-sm text-canvas-soft/85">
+              <svg class="w-4 h-4 mt-0.5 text-primary shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Three feature cards (judge / window / fallback) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {features.map((f, idx) => (
+        <div class="card-canvas p-7 reveal" data-delay={idx * 2}>
+
+          <div class="flex items-center justify-between mb-5">
+            <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute">
+              {f.data.label}
+            </span>
+            <span class="w-8 h-8 rounded-full bg-primary-pale flex items-center justify-center" aria-hidden="true">
+              {f.key === 'judge' && (
+                <svg class="w-4 h-4 text-positive-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>
+              )}
+              {f.key === 'window' && (
+                <svg class="w-4 h-4 text-positive-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              )}
+              {f.key === 'fallback' && (
+                <svg class="w-4 h-4 text-positive-deep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              )}
+            </span>
+          </div>
+
+          <h3 class="text-xl font-extrabold tracking-tight text-ink mb-3">
+            {f.data.title}
+          </h3>
+          <p class="text-sm text-body leading-relaxed mb-5">
+            {f.data.desc}
+          </p>
+          <pre class="code-block text-[11px] py-3 px-4">{f.data.code}</pre>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="0"] { animation-delay: 0.05s; }
+  .reveal[data-delay="2"] { animation-delay: 0.18s; }
+</style>

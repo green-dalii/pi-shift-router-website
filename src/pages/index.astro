@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/astro/Hero.astro';
+import QuickStart from '../components/astro/QuickStart.astro';
+import Models from '../components/astro/Models.astro';
+import FAQ from '../components/astro/FAQ.astro';
+import { getTranslations } from '../content/locales';
+
+const t = getTranslations('en');
+---
+
+<BaseLayout
+  title={t.meta.title}
+  description={t.meta.description}
+  keywords={t.meta.keywords}
+  locale="en"
+  pathname="/"
+>
+  <Hero locale="en" />
+  <QuickStart locale="en" />
+  <Models locale="en" />
+  <FAQ locale="en" />
+</BaseLayout>

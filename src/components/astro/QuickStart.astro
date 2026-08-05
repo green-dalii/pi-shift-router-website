@@ -1,0 +1,73 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="quick-start" class="relative py-24 sm:py-32 bg-canvas">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-2xl mb-14 sm:mb-20">
+      <span class="eyebrow">{t.quickStart.label}</span>
+      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
+        {t.quickStart.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
+        {t.quickStart.subtitle}
+      </p>
+    </div>
+
+    <!-- Steps -->
+    <ol class="space-y-5 sm:space-y-6">
+      {t.quickStart.steps.map((step, idx) => (
+        <li class="card-sage md:flex md:items-stretch md:gap-8 p-6 sm:p-8 reveal" data-delay={idx * 2}>
+
+          <!-- Number + content -->
+          <div class="md:flex-1 md:py-1">
+            <div class="flex items-center gap-3 mb-3">
+              <span class="font-mono text-xs text-mute tracking-wider">
+                {String(idx + 1).padStart(2, '0')} / {String(t.quickStart.steps.length).padStart(2, '0')}
+              </span>
+              <span class="h-px flex-1 bg-ink/10"></span>
+            </div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-ink mb-3">
+              {step.title}
+            </h3>
+            <p class="text-base text-body leading-relaxed">
+              {step.desc}
+            </p>
+          </div>
+
+          <!-- Code block (if any) -->
+          {step.code && (
+            <div class="md:w-2/5 mt-5 md:mt-0 flex flex-col">
+              {step.codeLabel && (
+                <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2">
+                  {step.codeLabel}
+                </span>
+              )}
+              <pre class="code-block flex-1 whitespace-pre">{step.code}</pre>
+            </div>
+          )}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="0"] { animation-delay: 0.05s; }
+  .reveal[data-delay="2"] { animation-delay: 0.18s; }
+  .reveal[data-delay="4"] { animation-delay: 0.32s; }
+</style>

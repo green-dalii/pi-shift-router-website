@@ -1,0 +1,104 @@
+---
+import '../index.css';
+import Header from '../components/astro/Header.astro';
+import Footer from '../components/astro/Footer.astro';
+import { getTranslations, swapLocalePrefix, type Locale } from '../content/locales';
+
+interface Props {
+  title: string;
+  description?: string;
+  keywords?: string;
+  locale?: Locale;
+  /** Pathname of the current page (used by Header / Footer language switcher). */
+  pathname?: string;
+}
+
+const {
+  title,
+  description = '',
+  keywords = '',
+  locale = 'en',
+  pathname = '/',
+} = Astro.props;
+
+const t = getTranslations(locale);
+const siteUrl = Astro.site!;
+const canonical = new URL(pathname, siteUrl).href;
+
+// hreflang: both locales → same page
+const hreflangEntries = (['en', 'zh'] as const).map((code) => ({
+  code,
+  href: new URL(swapLocalePrefix(pathname, code), siteUrl).href,
+}));
+const xDefault = hreflangEntries.find((h) => h.code === 'en')?.href ?? siteUrl.href;
+
+const ogLocale = locale === 'zh' ? 'zh_CN' : 'en_US';
+const ogImage = new URL('/favicon.svg', siteUrl).href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': siteUrl.href + '#website',
+      name: t.footer.brand,
+      url: siteUrl.href,
+      description,
+      inLanguage: locale === 'zh' ? 'zh-CN' : 'en',
+    },
+    {
+      '@type': 'SoftwareApplication',
+      name: t.footer.brand,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Cross-platform',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      license: 'https://opensource.org/licenses/MIT',
+      description,
+    },
+  ],
+};
+---
+
+<!doctype html>
+<html lang={locale === 'zh' ? 'zh-CN' : 'en'} style="overflow-x: hidden;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+    <meta name="theme-color" content="#9fe870" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    {hreflangEntries.map((h) => (
+      <link rel="alternate" hreflang={h.code} href={h.href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.footer.brand} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={ogLocale} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+  </head>
+  <body class="bg-canvas-soft text-ink min-h-screen">
+    <Header locale={locale} pathname={pathname} />
+    <main class="pt-16">
+      <slot />
+    </main>
+    <Footer locale={locale} pathname={pathname} />
+  </body>
+</html>

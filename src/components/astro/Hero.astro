@@ -1,0 +1,160 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const githubUrl = 'https://github.com/green-dalii/pi-shift-router';
+---
+
+<section class="relative pt-32 sm:pt-40 pb-20 sm:pb-28 overflow-hidden">
+  <!-- Subtle grid texture -->
+  <div class="absolute inset-0 pointer-events-none opacity-[0.35]" aria-hidden="true">
+    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+          <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#0e0f0c" stroke-width="0.5" opacity="0.06"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+    </svg>
+  </div>
+
+  <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+
+      <!-- Left: headline + CTAs -->
+      <div class="lg:col-span-7">
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-pill bg-canvas border border-ink/10 mb-7 reveal">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" style="animation: pulse-soft 2.4s ease-in-out infinite"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+          </span>
+          <span class="text-[11px] font-mono text-ink/70 tracking-wide">
+            {t.hero.badge}
+          </span>
+        </div>
+
+        <h1 class="font-display font-extrabold text-ink tracking-tight leading-[1.02] reveal" data-delay="1">
+          <span class="block text-[clamp(2.5rem,6vw,5rem)]">{t.hero.title1}</span>
+          <span class="block text-[clamp(2.5rem,6vw,5rem)] text-ink">{t.hero.title2}</span>
+        </h1>
+
+        <p class="mt-7 text-lg sm:text-xl text-body leading-relaxed max-w-xl reveal" data-delay="2">
+          {t.hero.subtitle}
+        </p>
+
+        <div class="mt-9 flex flex-wrap items-center gap-3 reveal" data-delay="3">
+          <a href={githubUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            {t.hero.ctaPrimary}
+          </a>
+          <a href="#quick-start" class="btn-tertiary">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg>
+            {t.hero.ctaSecondary}
+          </a>
+        </div>
+
+        <!-- Trust strip -->
+        <div class="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 reveal" data-delay="4">
+          {t.hero.trustStrip.map((item) => (
+            <span class="inline-flex items-center gap-1.5 text-xs text-body">
+              <svg class="w-3.5 h-3.5 text-positive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right: terminal mockup -->
+      <div class="lg:col-span-5 reveal" data-delay="3">
+        <div class="card-dark p-0 overflow-hidden shadow-2xl shadow-ink/20 ring-1 ring-white/5">
+
+          <!-- Terminal chrome -->
+          <div class="flex items-center justify-between px-4 py-3 border-b border-canvas-soft/10 bg-ink-deep/40">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-canvas-soft/20"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-canvas-soft/20"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-canvas-soft/20"></span>
+            </div>
+            <span class="text-[10px] font-mono text-canvas-soft/50 tracking-wide">{t.hero.terminal.title}</span>
+            <span class="w-12"></span>
+          </div>
+
+          <!-- Status panel -->
+          <div class="px-5 py-4 border-b border-canvas-soft/10">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="relative flex h-1.5 w-1.5">
+                <span class="absolute inline-flex h-full w-full rounded-full bg-primary opacity-70" style="animation: pulse-soft 2.4s ease-in-out infinite"></span>
+                <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary"></span>
+              </span>
+              <span class="text-[10px] font-mono text-canvas-soft/50 uppercase tracking-[0.15em]">{t.hero.terminal.subtitle}</span>
+            </div>
+
+            <!-- Status bar mockup -->
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono">
+              <div class="flex items-center gap-1.5">
+                <span class="text-canvas-soft/40">{t.hero.terminal.statusLabel}:</span>
+                <span class="text-canvas-soft">{t.hero.terminal.statusModel}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-canvas-soft/40">{t.hero.terminal.statusTier}:</span>
+                <span class="px-2 py-0.5 bg-primary text-ink font-bold rounded-pill">{t.hero.terminal.statusTierValue}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="text-canvas-soft/40">mode:</span>
+                <span class="text-primary">{t.hero.terminal.statusMode}</span>
+              </div>
+            </div>
+
+            <div class="mt-3 grid grid-cols-2 gap-3 text-[11px] font-mono">
+              <div class="flex flex-col gap-0.5">
+                <span class="text-canvas-soft/40 uppercase tracking-wider">{t.hero.terminal.judgeLabel}</span>
+                <span class="text-primary">{t.hero.terminal.judgeValue}</span>
+              </div>
+              <div class="flex flex-col gap-0.5">
+                <span class="text-canvas-soft/40 uppercase tracking-wider">{t.hero.terminal.windowLabel}</span>
+                <span class="text-canvas-soft">{t.hero.terminal.windowValue}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Log lines -->
+          <div class="px-5 py-4 font-mono text-[11px] leading-relaxed space-y-1.5 max-h-44 overflow-hidden">
+            {t.hero.terminal.logLines.map((line) => (
+              <div class="flex gap-3">
+                <span class="text-canvas-soft/30 shrink-0">{line.time}</span>
+                <span class="text-canvas-soft/85">{line.text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="mt-16 sm:mt-24 flex justify-center reveal" data-delay="5">
+      <div class="flex flex-col items-center gap-2 opacity-50">
+        <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-ink/60">{t.hero.scrollHint || 'See how'}</span>
+        <div class="w-px h-8 bg-gradient-to-b from-ink/40 to-transparent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="1"] { animation-delay: 0.05s; }
+  .reveal[data-delay="2"] { animation-delay: 0.18s; }
+  .reveal[data-delay="3"] { animation-delay: 0.32s; }
+  .reveal[data-delay="4"] { animation-delay: 0.46s; }
+  .reveal[data-delay="5"] { animation-delay: 0.6s; }
+</style>

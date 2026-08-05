@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://shift-router.greenerai.top/sitemap-index.xml

@@ -1,0 +1,67 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="faq" class="relative py-24 sm:py-32 bg-canvas">
+  <div class="max-w-3xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="text-center mb-12 sm:mb-16">
+      <span class="eyebrow">{t.faq.label}</span>
+      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
+        {t.faq.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg mx-auto leading-relaxed">
+        {t.faq.subtitle}
+      </p>
+    </div>
+
+    <!-- Accordion -->
+    <div class="space-y-3">
+      {t.faq.items.map((item, idx) => (
+        <details
+          class="group card-sage px-6 sm:px-7 py-5 sm:py-6 reveal"
+          data-delay={idx * 2}
+          open={idx === 0}
+        >
+          <summary class="flex items-center justify-between gap-4 cursor-pointer select-none list-none">
+            <h3 class="text-base sm:text-lg font-extrabold tracking-tight text-ink pr-2">
+              {item.q}
+            </h3>
+            <span class="shrink-0 w-8 h-8 rounded-full bg-canvas border border-ink/10 flex items-center justify-center transition-transform duration-200 group-open:rotate-45">
+              <svg class="w-4 h-4 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </summary>
+          <div class="mt-4 pt-4 border-t border-ink/10">
+            <p class="text-[15px] text-body leading-relaxed">
+              {item.a}
+            </p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="0"] { animation-delay: 0.05s; }
+  .reveal[data-delay="2"] { animation-delay: 0.18s; }
+  .reveal[data-delay="4"] { animation-delay: 0.32s; }
+  .reveal[data-delay="6"] { animation-delay: 0.46s; }
+  .reveal[data-delay="8"] { animation-delay: 0.6s; }
+  .reveal[data-delay="10"] { animation-delay: 0.74s; }
+
+  details summary::-webkit-details-marker { display: none; }
+</style>
