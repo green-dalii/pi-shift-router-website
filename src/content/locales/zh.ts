@@ -22,7 +22,7 @@ export const zh: Translations = {
     title1: '每一轮对话，',
     title2: '都走对的角色。',
     subtitle:
-      'pi-shift-router 把 Pi 的每一轮路由到 Fast 程序员或 Smart CTO 角色。一个小 LLM Judge 选角色；被选中的模型随后驱动整轮 —— 所有思考、所有工具调用。',
+      '日常编码花几分钱，真正重要的活留给前沿模型。pi-shift-router 每轮自动切换角色 —— provider 掉线时流程不断。',
     ctaPrimary: '快速上手',
     ctaSecondary: '查看文档',
     terminal: {
@@ -45,12 +45,12 @@ export const zh: Translations = {
         { time: '🦾', text: '[deepseek-v4-flash] ← 同层 failover（v0.6.0）' },
       ],
     },
-    trustStrip: ['零运行时依赖', 'MIT 开源', '202 个单元测试', 'Node 24+'],
+    trustStrip: ['几乎零额外成本', '默认无行为，零风险', 'MIT 开源 · 202 个测试', 'Node 24+'],
   },
   quickStart: {
     label: '快速上手',
     title: '三步就能跑起来',
-    subtitle: 'Node.js ≥ 24、pi-agent ≥ 0.80。一个 Provider 密钥，每层一个模型。',
+    subtitle: 'Node.js ≥ 24、pi-agent ≥ 0.80。两层默认都为空 —— 配置前路由器是 no-op。零风险，随时可撤。',
     steps: [
       {
         title: '安装',
@@ -76,6 +76,20 @@ export const zh: Translations = {
     label: '模型选择',
     title: '两个档位，一个 Judge。',
     subtitle: '每一轮按心智模式（执行 vs 判断）分类，路由到合适的档位。',
+    valueProps: [
+      {
+        title: '只在必要时用 Smart',
+        desc: '升级到 Smart 立即生效 —— 质量优先。降级需要持续趋势，例行工作永远不会误烧前沿模型的 token。',
+      },
+      {
+        title: 'Judge 成本几乎为零',
+        desc: 'Judge 就是 Fast 层模型本身 —— 一次分类几千 token，按你最低的价格计费。',
+      },
+      {
+        title: '自愈式故障转移',
+        desc: '遇 429/5xx，失败模型冷却（1m → 30m），同层下一个健康模型接管 —— 同一轮内完成。',
+      },
+    ],
     fast: {
       label: 'Fast',
       title: '程序员',
@@ -122,6 +136,18 @@ export const zh: Translations = {
     title: '几个常见问题',
     subtitle: '内容直接取自 README。',
     items: [
+      {
+        q: '不配置任何模型会怎样？',
+        a: '两层默认都为空。路由器不起作用 —— pi 用默认模型。运行 /router config 配置一个 Fast 和一个 Smart 模型。',
+      },
+      {
+        q: '真的能省钱吗？',
+        a: 'Judge 用 Fast 层模型（通常是最便宜的）每轮几千 token、200ms–2s。相比避免误调 Smart 省下的钱，这点开销完全忽略不计。',
+      },
+      {
+        q: '试一下安全吗？',
+        a: '安全。配置前路由器什么都不做；纯 TypeScript、零运行时依赖；/router off 可随时停用。完全可逆。',
+      },
       {
         q: 'Smart 层到底是什么？只是审查者吗？',
         a: 'Smart 层是 CTO 角色 —— 任务复杂时它驱动整轮：架构、设计 review、安全审计、多步规划、不可逆操作。它不是 judge、也不是审查者：它自己写代码、调工具、跑循环，以那个智力层级完成整轮工作。',

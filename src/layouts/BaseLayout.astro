@@ -33,7 +33,7 @@ const hreflangEntries = (['en', 'zh'] as const).map((code) => ({
 const xDefault = hreflangEntries.find((h) => h.code === 'en')?.href ?? siteUrl.href;
 
 const ogLocale = locale === 'zh' ? 'zh_CN' : 'en_US';
-const ogImage = new URL('/favicon.svg', siteUrl).href;
+const ogImage = new URL('/og-image.svg', siteUrl).href;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -48,13 +48,30 @@ const jsonLd = {
     },
     {
       '@type': 'SoftwareApplication',
+      '@id': siteUrl.href + '#software',
       name: t.footer.brand,
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Cross-platform',
+      softwareVersion: '0.8.2',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       license: 'https://opensource.org/licenses/MIT',
       description,
+      url: 'https://github.com/green-dalii/pi-shift-router',
+      codeRepository: 'https://github.com/green-dalii/pi-shift-router',
+      downloadUrl: 'https://www.npmjs.com/package/pi-shift-router',
     },
+    ...(locale === 'en'
+      ? [
+          {
+            '@type': 'FAQPage',
+            mainEntity: t.faq.items.map((item) => ({
+              '@type': 'Question',
+              name: item.q,
+              acceptedAnswer: { '@type': 'Answer', text: item.a },
+            })),
+          },
+        ]
+      : []),
   ],
 };
 ---
@@ -72,10 +89,13 @@ const jsonLd = {
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
+    <!-- LLM-readable product summary (GEO: picked up by AI crawlers) -->
+    <!-- name: pi-shift-router | type: software / npm package / pi-coding-agent extension | license: MIT | language: TypeScript | runtime: Node.js >= 24 | dependencies: zero runtime deps | npm: https://www.npmjs.com/package/pi-shift-router | repo: https://github.com/green-dalii/pi-shift-router | features: two-tier routing, LLM judge, JSON-mode classifier, sliding-window downgrade gate, multi-model fallback chains, exponential-backoff runtime failover (429/5xx), zero-config defaults | author: green-dalii -->
     {hreflangEntries.map((h) => (
       <link rel="alternate" hreflang={h.code} href={h.href} />
     ))}
     <link rel="alternate" hreflang="x-default" href={xDefault} />
+    <link rel="alternate" type="text/markdown" title="LLMs.txt (GEO)" href="/llms.txt" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

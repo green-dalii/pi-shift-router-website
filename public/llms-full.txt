@@ -1,0 +1,154 @@
+# pi-shift-router — Full documentation for LLM consumption
+
+> Auto-routing Pi coding agent turns between a fast Programmer and a smart CTO role. An LLM judge picks the right role per turn; multi-model fallback chains keep you running; zero runtime dependencies.
+
+## Overview
+
+**pi-shift-router** is a [pi-coding-agent](https://github.com/earendil-works/pi-coding-agent) extension that routes every turn to either a fast execution model or a smart judgment model. Before each turn, a small LLM Judge (the fast-tier model itself) classifies the task as `fast` or `smart`. The chosen model then drives the whole turn — all thinking, all tool calls, all message content — at that tier's intelligence level.
+
+### Roles
+
+| Role | Tier | Emoji | What it does for the whole turn | When |
+|------|------|-------|----------------------------------|------|
+| **Programmer** | Fast | 🦾 | Executes: writes code, runs tests, fixes the bug, follows the established pattern | Routine, well-defined, low stakes |
+| **CTO** | Smart | 🧠 | Drives the entire turn when the work is complex: architecture, design review, security audit, multi-step planning, irrecoverable actions, "very deep" reasoning | High stakes, irreversible, ambiguous, or user asks for depth |
+
+The fast tier is **not** a real Programmer — it's a model that handles execution; the smart tier is **not** a real CTO — it's the model that handles complex judgment, but it also **does all the work itself** (writes the code, calls the tools, runs the loop). The LLM Judge is a small one-shot classification call; the chosen tier then drives the entire agent run.
+
+**Zero behavior change by default** — both tiers start empty. The router does nothing until you assign models via `/router config`.
+
+## How it works
+
+```mermaid
+flowchart TD
+    Input["User sends a message"]
+    Input --> Hook["before_agent_start fires"]
+    Hook --> Enabled{"Router enabled?"}
+    Enabled -->|No| Skip["pi uses default model"]
+    Enabled -->|Yes| Judge["LLM Judge (Fast tier's model, JSON mode)"]
+    Judge --> Fail{"Judge OK?"}
+    Fail -->|No| Fallback["Hold position — stay on current tier"]
+    Fail -->|Yes| Decide
+    Decide{"Classified as?"}
+    Decide -->|Smart & on Fast| Upgrade["UPGRADE → Smart model (immediate)"]
+    Decide -->|Fast & on Smart| Trend["Check sliding window"]
+    Decide -->|Same as current| Stay["STAY — no switch"]
+    Trend --> Stable{"Fast ≥60% of last 5?"}
+    Stable -->|Yes| Down["DOWNGRADE → Fast model"]
+    Stable -->|No| Stay
+    Upgrade & Down --> Failover["On 429/5xx: mark cooldown + switch to next healthy model in tier"]
+    Failover & Stay --> Done["Agent processes with selected model"]
+```
+
+Three properties that matter:
+
+- **Upgrades are immediate** (Fast → Smart). Quality first.
+- **Downgrades need sustained trend** (≥60% of last 5 turns are Fast). Cache protection.
+- **One classification per turn.** No thrashing during tool calls.
+
+**JSON-mode enforcement**: OpenAI-compatible APIs use `response_format: { type: "json_object" }`; Anthropic uses assistant prefill `{` to force JSON-start output. While the Judge is in flight, the status bar shows `⚖ judging…`.
+
+### Runtime failover (v0.6.0)
+
+When the primary model hits 429 / 5xx / quota / Token-Plan exhaustion, pi retries first (provider ×3, agent ×3), then the router takes over:
+
+1. Mark the failing model into **exponential-backoff cooldown** (1m, 2m, 4m, … capped at 30m).
+2. Immediately `setModel` to the next healthy model **in the same tier** (no cross-tier).
+3. pi's pending retry continues with the fallback — same-turn failover.
+4. Subsequent turns skip cooled models in `before_agent_start`.
+5. A 2xx response clears the cooldown; session restart resets everything.
+
+The Judge also walks the full fast-tier chain before giving up, sharing the same cooldown map as routing. Manual override (`/route-force`) always bypasses cooldowns. Auth/config errors (400/401) never trigger failover.
+
+## Quick Start
+
+**Prerequisites** — Node.js ≥ 24, pi-agent ≥ 0.80, one provider account with API key in pi-agent's `auth.json`, one model for each tier.
+
+**Install**
+
+```bash
+pi install npm:pi-shift-router
+```
+
+Registers in `~/.pi/agent/settings.json` and auto-loads on next pi launch. See [pi's packages docs](https://github.com/earendil-works/pi-coding-agent/blob/main/docs/packages.md) for git / local-path install.
+
+**Configure**
+
+Inside pi, run `/router config` and pick one Fast + one Smart model. Save to user or project scope.
+
+**Verify**
+
+`/router status` shows your tiers and models; the next turn triggers the first Judge call.
+
+## Commands
+
+| Command | What it does |
+|---------|--------------|
+| `/router status` | Show tier, model, window, config summary |
+| `/router on` / `/router off` | Enable / disable routing |
+| `/router config` | Launch the TUI configuration wizard |
+| `/router quiet` | Toggle inline toast notifications |
+| `/router verbose` | Toggle verbose console logging |
+| `/route-force <tier>` | Pin Smart or Fast for the next turn |
+| `/route-force <provider>/<model>` | Pin a specific model for the next turn |
+| `/route-force auto` | Clear manual override |
+
+## Configuration
+
+Two-layer config: user (`~/.pi/agent/pi-shift-router.json`) + project (`<cwd>/.pi/pi-shift-router.json`). Project wins on conflict.
+
+```json
+{
+  "enabled": true,
+  "tiers": {
+    "fast":  { "models": [
+      { "provider": "deepseek", "model": "deepseek-v4-flash", "priority": 1 },
+      { "provider": "kimi",     "model": "kimi-k3",          "priority": 2 }
+    ] },
+    "smart": { "models": [{ "provider": "kimi", "model": "kimi-k3", "priority": 1 }] }
+  },
+  "routing": { "mode": "auto", "judgeTimeout": 5000, "window": { "size": 5, "threshold": 0.6 } },
+  "ux": { "quietMode": false, "statusBar": true, "inlineToast": true, "routerLogVerbose": false }
+}
+```
+
+| Field | Default | Meaning |
+|-------|---------|---------|
+| `enabled` | `true` | Master switch. Use `/router off` to disable. |
+| `tiers.<tier>.models[]` | `[]` | Ordered by `priority`. First hit wins; rest are run-time fallbacks. |
+| `routing.judgeTimeout` | `5000` | ms. Judge API call timeout. |
+| `routing.window.size` / `threshold` | `5` / `0.6` | Sliding-window downgrade gate. |
+| `ux.quietMode` / `statusBar` / `inlineToast` / `routerLogVerbose` | various | Surface controls. |
+
+Each tier's `models` array is an **ordered priority list** — first entry is the primary; later entries stand by as fallback. Configure multiple models via `/router config`'s TUI chain editor (`a` add, `x` remove, `J`/`K` reorder, `d` save, `Esc` cancel).
+
+## FAQ
+
+### What if I don't configure any models?
+
+Both tiers start empty. The router is a no-op; pi uses its default model. Run `/router config`.
+
+### Does the Judge add noticeable latency?
+
+A Judge call costs a few thousand tokens at your Fast-tier pricing. End-to-end classification round-trip is typically 200ms–2s. The status bar shows `⚖ judging…` during the call.
+
+### What if my primary model 429s or times out?
+
+Exponential-backoff cooldown (v0.6.0): primary goes into cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over. A 2xx response clears the cooldown immediately.
+
+### Does this work across different providers?
+
+Yes. Each tier stores an ordered list of `{provider, model, priority}` pairs. Mix freely.
+
+### Will it downgrade Smart prematurely?
+
+Only when the **weighted** ratio of fast votes in the last 5 classified turns is ≥ `window.threshold` (default `0.6`). Low-confidence votes below `window.minConfidence` (default `0.5`) are ignored. Raise `threshold` to `0.8` to stay on Smart longer. Upgrades (Fast → Smart) are always immediate.
+
+### Is there cost overhead from the Judge?
+
+The Judge uses the Fast-tier model (typically your cheapest). Savings from avoiding unnecessary Smart-tier turns dwarf this cost.
+
+## Licensing
+
+- **Author & License** — pi-shift-router by [green-dalii](https://github.com/green-dalii), licensed under [MIT](LICENSE) © 2026.
+- **Related plugins** — [pi-model-router](https://github.com/yeliu84/pi-model-router) (3-tier routing, USD budget, keyword rules), [pi-smart-router](https://github.com/beettlle/pi-smart-router) (local ONNX ML inference). These are complementary, not competitive.

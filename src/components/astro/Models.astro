@@ -30,6 +30,23 @@ const features = [
       </p>
     </div>
 
+    <!-- Value props: why this pays off (3 columns) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10 sm:mb-14">
+      {t.models.valueProps.map((v, idx) => (
+        <div class="card-green-pale p-6 reveal" data-delay={idx * 2}>
+          <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center mb-4" aria-hidden="true">
+            <svg class="w-4 h-4 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 class="text-base font-extrabold tracking-tight text-ink mb-2">
+            {v.title}
+          </h3>
+          <p class="text-sm text-body leading-relaxed">
+            {v.desc}
+          </p>
+        </div>
+      ))}
+    </div>
+
     <!-- Two tier cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
 

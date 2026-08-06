@@ -56,6 +56,10 @@ export interface Translations {
     label: string;
     title: string;
     subtitle: string;
+    valueProps: {
+      title: string;
+      desc: string;
+    }[];
     fast: {
       label: string;
       title: string;

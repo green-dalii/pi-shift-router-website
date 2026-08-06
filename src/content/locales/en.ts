@@ -22,7 +22,7 @@ export const en: Translations = {
     title1: 'Every turn,',
     title2: 'the right role.',
     subtitle:
-      'pi-shift-router routes every Pi turn between a fast Programmer and a smart CTO role. A small LLM Judge picks the role; the chosen model then drives the whole turn — all thinking, all tool calls.',
+      'Spend pennies on routine coding, keep frontier models for the work that matters. pi-shift-router auto-switches roles per turn — and keeps your flow alive when a provider blinks.',
     ctaPrimary: 'Get Started',
     ctaSecondary: 'Read the Docs',
     terminal: {
@@ -45,12 +45,12 @@ export const en: Translations = {
         { time: '🦾', text: '[deepseek-v4-flash] ← same-tier failover (v0.6.0)' },
       ],
     },
-    trustStrip: ['Zero runtime deps', 'Open source MIT', '202 unit tests', 'Node 24+'],
+    trustStrip: ['~Zero extra cost', 'Zero behavior change by default', 'Open source MIT · 202 tests', 'Node 24+'],
   },
   quickStart: {
     label: 'Quick Start',
     title: 'Up and running in three steps',
-    subtitle: 'Node.js ≥ 24 and pi-agent ≥ 0.80. One provider key, one model per tier.',
+    subtitle: 'Node.js ≥ 24 and pi-agent ≥ 0.80. Both tiers start empty — the router is a no-op until you configure it. Zero risk, fully reversible.',
     steps: [
       {
         title: 'Install',
@@ -76,6 +76,20 @@ export const en: Translations = {
     label: 'Models',
     title: 'Two tiers. One judge.',
     subtitle: 'Every turn is classified by mental mode — execution or judgment — and routed to the tier that fits.',
+    valueProps: [
+      {
+        title: 'Smart only when it matters',
+        desc: 'Upgrades to Smart are immediate — quality first. Downgrades need a sustained trend, so routine work never accidentally burns frontier tokens.',
+      },
+      {
+        title: 'Near-zero judge cost',
+        desc: 'The judge is the fast-tier model itself — a few thousand tokens per classification, at your cheapest pricing.',
+      },
+      {
+        title: 'Self-healing fallback',
+        desc: 'On 429/5xx a failed model cools down (1m → 30m) and the next healthy model in the same tier takes over — same turn.',
+      },
+    ],
     fast: {
       label: 'Fast',
       title: 'Programmer',
@@ -122,6 +136,18 @@ export const en: Translations = {
     title: 'Questions, answered',
     subtitle: 'Straight from the README.',
     items: [
+      {
+        q: 'What if I don\'t configure any models?',
+        a: 'Both tiers start empty. The router is a no-op — pi uses its default model. Run /router config to assign one Fast and one Smart model.',
+      },
+      {
+        q: 'Does this actually save money?',
+        a: 'The judge uses the fast-tier model (typically your cheapest) for a few thousand tokens per turn — 200ms–2s. Savings from avoiding unnecessary Smart-tier turns dwarf this cost.',
+      },
+      {
+        q: 'Is it safe to try?',
+        a: 'Yes. The router does nothing until you configure models, it is pure TypeScript with zero runtime dependencies, and /router off disables it for the session. Fully reversible.',
+      },
       {
         q: 'What is the smart tier? Is it just a reviewer?',
         a: 'The smart tier is the CTO role — it drives the entire turn when the work is complex: architecture, design review, security audit, multi-step planning, irrecoverable actions. It is not a judge or a reviewer: it writes the code, calls the tools, and runs the loop itself at that intelligence level.',

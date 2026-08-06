@@ -1,0 +1,83 @@
+# pi-shift-router
+
+> Auto-routing Pi coding agent turns between a fast Programmer and a smart CTO role. An LLM judge picks the right role per turn; multi-model fallback chains keep you running; zero runtime dependencies.
+
+## About
+
+pi-shift-router is a pi-coding-agent extension that classifies every turn by mental mode and routes between two roles:
+
+- **Fast = Programmer** — executes the turn: writes code, runs tests, fixes bugs, follows established patterns. For routine, well-defined, low-stakes work.
+- **Smart = CTO** — drives the entire turn when the work is complex: architecture, design review, security audit, multi-step planning, irrecoverable actions. The smart role is not a judge — it is the model that actually writes, thinks, and runs tools for the whole turn.
+
+A small LLM Judge (the fast-tier model itself, JSON mode) classifies each turn as fast or smart. Upgrades are immediate; downgrades need a sustained trend (fast votes ≥ 60% of the last 5 turns). On 429/5xx, the failing model enters exponential-backoff cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over.
+
+## Key facts
+
+- Runtime: Node.js ≥ 24, pi-agent ≥ 0.80
+- Dependencies: zero runtime deps (pure TypeScript)
+- License: MIT
+- Version: 0.8.2
+- Tests: 202 unit tests
+- npm: https://www.npmjs.com/package/pi-shift-router
+- Repository: https://github.com/green-dalii/pi-shift-router
+- Author: green-dalii
+
+## Install
+
+```bash
+pi install npm:pi-shift-router
+```
+
+Registers in ~/.pi/agent/settings.json and auto-loads on the next pi launch.
+
+## Configure
+
+Inside pi, run `/router config` and pick one Fast + one Smart model. Save to user or project scope.
+
+## Verify
+
+`/router status` shows your tiers and models; the next turn triggers the first Judge call.
+
+## Commands
+
+- `/router status` — show tier, model, window, config summary
+- `/router on` / `/router off` — enable / disable routing
+- `/router config` — launch the TUI configuration wizard
+- `/router quiet` — toggle inline toast notifications
+- `/router verbose` — toggle verbose console logging
+- `/route-force <tier>` — pin Smart or Fast for the next turn
+- `/route-force <provider>/<model>` — pin a specific model for the next turn
+- `/route-force auto` — clear manual override
+
+## Configuration
+
+Two-layer config: user (`~/.pi/agent/pi-shift-router.json`) + project (`<cwd>/.pi/pi-shift-router.json`). Project wins on conflict.
+
+```json
+{
+  "enabled": true,
+  "tiers": {
+    "fast":  { "models": [
+      { "provider": "deepseek", "model": "deepseek-v4-flash", "priority": 1 },
+      { "provider": "kimi",     "model": "kimi-k3",          "priority": 2 }
+    ] },
+    "smart": { "models": [{ "provider": "kimi", "model": "kimi-k3", "priority": 1 }] }
+  },
+  "routing": { "mode": "auto", "judgeTimeout": 5000, "window": { "size": 5, "threshold": 0.6 } },
+  "ux": { "quietMode": false, "statusBar": true, "inlineToast": true, "routerLogVerbose": false }
+}
+```
+
+## FAQ
+
+- **What if I don't configure any models?** Both tiers start empty. The router is a no-op; pi uses its default model. Run `/router config`.
+- **Does the Judge add noticeable latency?** A few thousand tokens at Fast-tier pricing; end-to-end classification typically 200ms–2s. Status bar shows `⚖ judging…`.
+- **What if my primary model 429s or times out?** Exponential-backoff cooldown (1m → 2m → 4m … capped 30m); next healthy model in the same tier takes over. A 2xx response clears the cooldown.
+- **Does this work across different providers?** Yes — each tier is an ordered list of `{provider, model, priority}` pairs.
+- **Is it different from pi-model-router / pi-smart-router?** They solve different problems and can be used together.
+
+## Links
+
+- [GitHub repository](https://github.com/green-dalii/pi-shift-router)
+- [npm package](https://www.npmjs.com/package/pi-shift-router)
+- [pi-coding-agent](https://github.com/earendil-works/pi-coding-agent)
