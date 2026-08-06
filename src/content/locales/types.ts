@@ -10,7 +10,7 @@ export interface Translations {
   };
   nav: {
     quickStart: string;
-    models: string;
+    howItWorks: string;
     faq: string;
     github: string;
     languageLabel: string;
@@ -39,7 +39,7 @@ export interface Translations {
       windowValue: string;
       logLines: { time: string; text: string }[];
     };
-    trustStrip: string[];
+    trustStrip: { label: string; desc: string }[];
   };
   quickStart: {
     label: string;
@@ -56,6 +56,7 @@ export interface Translations {
     label: string;
     title: string;
     subtitle: string;
+    intro: string;
     valueProps: {
       title: string;
       desc: string;
@@ -106,6 +107,7 @@ export interface Translations {
     sections: {
       product: { title: string; links: { label: string; href: string }[] };
       resources: { title: string; links: { label: string; href: string }[] };
+      friends: { title: string; links: { label: string; href: string }[] };
     };
     languageLabel: string;
   };

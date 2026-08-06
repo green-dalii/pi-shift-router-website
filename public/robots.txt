@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://shift-router.greenerai.top/sitemap-index.xml
+Sitemap: https://shiftrouter.greenerai.top/sitemap-index.xml

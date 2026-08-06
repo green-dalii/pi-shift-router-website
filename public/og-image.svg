@@ -41,13 +41,13 @@
 
   <!-- headline -->
   <text class="title" x="72" y="300">Every turn,</text>
-  <text class="title" x="72" y="385">the right role.</text>
+  <text class="title" x="72" y="385">the right model.</text>
 
   <!-- pill -->
   <rect class="pill-bg" x="72" y="440" width="330" height="56" rx="28"/>
-  <text class="pill" x="100" y="478">Fast Programmer · Smart CTO</text>
+  <text class="pill" x="100" y="478">Fast &amp; cheap · Smart &amp; deep</text>
 
   <!-- footer strip -->
   <text class="sub" x="72" y="560">Open source · Zero dependencies · pi coding-agent extension</text>
-  <text class="sub" x="72" y="596" opacity="0.6">shift-router.greenerai.top</text>
+  <text class="sub" x="72" y="596" opacity="0.6">shiftrouter.greenerai.top</text>
 </svg>

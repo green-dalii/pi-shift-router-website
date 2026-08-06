@@ -2,15 +2,15 @@ import type { Translations } from './types';
 
 export const en: Translations = {
   meta: {
-    title: 'Pi Shift Router — Smart routing for Pi\'s coding agent',
+    title: 'Pi Shift Router — Stop picking models, start coding',
     description:
-      'An auto-routing Pi coding agent extension that switches every turn between a fast Programmer and a smart CTO role — an LLM judge picks the right role, the chosen model drives the whole turn, multi-model fallback chains keep you running, zero runtime dependencies.',
+      'A pi-coding-agent extension that automatically sends routine coding to a fast, cheap model — and escalates complex work to a frontier one. Saves tokens, survives provider outages, zero risk to try.',
     keywords:
-      'pi shift router, pi coding agent, llm router, model routing, ai coding, fast smart tier, code review, provider fallback, deepseek, openrouter, pi extension',
+      'pi shift router, pi coding agent, llm router, model routing, ai coding, save tokens, reduce ai cost, fast smart tier, provider fallback, deepseek, openrouter, pi extension',
   },
   nav: {
     quickStart: 'Quick Start',
-    models: 'Models',
+    howItWorks: 'How it works',
     faq: 'FAQ',
     github: 'GitHub',
     languageLabel: 'Language',
@@ -18,11 +18,11 @@ export const en: Translations = {
     zhLabel: '中文',
   },
   hero: {
-    badge: 'Open source · Zero dependencies · Node 24+',
+    badge: 'Open-source extension for pi-coding-agent',
     title1: 'Every turn,',
-    title2: 'the right role.',
+    title2: 'the right model.',
     subtitle:
-      'Spend pennies on routine coding, keep frontier models for the work that matters. pi-shift-router auto-switches roles per turn — and keeps your flow alive when a provider blinks.',
+      'Everyday coding runs on a cheap, fast model. Hard problems get the smart one. And when a provider stumbles, the router switches — automatically, mid-turn, so your work never stops.',
     ctaPrimary: 'Get Started',
     ctaSecondary: 'Read the Docs',
     terminal: {
@@ -45,89 +45,95 @@ export const en: Translations = {
         { time: '🦾', text: '[deepseek-v4-flash] ← same-tier failover (v0.6.0)' },
       ],
     },
-    trustStrip: ['~Zero extra cost', 'Zero behavior change by default', 'Open source MIT · 202 tests', 'Node 24+'],
+    trustStrip: [
+      { label: 'Multi-provider', desc: 'auto-switch keeps your task running' },
+      { label: 'No extra servers', desc: 'runs inside your Pi process' },
+      { label: 'Open source MIT', desc: 'zero runtime deps' },
+    ],
   },
   quickStart: {
     label: 'Quick Start',
     title: 'Up and running in three steps',
-    subtitle: 'Node.js ≥ 24 and pi-agent ≥ 0.80. Both tiers start empty — the router is a no-op until you configure it. Zero risk, fully reversible.',
+    subtitle: 'Install it and nothing changes — routing only starts once you pick your models. Fully reversible, no lock-in.',
     steps: [
       {
         title: 'Install',
-        desc: 'Install from npm with the pi package manager. It registers in ~/.pi/agent/settings.json and auto-loads on the next pi launch.',
+        desc: 'One command. pi registers it in your settings and loads it on the next launch — no rebuild, no config files to touch.',
         codeLabel: 'Install command',
         code: 'pi install npm:pi-shift-router',
       },
       {
-        title: 'Configure',
-        desc: 'Inside pi, run /router config and pick one Fast + one Smart model. Save to user or project scope. Both tiers start empty — nothing routes until you assign models.',
+        title: 'Pick your models',
+        desc: 'Run /router config and choose one fast model and one smart model — the pair you already use. Save to user or project scope.',
         codeLabel: 'Configure',
         code: '/router config',
       },
       {
-        title: 'Verify',
-        desc: '/router status shows your tiers and models; the next turn triggers the first Judge call. Tune later with /router quiet, /router verbose, and /route-force.',
+        title: 'Watch it work',
+        desc: '/router status shows your setup; the next turn runs the first classification. From there it\'s automatic — tune later with /router quiet and /route-force when you want control.',
         codeLabel: 'Verify',
         code: '/router status',
       },
     ],
   },
   models: {
-    label: 'Models',
-    title: 'Two tiers. One judge.',
-    subtitle: 'Every turn is classified by mental mode — execution or judgment — and routed to the tier that fits.',
+    label: 'How it works',
+    title: 'One simple idea',
+    subtitle: 'Every task has a difficulty. Every model has a price. pi-shift-router matches the two — automatically.',
+    intro:
+      'Think of it like a team: the Programmer writes code fast and cheap; the CTO steps in when the stakes are high. Same task, two minds — the router decides which one you need before you even finish typing.',
     valueProps: [
       {
-        title: 'Smart only when it matters',
-        desc: 'Upgrades to Smart are immediate — quality first. Downgrades need a sustained trend, so routine work never accidentally burns frontier tokens.',
+        title: 'Routine work stays cheap',
+        desc: 'The judge only upgrades when a task actually needs depth — everyday coding keeps running on your budget model, and expensive flagships are reserved for what matters.',
       },
       {
-        title: 'Near-zero judge cost',
-        desc: 'The judge is the fast-tier model itself — a few thousand tokens per classification, at your cheapest pricing.',
+        title: 'The deciding is nearly free',
+        desc: 'One tiny classification call — a few thousand tokens at your cheapest price, 200ms–2s. The savings from skipping unnecessary smart turns dwarf it.',
       },
       {
-        title: 'Self-healing fallback',
-        desc: 'On 429/5xx a failed model cools down (1m → 30m) and the next healthy model in the same tier takes over — same turn.',
+        title: 'Keeps working when a provider hiccups',
+        desc: 'If a model 429s or times out, it cools down and the next healthy model in the same tier takes over — mid-turn, no action needed from you.',
       },
     ],
     fast: {
       label: 'Fast',
       title: 'Programmer',
-      desc: 'Executes the turn: writes code, runs tests, fixes the bug, follows the established pattern. For routine, well-defined, low-stakes work.',
-      badge: '🦾 Programmer',
+      desc: 'Your everyday coder. Fast on routine work — writing code, running tests, fixing bugs — so you don\'t waste a flagship model on a rename or a refactor.',
+      badge: '🦾 Your daily worker',
       bullets: [
-        'Writes code and fixes bugs',
-        'Runs tests, follows patterns',
-        'Routine, well-defined work',
+        'Day-to-day coding and fixes',
+        'Tests and mechanical changes',
+        'Routine, low-stakes work',
       ],
     },
     smart: {
       label: 'Smart',
       title: 'CTO',
-      desc: 'Drives the entire turn when the work is complex — architecture, design review, security audit, multi-step planning, irrecoverable actions. Not a judge: it does the work itself.',
-      badge: '🧠 CTO',
+      desc: 'Your architect for the hard stuff — architecture, design review, security, multi-step plans, irreversible changes. It doesn\'t just review; it does the work.',
+      badge: '🧠 For the hard stuff',
       bullets: [
-        'Architecture and design review',
-        'Security audit, multi-step planning',
-        'High stakes, ambiguous, wants depth',
+        'Architecture and design decisions',
+        'Reviews that need real judgment',
+        'Risky, ambiguous, or deep tasks',
       ],
     },
     judge: {
       label: 'LLM Judge',
-      title: 'One small call, then the role drives',
-      desc: 'A small LLM — the fast-tier model itself — classifies each turn as fast or smart in JSON mode. It is a one-shot classification; the chosen tier then drives the whole agent run.',
+      title: 'A tiny call decides',
+      desc: 'One small classification — by the fast-tier model itself — reads your request and picks fast or smart. No heavy reasoning, no delay you\'ll notice.',
       code: 'judgeTimeout: 5000',
     },
     window: {
       label: 'Downgrade gate',
-      title: 'Upgrades are instant, downgrades wait',
-      desc: 'Upgrades (Fast → Smart) are immediate — quality first. Downgrades need a sustained trend: fast votes ≥ 60% of the last 5 classified turns.',
+      title: 'No flip-flopping',
+      desc: 'Upgrades are instant when you need depth. Downgrades wait for a clear trend — fast votes in 5 of the last 5 classified turns — so the router never flickers between models mid-flow.',
       code: 'window: { size: 5, threshold: 0.6 }',
     },
     fallback: {
       label: 'Runtime failover',
-      title: 'Cooldown, then next in tier',
-      desc: 'On 429/5xx the failing model enters exponential-backoff cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over — same turn, no cross-tier. A 2xx response clears the cooldown.',
+      title: 'Failures, handled',
+      desc: 'When a provider rate-limits or errors, that model cools down (1m → 30m) and the next healthy one in the same tier takes over — you keep working through the outage.',
       code: 'cooldown: 1m → 2m → 4m → 30m',
     },
   },
@@ -138,35 +144,35 @@ export const en: Translations = {
     items: [
       {
         q: 'What if I don\'t configure any models?',
-        a: 'Both tiers start empty. The router is a no-op — pi uses its default model. Run /router config to assign one Fast and one Smart model.',
+        a: 'Nothing changes. Both tiers start empty — the router does nothing and pi keeps using your default model. Routing only begins once you run /router config and pick your models.',
       },
       {
         q: 'Does this actually save money?',
-        a: 'The judge uses the fast-tier model (typically your cheapest) for a few thousand tokens per turn — 200ms–2s. Savings from avoiding unnecessary Smart-tier turns dwarf this cost.',
+        a: 'Yes. Routine turns stay on your cheapest model instead of burning a flagship on every request. The judge itself costs a few thousand tokens at your fast-tier price — the savings dwarf it.',
       },
       {
         q: 'Is it safe to try?',
-        a: 'Yes. The router does nothing until you configure models, it is pure TypeScript with zero runtime dependencies, and /router off disables it for the session. Fully reversible.',
+        a: 'Completely. The router does nothing until you configure it, it is pure TypeScript with zero runtime dependencies, and /router off disables it instantly. No lock-in.',
       },
       {
-        q: 'What is the smart tier? Is it just a reviewer?',
-        a: 'The smart tier is the CTO role — it drives the entire turn when the work is complex: architecture, design review, security audit, multi-step planning, irrecoverable actions. It is not a judge or a reviewer: it writes the code, calls the tools, and runs the loop itself at that intelligence level.',
+        q: 'What exactly does the smart tier do?',
+        a: 'It\'s the architect role — for complex work it drives the whole turn: architecture, design review, security, multi-step plans, irreversible changes. It doesn\'t just advise or review; it writes the code and does the work itself.',
       },
       {
         q: 'Does the Judge add noticeable latency?',
-        a: 'A Judge call costs a few thousand tokens at your Fast-tier pricing. End-to-end classification is typically 200ms–2s, and the status bar shows ⚖ judging… during the call.',
+        a: 'No. The classification call is a few thousand tokens and takes about 200ms–2s. You\'ll see ⚖ judging… in the status bar during the call — most users never notice it.',
       },
       {
         q: 'What if my primary model 429s or times out?',
-        a: 'Exponential-backoff cooldown: the primary enters cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over. A 2xx response clears the cooldown immediately. Manual override always bypasses cooldowns.',
+        a: 'You keep working. The failed model enters a short cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over automatically — even mid-turn. A successful response clears the cooldown.',
       },
       {
-        q: 'Can I force a tier or model for one turn?',
-        a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins a specific model. /route-force auto clears the override.',
+        q: 'Can I force a specific model for one turn?',
+        a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins an exact model. /route-force auto clears the override.',
       },
       {
-        q: 'Does this work across different providers?',
-        a: 'Yes. Each tier stores an ordered list of {provider, model, priority} pairs — mix freely. The Judge also walks the full fast-tier chain before giving up, sharing the same cooldown map as routing.',
+        q: 'Does it work with models from different providers?',
+        a: 'Yes — mix freely. Each tier is an ordered list of {provider, model, priority} pairs, so your fast tier can be DeepSeek and your smart tier Kimi, all from one config.',
       },
       {
         q: 'How is it different from pi-model-router and pi-smart-router?',
@@ -183,7 +189,7 @@ export const en: Translations = {
         title: 'Product',
         links: [
           { label: 'Quick Start', href: '#quick-start' },
-          { label: 'Models', href: '#models' },
+          { label: 'How it works', href: '#how-it-works' },
           { label: 'FAQ', href: '#faq' },
         ],
       },
@@ -194,6 +200,12 @@ export const en: Translations = {
           { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
           { label: 'Issues', href: 'https://github.com/green-dalii/pi-shift-router/issues' },
           { label: 'Discussions', href: 'https://github.com/green-dalii/pi-shift-router/discussions' },
+        ],
+      },
+      friends: {
+        title: 'Friends',
+        links: [
+          { label: 'Karpathy LLM Wiki', href: 'https://llmwiki.greenerai.top' },
         ],
       },
     },

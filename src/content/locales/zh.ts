@@ -2,15 +2,15 @@ import type { Translations } from './types';
 
 export const zh: Translations = {
   meta: {
-    title: 'Pi Shift Router — 给 Pi 编码 Agent 装一个聪明的路由器',
+    title: 'Pi Shift Router — 别再手动挑模型，专心写代码',
     description:
-      '一个自动路由的 Pi 编码 Agent 扩展：每一轮在 Fast 程序员与 Smart CTO 两个角色间切换 —— LLM Judge 选角色，被选中的模型驱动整轮，多模型 fallback 链保障运行，零运行时依赖。',
+      '一个 pi-coding-agent 扩展：日常编码自动走便宜快速的模型，复杂任务自动升级到前沿模型。省 token、抗故障、零风险可试。',
     keywords:
-      'pi shift router, pi 编码代理, 模型路由, llm router, ai 编程, 快慢分层, 代码审查, provider 故障转移, deepseek, openrouter, pi 扩展',
+      'pi shift router, pi 编码代理, 模型路由, llm router, ai 编程, 省钱, 降低 ai 成本, 快慢分层, provider 故障转移, deepseek, openrouter, pi 扩展',
   },
   nav: {
     quickStart: '快速上手',
-    models: '模型选择',
+    howItWorks: '工作原理',
     faq: '常见问题',
     github: 'GitHub',
     languageLabel: '语言',
@@ -18,11 +18,11 @@ export const zh: Translations = {
     zhLabel: '中文',
   },
   hero: {
-    badge: '开源 · 零依赖 · Node 24+',
+    badge: '为 pi-coding-agent 打造的开源扩展',
     title1: '每一轮对话，',
-    title2: '都走对的角色。',
+    title2: '都用对的模型。',
     subtitle:
-      '日常编码花几分钱，真正重要的活留给前沿模型。pi-shift-router 每轮自动切换角色 —— provider 掉线时流程不断。',
+      '日常编码用便宜快速的模型，复杂问题交给聪明模型。某个服务商掉线或限流？自动切换到下一个 —— 任务不中断。',
     ctaPrimary: '快速上手',
     ctaSecondary: '查看文档',
     terminal: {
@@ -45,89 +45,95 @@ export const zh: Translations = {
         { time: '🦾', text: '[deepseek-v4-flash] ← 同层 failover（v0.6.0）' },
       ],
     },
-    trustStrip: ['几乎零额外成本', '默认无行为，零风险', 'MIT 开源 · 202 个测试', 'Node 24+'],
+    trustStrip: [
+      { label: '多 Provider', desc: '自动切换，任务不中断' },
+      { label: '无第三方服务器', desc: '跑在你的 Pi 进程里' },
+      { label: 'MIT 开源', desc: '零运行时依赖' },
+    ],
   },
   quickStart: {
     label: '快速上手',
     title: '三步就能跑起来',
-    subtitle: 'Node.js ≥ 24、pi-agent ≥ 0.80。两层默认都为空 —— 配置前路由器是 no-op。零风险，随时可撤。',
+    subtitle: '装完什么都不变 —— 只有你选好模型后路由才开始工作。随时可卸载，没有任何绑定。',
     steps: [
       {
         title: '安装',
-        desc: '用 pi 包管理器从 npm 安装。会写入 ~/.pi/agent/settings.json，下次启动 pi 自动加载。',
+        desc: '一条命令。pi 会写入你的设置，下次启动自动加载 —— 不用重新编译，也不用改任何配置。',
         codeLabel: '安装命令',
         code: 'pi install npm:pi-shift-router',
       },
       {
-        title: '配置',
-        desc: '在 pi 里运行 /router config，为 Fast 和 Smart 各选一个模型，保存到用户或项目作用域。两层默认都为空 —— 配置前路由器不起作用。',
+        title: '选好你的模型',
+        desc: '运行 /router config，选一个 fast 模型和一个 smart 模型 —— 就用你已经在用的那两个。可以存到用户级或项目级。',
         codeLabel: '配置',
         code: '/router config',
       },
       {
-        title: '验证',
-        desc: '/router status 显示层级和模型；下一轮触发首次 Judge 调用。之后可用 /router quiet、/router verbose 和 /route-force 调整。',
+        title: '看它自己工作',
+        desc: '/router status 显示你的配置；下一轮就完成第一次分类。之后全自动 —— 想控制时用 /router quiet 和 /route-force 调整。',
         codeLabel: '验证',
         code: '/router status',
       },
     ],
   },
   models: {
-    label: '模型选择',
-    title: '两个档位，一个 Judge。',
-    subtitle: '每一轮按心智模式（执行 vs 判断）分类，路由到合适的档位。',
+    label: '工作原理',
+    title: '一个简单的想法',
+    subtitle: '每个任务有难度，每个模型有价格。pi-shift-router 自动把两者匹配起来。',
+    intro:
+      '就像一支团队：程序员又快又便宜地把活干了，CTO 在关键时刻把关。同一件事，两种脑力 —— 你还没打完字，路由器就已经决定该用谁。',
     valueProps: [
       {
-        title: '只在必要时用 Smart',
-        desc: '升级到 Smart 立即生效 —— 质量优先。降级需要持续趋势，例行工作永远不会误烧前沿模型的 token。',
+        title: '日常活保持便宜',
+        desc: '只有任务真的需要深度时，judge 才升级 —— 日常编码一直跑在你的平价模型上，昂贵的前沿模型只留给真正重要的事。',
       },
       {
-        title: 'Judge 成本几乎为零',
-        desc: 'Judge 就是 Fast 层模型本身 —— 一次分类几千 token，按你最低的价格计费。',
+        title: '判断本身几乎免费',
+        desc: '一次微型分类调用 —— 按你最低价计费几千 token，耗时 200ms–2s。相比避免误用 Smart 省下的钱，这点开销不值一提。',
       },
       {
-        title: '自愈式故障转移',
-        desc: '遇 429/5xx，失败模型冷却（1m → 30m），同层下一个健康模型接管 —— 同一轮内完成。',
+        title: 'provider 掉线也不停',
+        desc: '如果某个模型 429 或超时，它进入短暂冷却，同层下一个健康模型自动接管 —— 就在同一轮内，你什么都不用做。',
       },
     ],
     fast: {
       label: 'Fast',
       title: '程序员',
-      desc: '执行整轮任务：写代码、跑测试、修 bug、套用既定模式。适合例行、路径明确、低风险的工作。',
-      badge: '🦾 程序员',
+      desc: '你的日常码农。日常活又快又稳 —— 写代码、跑测试、修 bug，不会为一次重命名或重构浪费前沿模型。',
+      badge: '🦾 你的日常帮手',
       bullets: [
-        '写代码、修 bug',
-        '跑测试、套用模式',
-        '例行、路径明确的工作',
+        '日常编码与修 bug',
+        '测试与重复性改动',
+        '简单、低风险的任务',
       ],
     },
     smart: {
       label: 'Smart',
       title: 'CTO',
-      desc: '任务复杂时驱动整轮 —— 架构、设计 review、安全审计、多步规划、不可逆操作。它不是 judge，它自己动手干所有活。',
-      badge: '🧠 CTO',
+      desc: '处理难题的架构师 —— 架构、设计 review、安全、多步规划、不可逆的改动。它不只是给意见，它亲自把活干完。',
+      badge: '🧠 专治难题',
       bullets: [
-        '架构与设计 review',
-        '安全审计、多步规划',
-        '高风险、路径不明、要深度',
+        '架构与设计决策',
+        '需要真判断的 review',
+        '高风险、模糊、要深度的任务',
       ],
     },
     judge: {
       label: 'LLM Judge',
-      title: '一次小调用，角色随后驱动',
-      desc: '一个小 LLM —— 就是 Fast 层模型本身 —— 以 JSON mode 把每一轮分类为 fast 或 smart。它是一次性分类；被选中的档位随后驱动整个 agent run。',
+      title: '一个小调用就决定',
+      desc: '一次轻量分类 —— 由 fast 层模型自己完成 —— 读你的请求，选出 fast 或 smart。没有重推理，也没有你能察觉的延迟。',
       code: 'judgeTimeout: 5000',
     },
     window: {
       label: '降级门',
-      title: '升级立即，降级要看趋势',
-      desc: '升级（Fast → Smart）立即生效 —— 质量优先。降级需要持续趋势：最近 5 轮中 fast 投票占比 ≥ 60%。',
+      title: '不来回抖',
+      desc: '需要深度时升级立即生效。降级要等明确趋势 —— 最近 5 轮分类中多数是 fast —— 路由绝不中途在两个模型间来回跳。',
       code: 'window: { size: 5, threshold: 0.6 }',
     },
     fallback: {
       label: '运行时故障转移',
-      title: '冷却后切同层下一个',
-      desc: '遇 429/5xx，失败模型进入指数退避冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型接管 —— 同轮完成，不跨层。2xx 响应立即清除冷却。',
+      title: '故障，自动处理',
+      desc: 'provider 限流或报错时，那个模型进入冷却（1m → 30m），同层下一个健康模型接管 —— 你全程无感，继续干活。',
       code: 'cooldown: 1m → 2m → 4m → 30m',
     },
   },
@@ -138,35 +144,35 @@ export const zh: Translations = {
     items: [
       {
         q: '不配置任何模型会怎样？',
-        a: '两层默认都为空。路由器不起作用 —— pi 用默认模型。运行 /router config 配置一个 Fast 和一个 Smart 模型。',
+        a: '什么都不变。两层默认都为空 —— 路由器不做任何事，pi 继续用你的默认模型。只有运行 /router config 选好模型后，路由才开始工作。',
       },
       {
         q: '真的能省钱吗？',
-        a: 'Judge 用 Fast 层模型（通常是最便宜的）每轮几千 token、200ms–2s。相比避免误调 Smart 省下的钱，这点开销完全忽略不计。',
+        a: '能。日常任务继续用你最便宜的模型，而不是每个请求都烧旗舰。judge 本身按 fast 层价格计费几千 token —— 省下的钱远超这点开销。',
       },
       {
         q: '试一下安全吗？',
-        a: '安全。配置前路由器什么都不做；纯 TypeScript、零运行时依赖；/router off 可随时停用。完全可逆。',
+        a: '完全安全。配置前路由器什么都不做；纯 TypeScript、零运行时依赖；/router off 可立即停用。没有任何绑定。',
       },
       {
-        q: 'Smart 层到底是什么？只是审查者吗？',
-        a: 'Smart 层是 CTO 角色 —— 任务复杂时它驱动整轮：架构、设计 review、安全审计、多步规划、不可逆操作。它不是 judge、也不是审查者：它自己写代码、调工具、跑循环，以那个智力层级完成整轮工作。',
+        q: 'Smart 层到底做什么？',
+        a: '它是架构师角色 —— 复杂工作由它驱动整轮：架构、设计 review、安全、多步规划、不可逆的改动。它不只是给建议或审查，它自己动手写代码、把活干完。',
       },
       {
         q: 'Judge 会增加明显延迟吗？',
-        a: '一次 Judge 调用是几千 token、按 Fast 层价格计费。端到端分类往返通常 200ms–2s，调用期间状态栏显示 ⚖ judging…。',
+        a: '不会。分类调用只需几千 token、约 200ms–2s。调用期间状态栏显示 ⚖ judging… —— 大多数用户根本感觉不到。',
       },
       {
         q: 'Primary 模型 429 或超时怎么办？',
-        a: '指数退避冷却：primary 标记冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型接管。2xx 响应立即清除冷却。手动覆盖始终绕过冷却。',
+        a: '你继续干活就行。失败的模型进入短暂冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型自动接管 —— 甚至在同一轮内。请求成功就立即清除冷却。',
       },
       {
-        q: '能强制指定某一轮的档位或模型吗？',
-        a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定指定模型。/route-force auto 清除覆盖。',
+        q: '能强制指定某一轮用某个模型吗？',
+        a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定具体模型。/route-force auto 清除覆盖。',
       },
       {
-        q: '能跨 Provider 混用吗？',
-        a: '可以。每层是一个有序的 {provider, model, priority} 列表，任意组合。Judge 会走完整个 fast 链才放弃，与路由共享同一冷却表。',
+        q: '能混用不同 provider 的模型吗？',
+        a: '可以 —— 随便混。每层是一个按优先级排序的 {provider, model, priority} 列表，fast 层用 DeepSeek、smart 层用 Kimi，一份配置全搞定。',
       },
       {
         q: '和 pi-model-router、pi-smart-router 有什么区别？',
@@ -176,14 +182,14 @@ export const zh: Translations = {
   },
   footer: {
     brand: 'Pi Shift Router',
-    tagline: '为 Pi 编码 Agent 在 Fast 程序员与 Smart CTO 两个角色间自动路由。',
+    tagline: '为 Pi 编码 Agent 自动选模型：日常活便宜又快，复杂活交给聪明模型。',
     copyright: 'MIT 开源。由 green-dalii 维护。',
     sections: {
       product: {
         title: '产品',
         links: [
           { label: '快速上手', href: '#quick-start' },
-          { label: '模型选择', href: '#models' },
+          { label: '工作原理', href: '#how-it-works' },
           { label: '常见问题', href: '#faq' },
         ],
       },
@@ -194,6 +200,12 @@ export const zh: Translations = {
           { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
           { label: 'Issues', href: 'https://github.com/green-dalii/pi-shift-router/issues' },
           { label: 'Discussions', href: 'https://github.com/green-dalii/pi-shift-router/discussions' },
+        ],
+      },
+      friends: {
+        title: '友情链接',
+        links: [
+          { label: 'Karpathy LLM Wiki', href: 'https://llmwiki.greenerai.top' },
         ],
       },
     },

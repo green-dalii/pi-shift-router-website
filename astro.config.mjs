@@ -5,7 +5,7 @@ import icon from 'astro-icon';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://shift-router.greenerai.top',
+  site: 'https://shiftrouter.greenerai.top',
   output: 'static',
   integrations: [
     icon(),
