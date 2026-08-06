@@ -15,19 +15,20 @@ A static Astro site built with Tailwind CSS, following the
 ## Develop
 
 ```bash
-npm install
-npm run dev      # http://localhost:3000
-npm run build    # → ./dist
-npm run preview  # serve ./dist
+pnpm install
+pnpm dev       # http://localhost:3000
+pnpm build     # → ./dist
+pnpm preview   # serve ./dist
 ```
+
+Managed with **pnpm** (`packageManager: pnpm@10.14.0`).
 
 ## Structure
 
 ```
 src/
 ├── components/astro/   # Section components (Header, Hero, ...)
-├── content/locales/    # en.ts, zh.ts — every string
-├── i18n/astro.ts       # translations registry + helpers
+├── content/locales/    # en.ts, zh.ts, types.ts, index.ts (registry + helpers)
 ├── layouts/            # BaseLayout.astro (HTML shell, SEO, schema.org)
 ├── pages/              # index.astro (EN), zh/index.astro (ZH)
 └── index.css           # @import fonts + @theme tokens
@@ -55,7 +56,7 @@ packages locally and replace the `@import` lines in `src/index.css` with the
 package paths:
 
 ```bash
-npm i @fontsource/manrope @fontsource/inter @fontsource/jetbrains-mono
+pnpm i @fontsource/manrope @fontsource/inter @fontsource/jetbrains-mono
 # then in index.css:
 # @import "@fontsource/manrope/800.css";
 # @import "@fontsource/inter/400.css";
