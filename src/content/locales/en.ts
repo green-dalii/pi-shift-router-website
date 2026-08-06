@@ -4,7 +4,7 @@ export const en: Translations = {
   meta: {
     title: 'Pi Shift Router — Smart routing for Pi\'s coding agent',
     description:
-      'An auto-routing Pi coding agent extension that switches every turn between fast execution and smart reasoning models — an LLM judge picks the right tier, multi-model fallback chains keep you running, zero runtime dependencies.',
+      'An auto-routing Pi coding agent extension that switches every turn between a fast Programmer and a smart CTO role — an LLM judge picks the right role, the chosen model drives the whole turn, multi-model fallback chains keep you running, zero runtime dependencies.',
     keywords:
       'pi shift router, pi coding agent, llm router, model routing, ai coding, fast smart tier, code review, provider fallback, deepseek, openrouter, pi extension',
   },
@@ -20,9 +20,9 @@ export const en: Translations = {
   hero: {
     badge: 'Open source · Zero dependencies · Node 24+',
     title1: 'Every turn,',
-    title2: 'the right model.',
+    title2: 'the right role.',
     subtitle:
-      'pi-shift-router routes every Pi turn to a fast execution model or a smart judgment model. A small LLM Judge picks the tier; fallback chains keep you running when a provider rate-limits.',
+      'pi-shift-router routes every Pi turn between a fast Programmer and a smart CTO role. A small LLM Judge picks the role; the chosen model then drives the whole turn — all thinking, all tool calls.',
     ctaPrimary: 'Get Started',
     ctaSecondary: 'Read the Docs',
     terminal: {
@@ -78,30 +78,30 @@ export const en: Translations = {
     subtitle: 'Every turn is classified by mental mode — execution or judgment — and routed to the tier that fits.',
     fast: {
       label: 'Fast',
-      title: 'Execution mode',
-      desc: 'Coding, debugging, tests, docs, following patterns. The programmer — works a lot, thinks in patterns.',
+      title: 'Programmer',
+      desc: 'Executes the turn: writes code, runs tests, fixes the bug, follows the established pattern. For routine, well-defined, low-stakes work.',
       badge: '🦾 Programmer',
       bullets: [
-        'Coding and debugging',
-        'Tests and docs',
-        'Following patterns',
+        'Writes code and fixes bugs',
+        'Runs tests, follows patterns',
+        'Routine, well-defined work',
       ],
     },
     smart: {
       label: 'Smart',
-      title: 'Judgment mode',
-      desc: 'Architecture, review, planning, security audit. The CTO — few turns, high impact, quality gate.',
+      title: 'CTO',
+      desc: 'Drives the entire turn when the work is complex — architecture, design review, security audit, multi-step planning, irrecoverable actions. Not a judge: it does the work itself.',
       badge: '🧠 CTO',
       bullets: [
-        'Architecture and review',
-        'Planning and design',
-        'Security audit',
+        'Architecture and design review',
+        'Security audit, multi-step planning',
+        'High stakes, ambiguous, wants depth',
       ],
     },
     judge: {
       label: 'LLM Judge',
-      title: 'The fast-tier model judges',
-      desc: 'A small LLM — the fast-tier model itself — classifies each turn as fast or smart in JSON mode. OpenAI-compatible APIs enforce response_format; Anthropic uses an assistant prefill.',
+      title: 'One small call, then the role drives',
+      desc: 'A small LLM — the fast-tier model itself — classifies each turn as fast or smart in JSON mode. It is a one-shot classification; the chosen tier then drives the whole agent run.',
       code: 'judgeTimeout: 5000',
     },
     window: {
@@ -113,7 +113,7 @@ export const en: Translations = {
     fallback: {
       label: 'Runtime failover',
       title: 'Cooldown, then next in tier',
-      desc: 'On 429/5xx the failing model enters exponential-backoff cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over — same turn, no cross-tier.',
+      desc: 'On 429/5xx the failing model enters exponential-backoff cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over — same turn, no cross-tier. A 2xx response clears the cooldown.',
       code: 'cooldown: 1m → 2m → 4m → 30m',
     },
   },
@@ -123,8 +123,8 @@ export const en: Translations = {
     subtitle: 'Straight from the README.',
     items: [
       {
-        q: 'What if I don\'t configure any models?',
-        a: 'Both tiers start empty. The router is a no-op — pi uses its default model. Run /router config to assign one Fast and one Smart model.',
+        q: 'What is the smart tier? Is it just a reviewer?',
+        a: 'The smart tier is the CTO role — it drives the entire turn when the work is complex: architecture, design review, security audit, multi-step planning, irrecoverable actions. It is not a judge or a reviewer: it writes the code, calls the tools, and runs the loop itself at that intelligence level.',
       },
       {
         q: 'Does the Judge add noticeable latency?',
@@ -132,15 +132,15 @@ export const en: Translations = {
       },
       {
         q: 'What if my primary model 429s or times out?',
-        a: 'Exponential-backoff cooldown: the primary enters cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over. A 2xx response clears the cooldown immediately.',
+        a: 'Exponential-backoff cooldown: the primary enters cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over. A 2xx response clears the cooldown immediately. Manual override always bypasses cooldowns.',
       },
       {
         q: 'Can I force a tier or model for one turn?',
-        a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins a specific model. /route-force auto clears the override. Manual override always bypasses cooldowns.',
+        a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins a specific model. /route-force auto clears the override.',
       },
       {
         q: 'Does this work across different providers?',
-        a: 'Yes. Each tier stores an ordered list of {provider, model, priority} pairs — mix freely. The Judge walks the full fast-tier chain before giving up, sharing the same cooldown map as routing.',
+        a: 'Yes. Each tier stores an ordered list of {provider, model, priority} pairs — mix freely. The Judge also walks the full fast-tier chain before giving up, sharing the same cooldown map as routing.',
       },
       {
         q: 'How is it different from pi-model-router and pi-smart-router?',
@@ -150,7 +150,7 @@ export const en: Translations = {
   },
   footer: {
     brand: 'Pi Shift Router',
-    tagline: 'Auto-routing Pi coding agent turns between fast execution and smart reasoning models.',
+    tagline: 'Auto-routing Pi coding agent turns between a fast Programmer and a smart CTO role.',
     copyright: 'Open source under MIT. By green-dalii.',
     sections: {
       product: {

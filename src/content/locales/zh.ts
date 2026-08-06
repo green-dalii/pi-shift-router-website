@@ -4,7 +4,7 @@ export const zh: Translations = {
   meta: {
     title: 'Pi Shift Router — 给 Pi 编码 Agent 装一个聪明的路由器',
     description:
-      '一个自动路由的 Pi 编码 Agent 扩展：每一轮在 Fast 执行模型与 Smart 判断模型间切换 —— LLM Judge 自动分类，多模型 fallback 链保障运行，零运行时依赖。',
+      '一个自动路由的 Pi 编码 Agent 扩展：每一轮在 Fast 程序员与 Smart CTO 两个角色间切换 —— LLM Judge 选角色，被选中的模型驱动整轮，多模型 fallback 链保障运行，零运行时依赖。',
     keywords:
       'pi shift router, pi 编码代理, 模型路由, llm router, ai 编程, 快慢分层, 代码审查, provider 故障转移, deepseek, openrouter, pi 扩展',
   },
@@ -20,9 +20,9 @@ export const zh: Translations = {
   hero: {
     badge: '开源 · 零依赖 · Node 24+',
     title1: '每一轮对话，',
-    title2: '都走对的模型。',
+    title2: '都走对的角色。',
     subtitle:
-      'pi-shift-router 把 Pi 的每一轮路由到 Fast 执行模型或 Smart 判断模型。一个小 LLM Judge 负责选档；provider 被限流时 fallback 链保证任务不断。',
+      'pi-shift-router 把 Pi 的每一轮路由到 Fast 程序员或 Smart CTO 角色。一个小 LLM Judge 选角色；被选中的模型随后驱动整轮 —— 所有思考、所有工具调用。',
     ctaPrimary: '快速上手',
     ctaSecondary: '查看文档',
     terminal: {
@@ -78,30 +78,30 @@ export const zh: Translations = {
     subtitle: '每一轮按心智模式（执行 vs 判断）分类，路由到合适的档位。',
     fast: {
       label: 'Fast',
-      title: '执行模式',
-      desc: '写代码、调试、测试、文档、套用模式。程序员 —— 工作量大，思路成模式。',
+      title: '程序员',
+      desc: '执行整轮任务：写代码、跑测试、修 bug、套用既定模式。适合例行、路径明确、低风险的工作。',
       badge: '🦾 程序员',
       bullets: [
-        '编码与调试',
-        '测试与文档',
-        '套用既有模式',
+        '写代码、修 bug',
+        '跑测试、套用模式',
+        '例行、路径明确的工作',
       ],
     },
     smart: {
       label: 'Smart',
-      title: '判断模式',
-      desc: '架构、审查、规划、安全审计。CTO —— 轮次少、影响大、质量把关。',
+      title: 'CTO',
+      desc: '任务复杂时驱动整轮 —— 架构、设计 review、安全审计、多步规划、不可逆操作。它不是 judge，它自己动手干所有活。',
       badge: '🧠 CTO',
       bullets: [
-        '架构与审查',
-        '规划与设计',
-        '安全审计',
+        '架构与设计 review',
+        '安全审计、多步规划',
+        '高风险、路径不明、要深度',
       ],
     },
     judge: {
       label: 'LLM Judge',
-      title: '由 Fast 层模型来判断',
-      desc: '一个小 LLM —— 就是 Fast 层模型本身 —— 以 JSON mode 把每一轮分类为 fast 或 smart。OpenAI 兼容 API 强制 response_format；Anthropic 用 assistant prefill。',
+      title: '一次小调用，角色随后驱动',
+      desc: '一个小 LLM —— 就是 Fast 层模型本身 —— 以 JSON mode 把每一轮分类为 fast 或 smart。它是一次性分类；被选中的档位随后驱动整个 agent run。',
       code: 'judgeTimeout: 5000',
     },
     window: {
@@ -113,7 +113,7 @@ export const zh: Translations = {
     fallback: {
       label: '运行时故障转移',
       title: '冷却后切同层下一个',
-      desc: '遇 429/5xx，失败模型进入指数退避冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型接管 —— 同轮完成，不跨层。',
+      desc: '遇 429/5xx，失败模型进入指数退避冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型接管 —— 同轮完成，不跨层。2xx 响应立即清除冷却。',
       code: 'cooldown: 1m → 2m → 4m → 30m',
     },
   },
@@ -123,8 +123,8 @@ export const zh: Translations = {
     subtitle: '内容直接取自 README。',
     items: [
       {
-        q: '不配置任何模型会怎样？',
-        a: '两层默认都为空。路由器不起作用 —— pi 用默认模型。运行 /router config 配置一个 Fast 和一个 Smart 模型。',
+        q: 'Smart 层到底是什么？只是审查者吗？',
+        a: 'Smart 层是 CTO 角色 —— 任务复杂时它驱动整轮：架构、设计 review、安全审计、多步规划、不可逆操作。它不是 judge、也不是审查者：它自己写代码、调工具、跑循环，以那个智力层级完成整轮工作。',
       },
       {
         q: 'Judge 会增加明显延迟吗？',
@@ -132,11 +132,11 @@ export const zh: Translations = {
       },
       {
         q: 'Primary 模型 429 或超时怎么办？',
-        a: '指数退避冷却：primary 标记冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型接管。2xx 响应立即清除冷却。',
+        a: '指数退避冷却：primary 标记冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型接管。2xx 响应立即清除冷却。手动覆盖始终绕过冷却。',
       },
       {
         q: '能强制指定某一轮的档位或模型吗？',
-        a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定指定模型。/route-force auto 清除覆盖。手动覆盖始终绕过冷却。',
+        a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定指定模型。/route-force auto 清除覆盖。',
       },
       {
         q: '能跨 Provider 混用吗？',
@@ -150,7 +150,7 @@ export const zh: Translations = {
   },
   footer: {
     brand: 'Pi Shift Router',
-    tagline: '为 Pi 编码 Agent 在 Fast 执行模型与 Smart 判断模型间自动路由。',
+    tagline: '为 Pi 编码 Agent 在 Fast 程序员与 Smart CTO 两个角色间自动路由。',
     copyright: 'MIT 开源。由 green-dalii 维护。',
     sections: {
       product: {
