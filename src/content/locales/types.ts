@@ -11,6 +11,8 @@ export interface Translations {
   nav: {
     quickStart: string;
     howItWorks: string;
+    useCases: string;
+    models: string;
     faq: string;
     github: string;
     languageLabel: string;
@@ -48,8 +50,6 @@ export interface Translations {
     steps: {
       title: string;
       desc: string;
-      code?: string;
-      codeLabel?: string;
     }[];
   };
   models: {
@@ -62,17 +62,17 @@ export interface Translations {
       desc: string;
     }[];
     fast: {
-      label: string;
-      title: string;
+      tier: string;
+      role: string;
+      emoji: string;
       desc: string;
-      badge: string;
       bullets: string[];
     };
     smart: {
-      label: string;
-      title: string;
+      tier: string;
+      role: string;
+      emoji: string;
       desc: string;
-      badge: string;
       bullets: string[];
     };
     judge: {
@@ -94,6 +94,34 @@ export interface Translations {
       code: string;
     };
   };
+  useCases: {
+    label: string;
+    title: string;
+    subtitle: string;
+    scenarios: {
+      title: string;
+      desc: string;
+    }[];
+    cta: { label: string; href: string };
+  };
+  modelsPage: {
+    label: string;
+    title: string;
+    intro: string;
+    patterns: {
+      title: string;
+      summary: string;
+      /** Two-tier layout: fast + smart columns */
+      fast?: { models: string[] };
+      smart?: { models: string[] };
+      /** Grouped-row layout: each row = a group (memory tier / provider / scenario) mapping fast -> smart */
+      groupRows?: { group: string; fast: string; smart: string }[];
+      /** Footnote under the group rows */
+      note?: string;
+      bestFor: string;
+    }[];
+    note: string;
+  };
   faq: {
     label: string;
     title: string;
@@ -103,11 +131,15 @@ export interface Translations {
   footer: {
     brand: string;
     tagline: string;
-    copyright: string;
+    copyrightParts: {
+      prefix: string;
+      author: { name: string; url: string };
+      suffix: string;
+    };
     sections: {
       product: { title: string; links: { label: string; href: string }[] };
       resources: { title: string; links: { label: string; href: string }[] };
-      friends: { title: string; links: { label: string; href: string }[] };
+      more: { title: string; links: { label: string; href: string }[] };
     };
     languageLabel: string;
   };

@@ -11,6 +11,8 @@ export const en: Translations = {
   nav: {
     quickStart: 'Quick Start',
     howItWorks: 'How it works',
+    useCases: 'Use cases',
+    models: 'Models',
     faq: 'FAQ',
     github: 'GitHub',
     languageLabel: 'Language',
@@ -34,12 +36,12 @@ export const en: Translations = {
       statusTierValue: 'fast',
       statusMode: 'auto',
       judgeLabel: 'judge',
-      judgeValue: '⚖ judging…',
+      judgeValue: '🧭 judging…',
       windowLabel: 'window',
       windowValue: '4/5 fast',
       logLines: [
         { time: '🦾', text: '[MiniMax-M3] → fix the failing test' },
-        { time: '⚖', text: 'judging…' },
+        { time: '🧭', text: 'judging…' },
         { time: '🧠', text: '[kimi-k3] ← upgraded for the architecture question' },
         { time: '⚠️', text: 'MiniMax-M3 429 → switching to deepseek-v4-flash — retry in 1m' },
         { time: '🦾', text: '[deepseek-v4-flash] ← same-tier failover (v0.6.0)' },
@@ -58,21 +60,15 @@ export const en: Translations = {
     steps: [
       {
         title: 'Install',
-        desc: 'One command. pi registers it in your settings and loads it on the next launch — no rebuild, no config files to touch.',
-        codeLabel: 'Install command',
-        code: 'pi install npm:pi-shift-router',
+        desc: 'One command. pi registers the extension in your settings and loads it on the next launch — no rebuild, no config files to touch.',
       },
       {
         title: 'Pick your models',
-        desc: 'Run /router config and choose one fast model and one smart model — the pair you already use. Save to user or project scope.',
-        codeLabel: 'Configure',
-        code: '/router config',
+        desc: 'Run /router config and pick a Fast model and a Smart model — the pair you already use. Save to user or project scope.',
       },
       {
         title: 'Watch it work',
         desc: '/router status shows your setup; the next turn runs the first classification. From there it\'s automatic — tune later with /router quiet and /route-force when you want control.',
-        codeLabel: 'Verify',
-        code: '/router status',
       },
     ],
   },
@@ -81,7 +77,7 @@ export const en: Translations = {
     title: 'One simple idea',
     subtitle: 'Every task has a difficulty. Every model has a price. pi-shift-router matches the two — automatically.',
     intro:
-      'Think of it like a team: the Programmer writes code fast and cheap; the CTO steps in when the stakes are high. Same task, two minds — the router decides which one you need before you even finish typing.',
+      'Think of it like a team: the Programmer handles the day-to-day fast and cheap; the CTO takes over the whole turn when the stakes demand it. Same task, two minds — the router decides which one you need before you finish typing.',
     valueProps: [
       {
         title: 'Routine work stays cheap',
@@ -97,10 +93,10 @@ export const en: Translations = {
       },
     ],
     fast: {
-      label: 'Fast',
-      title: 'Programmer',
+      tier: 'Fast',
+      role: 'Programmer',
+      emoji: '🦾',
       desc: 'Your everyday coder. Fast on routine work — writing code, running tests, fixing bugs — so you don\'t waste a flagship model on a rename or a refactor.',
-      badge: '🦾 Your daily worker',
       bullets: [
         'Day-to-day coding and fixes',
         'Tests and mechanical changes',
@@ -108,10 +104,10 @@ export const en: Translations = {
       ],
     },
     smart: {
-      label: 'Smart',
-      title: 'CTO',
+      tier: 'Smart',
+      role: 'CTO',
+      emoji: '🧠',
       desc: 'Your architect for the hard stuff — architecture, design review, security, multi-step plans, irreversible changes. It doesn\'t just review; it does the work.',
-      badge: '🧠 For the hard stuff',
       bullets: [
         'Architecture and design decisions',
         'Reviews that need real judgment',
@@ -137,6 +133,96 @@ export const en: Translations = {
       code: 'cooldown: 1m → 2m → 4m → 30m',
     },
   },
+  useCases: {
+    label: 'Use cases',
+    title: 'Three setups that cover most teams',
+    subtitle: 'Pick the one closest to your situation — everything is reversible.',
+    scenarios: [
+      {
+        title: 'Multi-provider resilience',
+        desc: 'Run 2–3 providers per tier. When one rate-limits or stalls, the next healthy model in the same tier takes over mid-turn.',
+      },
+      {
+        title: 'Single-provider tier ladder',
+        desc: 'One provider, two tiers. One bill, one rate-limit pool. Simplest setup — pick a budget model for routine work and the same vendor\'s flagship for hard turns.',
+      },
+      {
+        title: 'Local + cloud hybrid',
+        desc: 'Fast tier on a quantized local model. Smart tier in the cloud. Privacy on the routine turns; frontier quality when it matters.',
+      },
+    ],
+    cta: {
+      label: 'See recommended model pairings',
+      href: '/models',
+    },
+  },
+  modelsPage: {
+    label: 'Models',
+    title: 'Pick your model pair',
+    intro: 'Two rules of thumb: Fast tier — pick the cheapest model that parses JSON reliably (the Judge runs on it). Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins.',
+    patterns: [
+      {
+        title: 'Coding subscription plans',
+        summary: 'One subscription, many models. Use a token gateway (one key proxying every major provider) or reuse a coding-tool subscription you already pay for — most expose an OpenAI-compatible endpoint.',
+        fast: {
+          models: [
+            'deepseek-v4-flash',
+            'gpt-5.6-luna  (OpenCode Zen / Go)',
+            'qwen3.6-flash',
+          ],
+        },
+        smart: {
+          models: [
+            'gpt-5.6-sol  (OpenCode Zen / Go)',
+            'qwen3.8-max',
+            'kimi-k3',
+          ],
+        },
+        note: 'Reusable subscriptions: OpenCode Zen (OpenAI-compatible endpoint), GitHub Copilot (BYOK — OpenAI + Anthropic), Cursor (Pro / Pro+ / Ultra pools), OpenAI Codex (bundled with ChatGPT Plus / Pro / Business).',
+        bestFor: 'Zero extra setup — one bill, no new account.',
+      },
+      {
+        title: 'Local models by memory',
+        summary: 'Fast tier on quantized local (q4-k-m / NVFP4 / AWQ-int4). Once you have 64+ GB of VRAM or unified memory, Smart can run locally too. VRAM ≈ params × 0.6 at Q4_K_M.',
+        groupRows: [
+          { group: '< 32 GB', fast: 'Qwen3.6-27B  (dense, q4 ≈ 14 GB), Qwen3.6-35B-A3B  (MoE, q4 ≈ 18 GB), LFM2.5-8B-A1B', smart: 'Cloud — local Smart needs 64+ GB' },
+          { group: '32–128 GB', fast: 'Qwen3.6-35B-A3B  (MoE, q4 ≈ 18 GB), gemma-4-31B-it  (q4 ≈ 16 GB), Qwen3.6-27B  (dense, q4 ≈ 14 GB)', smart: 'Cloud — local Smart needs a very large machine' },
+          { group: '128+ GB', fast: 'Qwen3.6-35B-A3B  (MoE, q4 ≈ 18 GB)', smart: 'DeepSeek-V4-Flash  (284 B MoE / 13 B active, Q4_K_M ≈ 175 GB — needs 256 GB unified memory), GLM-5.2  (2-bit ≈ 239 GB)' },
+        ],
+        note: 'Sizes are Q4_K_M quant (production, not fp16). Qwen3.6-27B scores 77.2% on SWE-bench Verified — the strongest open-weight model that runs on a 24 GB card. Below ~256 GB of unified memory, local Smart rarely beats a flat-fee token plan on quality-per-dollar; run local Smart only for privacy or air-gapped work.',
+        bestFor: 'Cost-sensitive or air-gapped work; cloud only sees the hard turns.',
+      },
+      {
+        title: 'Same-provider tier ladder',
+        summary: 'One provider, two tiers — simplest setup. Use this when you already pay for one vendor and don\'t want to juggle keys.',
+        groupRows: [
+          { group: 'Anthropic', fast: 'sonnet-5', smart: 'opus-5 / fable-5' },
+          { group: 'OpenAI', fast: 'gpt-5.6-luna', smart: 'gpt-5.6-sol' },
+          { group: 'Google', fast: 'gemini-3.5-flash-lite', smart: 'gemini-3.6-flash' },
+          { group: 'Qwen (AliBaba)', fast: 'qwen3.7-plus', smart: 'qwen3.8-max' },
+          { group: 'DeepSeek', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
+          { group: 'Z.AI (GLM)', fast: 'glm-5 / glm-5-turbo', smart: 'glm-5.2' },
+          { group: 'xAI (Grok)', fast: 'grok-4.5-fast', smart: 'grok-4.5' },
+        ],
+        bestFor: 'Simplest path from zero to routing — just two model IDs.',
+      },
+      {
+        title: 'Cross-provider pairing',
+        summary: 'Best-of-breed regardless of vendor. Default: deepseek-v4-flash for Fast, claude-opus-5 for Smart. Add fallbacks for resilience.',
+        groupRows: [
+          { group: 'Lowest cost', fast: 'deepseek-v4-flash', smart: 'claude-opus-5' },
+          { group: 'Multi-provider fallback', fast: 'deepseek-v4-flash + glm-5.2', smart: 'claude-opus-5 + gpt-5.6-sol + kimi-k3' },
+          { group: 'Flat-fee', fast: 'opencode-go/deepseek-v4-flash', smart: 'opencode-go/glm-5.2' },
+          { group: '1 M context, long repo', fast: 'deepseek-v4-flash', smart: 'gemini-3.6-pro / kimi-k3' },
+          { group: 'Multimodal', fast: 'deepseek-v4-flash', smart: 'claude-opus-5 (vision) / gemini-3.6-pro' },
+          { group: 'Multilingual / Chinese-first', fast: 'deepseek-v4-flash', smart: 'qwen3.8-max' },
+          { group: 'GDPR / Europe', fast: 'deepseek-v4-flash (via OpenRouter)', smart: 'mistral-medium-2604' },
+        ],
+        bestFor: 'Strongest model in each tier, regardless of who sells it.',
+      },
+    ],
+    note: 'Pricing and model availability change monthly — refresh with `curl -s https://models.dev/api.json | jq` to see the latest. Full per-provider catalog lives at models.dev.',
+  },
   faq: {
     label: 'FAQ',
     title: 'Questions, answered',
@@ -160,7 +246,7 @@ export const en: Translations = {
       },
       {
         q: 'Does the Judge add noticeable latency?',
-        a: 'No. The classification call is a few thousand tokens and takes about 200ms–2s. You\'ll see ⚖ judging… in the status bar during the call — most users never notice it.',
+        a: 'No. The classification call is a few thousand tokens and takes about 200ms–2s. You\'ll see 🧭 judging… in the status bar during the call — most users never notice it.',
       },
       {
         q: 'What if my primary model 429s or times out?',
@@ -175,15 +261,27 @@ export const en: Translations = {
         a: 'Yes — mix freely. Each tier is an ordered list of {provider, model, priority} pairs, so your fast tier can be DeepSeek and your smart tier Kimi, all from one config.',
       },
       {
-        q: 'How is it different from pi-model-router and pi-smart-router?',
-        a: 'They solve different problems and can be used together: pi-shift-router is an LLM-as-classifier with zero runtime deps and runtime failover; pi-model-router adds 3 tiers, USD budget and keyword rules; pi-smart-router does local ONNX ML inference.',
+        q: 'Can I monitor how it\'s performing?',
+        a: 'Yes — run /router stats to see window size and confidence distribution (high / mid / low / none), cumulative upgrade and downgrade counts, total output tokens, and current / average tokens-per-second. The status bar also shows live throughput: [🧠 kimi-k3 • 23 tok/s] after a message finishes streaming.',
+      },
+      {
+        q: 'How do I tune the downgrade behavior?',
+        a: 'Two thresholds: `threshold` (default 0.6) controls how many of the last 5 classified turns must weigh toward fast before a downgrade happens; `minConfidence` (default 0.5) sets the floor below which votes are ignored entirely. Raise `threshold` to 0.8 to stay on Smart longer. Upgrades are always instant — only downgrades wait.',
+      },
+      {
+        q: 'How is it different from pi-model-router and CC-Switch?',
+        a: 'They solve different problems and can be used together: pi-shift-router is an LLM-as-classifier with zero runtime deps and same-turn runtime failover — automatic per turn inside pi. pi-model-router adds 3 tiers, a USD budget cap, and keyword rules — heavier but with cross-session cost control. CC-Switch is a separate desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode, and others — manual switching, not per-turn routing.',
       },
     ],
   },
   footer: {
     brand: 'Pi Shift Router',
     tagline: 'Auto-routing Pi coding agent turns between a fast Programmer and a smart CTO role.',
-    copyright: 'Open source under MIT. By green-dalii.',
+    copyrightParts: {
+      prefix: 'Open source under MIT · Built by ',
+      author: { name: 'green-dalii', url: 'https://github.com/green-dalii' },
+      suffix: '',
+    },
     sections: {
       product: {
         title: 'Product',
@@ -202,8 +300,8 @@ export const en: Translations = {
           { label: 'Discussions', href: 'https://github.com/green-dalii/pi-shift-router/discussions' },
         ],
       },
-      friends: {
-        title: 'Friends',
+      more: {
+        title: 'More projects',
         links: [
           { label: 'Karpathy LLM Wiki', href: 'https://llmwiki.greenerai.top' },
         ],
