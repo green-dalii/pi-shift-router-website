@@ -1,0 +1,60 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="use-cases" class="relative py-24 sm:py-32 bg-canvas-soft/40">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-2xl mb-14 sm:mb-20">
+      <span class="eyebrow">{t.useCases.label}</span>
+      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
+        {t.useCases.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
+        {t.useCases.subtitle}
+      </p>
+    </div>
+
+    <!-- 3 scenario cards: white surface on tinted section bg, border + soft shadow -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+      {t.useCases.scenarios.map((scenario, idx) => (
+        <article class="bg-canvas p-7 sm:p-8 flex flex-col h-full rounded-2xl border border-ink/10 shadow-sm reveal" data-delay={idx}>
+          <div class="flex items-center gap-2.5 mb-4">
+            <span class="w-8 h-8 rounded-full bg-primary flex items-center justify-center" aria-hidden="true">
+              <svg class="w-4 h-4 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-mute">
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <h3 class="text-[1.15rem] font-bold text-ink leading-snug mb-4">
+            {scenario.title}
+          </h3>
+          <p class="text-[15px] text-body leading-relaxed">
+            {scenario.desc}
+          </p>
+        </article>
+      ))}
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-12 sm:mt-16 text-center">
+      <a
+        href={t.useCases.cta.href}
+        class="inline-flex items-center gap-2 px-6 py-3 rounded-pill bg-ink text-canvas font-semibold text-sm hover:bg-ink-deep transition-colors group"
+      >
+        {t.useCases.cta.label}
+        <svg class="w-4 h-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+  </div>
+</section>

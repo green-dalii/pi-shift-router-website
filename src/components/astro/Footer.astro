@@ -12,6 +12,19 @@ const t = getTranslations(locale);
 const otherLocale: Locale = locale === 'en' ? 'zh' : 'en';
 const otherLocaleHref = swapLocalePrefix(pathname, otherLocale);
 const otherLocaleLabel = otherLocale === 'zh' ? t.nav.zhLabel : t.nav.enLabel;
+
+// Anchor links only exist on the landing page. When on any other page
+// (e.g. /models), prefix them with the home path so they navigate back
+// to the landing page first, then scroll to the section.
+const homePath = locale === 'zh' ? '/zh/' : '/';
+const isHome = pathname === homePath || pathname === homePath.replace(/\/$/, '') || pathname === '/';
+
+function resolveHref(href: string): string {
+  if (href.startsWith('#')) {
+    return isHome ? href : `${homePath}${href}`;
+  }
+  return href;
+}
 ---
 
 <footer class="bg-ink text-canvas-soft">
@@ -35,7 +48,12 @@ const otherLocaleLabel = otherLocale === 'zh' ? t.nav.zhLabel : t.nav.enLabel;
           {t.footer.tagline}
         </p>
         <p class="mt-5 text-xs text-canvas-soft/50">
-          {t.footer.copyright}
+          {t.footer.copyrightParts.prefix}<a
+            href={t.footer.copyrightParts.author.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-canvas-soft/70 hover:text-primary transition-colors underline-offset-2 hover:underline"
+          >{t.footer.copyrightParts.author.name}</a>{t.footer.copyrightParts.suffix}
         </p>
       </div>
 
@@ -47,7 +65,7 @@ const otherLocaleLabel = otherLocale === 'zh' ? t.nav.zhLabel : t.nav.enLabel;
         <ul class="space-y-2.5">
           {t.footer.sections.product.links.map((link) => (
             <li>
-              <a href={link.href} class="text-sm text-canvas-soft/75 hover:text-canvas transition-colors">
+              <a href={resolveHref(link.href)} class="text-sm text-canvas-soft/75 hover:text-canvas transition-colors">
                 {link.label}
               </a>
             </li>
@@ -73,10 +91,10 @@ const otherLocaleLabel = otherLocale === 'zh' ? t.nav.zhLabel : t.nav.enLabel;
 
       <div class="md:col-span-2">
         <h3 class="text-[11px] font-mono uppercase tracking-[0.15em] text-primary mb-4">
-          {t.footer.sections.friends.title}
+          {t.footer.sections.more.title}
         </h3>
         <ul class="space-y-2.5">
-          {t.footer.sections.friends.links.map((link) => (
+          {t.footer.sections.more.links.map((link) => (
             <li>
               <a href={link.href} target="_blank" rel="noopener noreferrer" class="text-sm text-canvas-soft/75 hover:text-canvas transition-colors inline-flex items-center gap-1.5">
                 {link.label}
@@ -108,7 +126,7 @@ const otherLocaleLabel = otherLocale === 'zh' ? t.nav.zhLabel : t.nav.enLabel;
     </div>
 
     <div class="mt-10 pt-6 border-t border-canvas-soft/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-canvas-soft/45">
-      <span>MIT License · v0.8.2-web</span>
+      <span>MIT License · v0.8.3-web</span>
       <span class="font-mono">pi-shift-router · router for {`{`}fast,smart{`}`}</span>
     </div>
   </div>

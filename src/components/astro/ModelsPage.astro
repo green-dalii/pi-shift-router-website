@@ -1,0 +1,133 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section class="relative py-24 sm:py-32 bg-canvas">
+  <div class="max-w-5xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-3xl mb-12 sm:mb-16">
+      <span class="eyebrow">{t.modelsPage.label}</span>
+      <h1 class="mt-4 text-[clamp(2.25rem,4.5vw,3.75rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
+        {t.modelsPage.title}
+      </h1>
+    </div>
+
+    <!-- Intro: the two rules -->
+    <div class="mb-14 sm:mb-20 max-w-3xl">
+      <p class="text-xl sm:text-2xl font-bold text-ink leading-snug">
+        {t.modelsPage.intro}
+      </p>
+    </div>
+
+    <!-- Patterns -->
+    <div class="space-y-6">
+      {t.modelsPage.patterns.map((pattern, idx) => (
+        <article class="card-sage p-7 sm:p-10 reveal border border-ink/10" data-delay={idx}>
+          <div class="flex items-center gap-3 mb-4">
+            <span class="font-mono text-xs text-primary uppercase tracking-[0.15em]">
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-ink leading-tight mb-3">
+            {pattern.title}
+          </h2>
+          <p class="text-[15px] text-body leading-relaxed mb-7 max-w-3xl">
+            {pattern.summary}
+          </p>
+
+          {pattern.groupRows && (
+            <!-- Grouped rows: each row = group (memory / provider / scenario) with fast + smart -->
+            <div class="mb-5 overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-ink/10">
+                    <th class="py-2.5 pr-4 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Setup</th>
+                    <th class="py-2.5 pr-4 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Fast 🦾</th>
+                    <th class="py-2.5 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Smart 🧠</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {pattern.groupRows.map((row) => (
+                    <tr class="border-b border-ink/5 last:border-b-0">
+                      <td class="py-2.5 pr-4 text-[14px] font-bold text-ink whitespace-nowrap align-top">{row.group}</td>
+                      <td class="py-2.5 pr-4 text-[13px] font-mono text-body align-top">{row.fast}</td>
+                      <td class="py-2.5 text-[13px] font-mono text-body align-top">{row.smart}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {pattern.fast && pattern.smart && (
+            <!-- Two-tier layout: fast + smart columns -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+              <div class="bg-canvas rounded-2xl p-5 sm:p-6 border border-ink/10">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-base" aria-hidden="true">🦾</span>
+                  <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-positive-deep font-bold">Fast</span>
+                </div>
+                <ul class="space-y-2 text-[13px] font-mono text-ink/85">
+                  {pattern.fast.models.map((m) => (
+                    <li class="leading-relaxed">{m}</li>
+                  ))}
+                </ul>
+              </div>
+              <div class="bg-canvas rounded-2xl p-5 sm:p-6 border border-ink/10">
+                <div class="flex items-center gap-2 mb-3">
+                  <span class="text-base" aria-hidden="true">🧠</span>
+                  <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-positive-deep font-bold">Smart</span>
+                </div>
+                <ul class="space-y-2 text-[13px] font-mono text-ink/85">
+                  {pattern.smart.models.map((m) => (
+                    <li class="leading-relaxed">{m}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )}
+
+          {pattern.note && (
+            <p class="text-[12px] text-mute leading-relaxed mb-5 italic">
+              {pattern.note}
+            </p>
+          )}
+
+          <!-- Best for -->
+          <div class="flex items-start gap-3 pt-5 border-t border-ink/10">
+            <span class="font-mono text-[11px] uppercase tracking-[0.15em] text-mute shrink-0 mt-0.5">
+              Best for
+            </span>
+            <p class="text-[14px] text-ink/85 leading-relaxed">
+              {pattern.bestFor}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Source note -->
+    <div class="mt-14 sm:mt-20 text-center">
+      <p class="text-sm text-mute leading-relaxed max-w-2xl mx-auto">
+        {t.modelsPage.note}
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+</style>

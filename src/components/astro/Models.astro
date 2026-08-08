@@ -58,18 +58,17 @@ const features = [
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
 
       <!-- FAST — sage soft surface (DESIGN.md card-feature-sage) -->
-      <div class="card-sage md:p-10 reveal" data-delay="0">
-        <div class="flex items-center justify-between mb-6">
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-canvas border border-ink/10">
-            <span class="w-1.5 h-1.5 rounded-full bg-positive"></span>
-            <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-ink">{t.models.fast.label}</span>
-          </span>
-          <span class="text-[11px] font-mono text-mute">{t.models.fast.badge}</span>
+      <div class="card-sage md:p-10 reveal hover:shadow-xl hover:-translate-y-1 hover:border-ink/20 transition-all duration-300 border border-ink/10 cursor-default" data-delay="0">
+        <div class="flex items-baseline gap-3 mb-4">
+          <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink leading-none">
+            {t.models.fast.tier}
+          </h3>
+          <span class="text-2xl" aria-hidden="true">{t.models.fast.emoji}</span>
         </div>
-        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-ink mb-4">
-          {t.models.fast.title}
-        </h3>
-        <p class="text-base text-body leading-relaxed mb-6">
+        <div class="text-sm font-mono uppercase tracking-[0.15em] text-mute mb-5">
+          {t.models.fast.role}
+        </div>
+        <p class="text-[15px] text-body leading-relaxed mb-6">
           {t.models.fast.desc}
         </p>
         <ul class="space-y-2.5">
@@ -83,18 +82,17 @@ const features = [
       </div>
 
       <!-- SMART — dark + lime (DESIGN.md card-feature-dark) -->
-      <div class="card-dark md:p-10 bg-ink text-primary reveal" data-delay="2">
-        <div class="flex items-center justify-between mb-6">
-          <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-pill bg-canvas/10 border border-canvas-soft/15">
-            <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
-            <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-canvas-soft">{t.models.smart.label}</span>
-          </span>
-          <span class="text-[11px] font-mono text-canvas-soft/60">{t.models.smart.badge}</span>
+      <div class="card-dark md:p-10 bg-ink text-primary reveal hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-default" data-delay="2">
+        <div class="flex items-baseline gap-3 mb-4">
+          <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-canvas leading-none">
+            {t.models.smart.tier}
+          </h3>
+          <span class="text-2xl" aria-hidden="true">{t.models.smart.emoji}</span>
         </div>
-        <h3 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-canvas mb-4">
-          {t.models.smart.title}
-        </h3>
-        <p class="text-base text-canvas-soft/85 leading-relaxed mb-6">
+        <div class="text-sm font-mono uppercase tracking-[0.15em] text-canvas-soft/60 mb-5">
+          {t.models.smart.role}
+        </div>
+        <p class="text-[15px] text-canvas-soft/85 leading-relaxed mb-6">
           {t.models.smart.desc}
         </p>
         <ul class="space-y-2.5">

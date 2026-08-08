@@ -11,10 +11,18 @@ const t = getTranslations(locale);
 
 const githubUrl = 'https://github.com/green-dalii/pi-shift-router';
 
+// Anchor links only exist on the landing page. When on any other page
+// (e.g. /models), prefix them with the home path so they navigate back
+// to the landing page first, then scroll to the section.
+const homePath = locale === 'zh' ? '/zh/' : '/';
+const isHome = pathname === homePath || pathname === homePath.replace(/\/$/, '') || pathname === '/';
+
 const navItems = [
-  { key: 'quick-start', label: t.nav.quickStart, href: '#quick-start' },
-  { key: 'how-it-works', label: t.nav.howItWorks, href: '#how-it-works' },
-  { key: 'faq', label: t.nav.faq, href: '#faq' },
+  { key: 'quick-start', label: t.nav.quickStart, href: isHome ? '#quick-start' : `${homePath}#quick-start` },
+  { key: 'how-it-works', label: t.nav.howItWorks, href: isHome ? '#how-it-works' : `${homePath}#how-it-works` },
+  { key: 'use-cases', label: t.nav.useCases, href: isHome ? '#use-cases' : `${homePath}#use-cases` },
+  { key: 'models', label: t.nav.models, href: locale === 'zh' ? '/zh/models' : '/models' },
+  { key: 'faq', label: t.nav.faq, href: isHome ? '#faq' : `${homePath}#faq` },
 ] as const;
 
 const otherLocale: Locale = locale === 'en' ? 'zh' : 'en';
@@ -115,8 +123,8 @@ const otherLocaleLabel = otherLocale === 'zh' ? t.nav.zhLabel : t.nav.enLabel;
   mobileBtn.addEventListener('click', function () {
     var isOpen = !mobileMenu.classList.contains('hidden');
     mobileMenu.classList.toggle('hidden');
-    iconMenu.classList.toggle('hidden', isOpen);
-    iconClose.classList.toggle('hidden', !isOpen);
+    iconMenu.classList.toggle('hidden', !isOpen);
+    iconClose.classList.toggle('hidden', isOpen);
     mobileBtn.setAttribute('aria-expanded', String(!isOpen));
   });
 

@@ -1,5 +1,6 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import TerminalWindow from './TerminalWindow.astro';
 
 interface Props {
   locale: Locale;
@@ -74,18 +75,7 @@ const t = getTranslations(locale);
 
       <!-- Right: terminal mockup -->
       <div class="lg:col-span-5 reveal" data-delay="3">
-        <div class="card-dark p-0 overflow-hidden shadow-2xl shadow-ink/20 ring-1 ring-white/5">
-
-          <!-- Terminal chrome -->
-          <div class="flex items-center justify-between px-4 py-3 border-b border-canvas-soft/10 bg-ink-deep/40">
-            <div class="flex items-center gap-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-canvas-soft/20"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-canvas-soft/20"></span>
-              <span class="w-2.5 h-2.5 rounded-full bg-canvas-soft/20"></span>
-            </div>
-            <span class="text-[10px] font-mono text-canvas-soft/50 tracking-wide">{t.hero.terminal.title}</span>
-            <span class="w-12"></span>
-          </div>
+        <TerminalWindow title={t.hero.terminal.title} class="shadow-2xl shadow-ink/20 ring-1 ring-white/5">
 
           <!-- Status panel -->
           <div class="px-5 py-4 border-b border-canvas-soft/10">
@@ -126,7 +116,7 @@ const t = getTranslations(locale);
           </div>
 
           <!-- Log lines -->
-          <div class="px-5 py-4 font-mono text-[11px] leading-relaxed space-y-1.5 max-h-44 overflow-hidden">
+          <div class="px-5 py-4 text-[11px] leading-relaxed space-y-1.5 max-h-44 overflow-hidden">
             {t.hero.terminal.logLines.map((line) => (
               <div class="flex gap-3">
                 <span class="text-canvas-soft/30 shrink-0">{line.time}</span>
@@ -134,7 +124,7 @@ const t = getTranslations(locale);
               </div>
             ))}
           </div>
-        </div>
+        </TerminalWindow>
       </div>
     </div>
 
