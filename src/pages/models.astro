@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ModelsPage from '../components/astro/ModelsPage.astro';
+import { getTranslations } from '../content/locales';
+
+const t = getTranslations('en');
+const pageTitle = `${t.modelsPage.title} — ${t.footer.brand}`;
+const pageDescription = t.modelsPage.intro;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={t.meta.keywords}
+  locale="en"
+  pathname="/models"
+>
+  <ModelsPage locale="en" />
+</BaseLayout>

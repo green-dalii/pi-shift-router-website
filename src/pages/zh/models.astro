@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ModelsPage from '../../components/astro/ModelsPage.astro';
+import { getTranslations } from '../../content/locales';
+
+const t = getTranslations('zh');
+const pageTitle = `${t.modelsPage.title} — ${t.footer.brand}`;
+const pageDescription = t.modelsPage.intro;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  keywords={t.meta.keywords}
+  locale="zh"
+  pathname="/zh/models"
+>
+  <ModelsPage locale="zh" />
+</BaseLayout>
