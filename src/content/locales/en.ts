@@ -4,7 +4,7 @@ export const en: Translations = {
   meta: {
     title: 'Pi Shift Router — Stop picking models, start coding',
     description:
-      'A pi-coding-agent extension that automatically sends routine coding to a fast, cheap model — and escalates complex work to a frontier one. Saves tokens, survives provider outages, zero risk to try.',
+      'A pi-coding-agent extension: a CTO for the work that matters, an engineer for the workload. Routine turns stay on a fast, cheap model; important work escalates to a frontier one automatically. Saves tokens, survives provider outages, zero risk to try.',
     keywords:
       'pi shift router, pi coding agent, llm router, model routing, ai coding, save tokens, reduce ai cost, fast smart tier, provider fallback, deepseek, openrouter, pi extension',
   },
@@ -21,6 +21,7 @@ export const en: Translations = {
   },
   hero: {
     badge: 'Open-source extension for pi-coding-agent',
+    slogan: "It's a CTO for the work that matters, an engineer for the workload.",
     title1: 'Every turn,',
     title2: 'the right model.',
     subtitle:
@@ -61,14 +62,40 @@ export const en: Translations = {
       {
         title: 'Install',
         desc: 'One command. pi registers the extension in your settings and loads it on the next launch — no rebuild, no config files to touch.',
+        hintTitle: 'Why it\'s safe to install',
+        hintItems: [
+          'Zero runtime dependencies — pure TypeScript, nothing new in node_modules',
+          'Zero telemetry — no analytics, no tracking, no phone-home',
+          'Zero backend — everything runs locally inside your pi session',
+          'Ultra-lightweight — one small extension, loads in milliseconds',
+          'Open source & auditable — read the whole codebase in an evening',
+          'No lock-in — uninstall anytime; pi falls back to your default model',
+        ],
       },
       {
         title: 'Pick your models',
         desc: 'Run /router config and pick a Fast model and a Smart model — the pair you already use. Save to user or project scope.',
+        hintTitle: 'How to pick',
+        hintItems: [
+          'Fast — the best value-to-quality model in your stack, not the cheapest (the Judge runs on it, so its judgment matters too)',
+          'Smart — a frontier model for the work that matters',
+          'Add 2–3 models per tier and they form a fallback chain for 429/5xx',
+        ],
+        link: {
+          label: 'See recommended pairings',
+          href: '/models',
+        },
       },
       {
         title: 'Watch it work',
         desc: '/router status shows your setup; the next turn runs the first classification. From there it\'s automatic — tune later with /router quiet and /route-force when you want control.',
+        hintTitle: 'What the output means',
+        hintItems: [
+          'Spend — how much each tier cost, and the baseline: what it would have cost without the router',
+          'Turns / upgrades / downgrades — how often the router escalated or settled',
+          'Cooldowns — models resting after a 429/5xx; they resume after backoff',
+          'Window — the last 5 classifications driving the downgrade gate',
+        ],
       },
     ],
   },
@@ -77,7 +104,7 @@ export const en: Translations = {
     title: 'One simple idea',
     subtitle: 'Every task has a difficulty. Every model has a price. pi-shift-router matches the two — automatically.',
     intro:
-      'Think of it like a team: the Programmer handles the day-to-day fast and cheap; the CTO takes over the whole turn when the stakes demand it. Same task, two minds — the router decides which one you need before you finish typing.',
+      'Think of it like a team: the engineer handles the day-to-day fast and cheap; the CTO takes over the whole turn when the work matters. Same task, two minds — the router decides which one you need before you finish typing.',
     valueProps: [
       {
         title: 'Routine work stays cheap',
@@ -85,7 +112,7 @@ export const en: Translations = {
       },
       {
         title: 'The deciding is nearly free',
-        desc: 'One tiny classification call — a few thousand tokens at your cheapest price, 200ms–2s. The savings from skipping unnecessary smart turns dwarf it.',
+        desc: 'One tiny classification call — a few thousand tokens at your fast-tier price, 200ms–2s. The savings from skipping unnecessary smart turns dwarf it.',
       },
       {
         title: 'Keeps working when a provider hiccups',
@@ -94,9 +121,9 @@ export const en: Translations = {
     ],
     fast: {
       tier: 'Fast',
-      role: 'Programmer',
+      role: 'Engineer',
       emoji: '🦾',
-      desc: 'Your everyday coder. Fast on routine work — writing code, running tests, fixing bugs — so you don\'t waste a flagship model on a rename or a refactor.',
+      desc: 'Your everyday engineer. Fast on routine work — writing code, running tests, fixing bugs — so you don\'t waste a flagship model on a rename or a refactor.',
       bullets: [
         'Day-to-day coding and fixes',
         'Tests and mechanical changes',
@@ -107,7 +134,7 @@ export const en: Translations = {
       tier: 'Smart',
       role: 'CTO',
       emoji: '🧠',
-      desc: 'Your architect for the hard stuff — architecture, design review, security, multi-step plans, irreversible changes. It doesn\'t just review; it does the work.',
+      desc: 'The CTO — sets direction, corrects course, reviews results, and takes on the hard problems itself: architecture, design review, security, multi-step plans, irreversible changes. High-stakes turns don\'t get dropped.',
       bullets: [
         'Architecture and design decisions',
         'Reviews that need real judgment',
@@ -129,8 +156,8 @@ export const en: Translations = {
     fallback: {
       label: 'Runtime failover',
       title: 'Failures, handled',
-      desc: 'When a provider rate-limits or errors, that model cools down (1m → 30m) and the next healthy one in the same tier takes over — you keep working through the outage.',
-      code: 'cooldown: 1m → 2m → 4m → 30m',
+      desc: 'When a provider rate-limits or errors, that model cools down with exponential backoff (5xx from 1m; 429/quota from 16m, capped at 6h) and the next healthy one in the same tier takes over — you keep working through the outage.',
+      code: 'cooldown: 1m → 4m → 16m → 1h → 4h → 6h',
     },
   },
   useCases: {
@@ -159,7 +186,7 @@ export const en: Translations = {
   modelsPage: {
     label: 'Models',
     title: 'Pick your model pair',
-    intro: 'Two rules of thumb: Fast tier — pick the cheapest model that parses JSON reliably (the Judge runs on it). Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins.',
+    intro: 'Two rules of thumb: Fast tier — pick the best value in your stack: strong quality per dollar, because this tier also powers the Judge (deepseek-v4-flash is the default pick — 0731 quality near Opus 5/GLM-5.2 territory at the low end of the price table). Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins.',
     patterns: [
       {
         title: 'Coding subscription plans',
@@ -183,13 +210,13 @@ export const en: Translations = {
       },
       {
         title: 'Local models by memory',
-        summary: 'Fast tier on quantized local (q4-k-m / NVFP4 / AWQ-int4). Once you have 64+ GB of VRAM or unified memory, Smart can run locally too. VRAM ≈ params × 0.6 at Q4_K_M.',
+        summary: 'Fast tier on quantized local (q4-k-m / NVFP4 / MXFP4 / AWQ-int4 / 1–2 bit ternary). Once you have 64+ GB of VRAM or unified memory, Smart can run locally too. VRAM ≈ params × 0.6 at Q4_K_M.',
         groupRows: [
-          { group: '< 32 GB', fast: 'Qwen3.6-27B  (dense, q4 ≈ 14 GB), Qwen3.6-35B-A3B  (MoE, q4 ≈ 18 GB), LFM2.5-8B-A1B', smart: 'Cloud — local Smart needs 64+ GB' },
-          { group: '32–128 GB', fast: 'Qwen3.6-35B-A3B  (MoE, q4 ≈ 18 GB), gemma-4-31B-it  (q4 ≈ 16 GB), Qwen3.6-27B  (dense, q4 ≈ 14 GB)', smart: 'Cloud — local Smart needs a very large machine' },
-          { group: '128+ GB', fast: 'Qwen3.6-35B-A3B  (MoE, q4 ≈ 18 GB)', smart: 'DeepSeek-V4-Flash  (284 B MoE / 13 B active, Q4_K_M ≈ 175 GB — needs 256 GB unified memory), GLM-5.2  (2-bit ≈ 239 GB)' },
+          { group: '≤ 32 GB', fast: 'LFM2.5-8B-A1B (8.5B), granite-4.1-8b (8.8B), Qwen3.6-27B (dense, q4 ≈ 14 GB), gemma-4-26b-a4b-it (q4 ≈ 13 GB), Qwen3.6-35B-A3B (MoE 36B/3B, q4 ≈ 18 GB), Laguna-XS-2.1 (MoE 33B/3B, q4 ≈ 17 GB), Ternary-Bonsai-27B (1.58-bit ≈ 7 GB, laptop/phone)', smart: 'Cloud frontier model' },
+          { group: '32–128 GB', fast: 'Fable-Fusion-711-NEO-MAX-MTP GGUF (27B, 2026-07, best post-trained), gemma-4-31B-it (q4 ≈ 16 GB), Laguna-S-2.1 (117.6B, q4 ≈ 59 GB — needs 64 GB+)', smart: 'Fable-Fusion-711 base weights, or cloud frontier' },
+          { group: '≥ 128 GB', fast: 'Fable-Fusion-711-NEO-MAX-MTP GGUF (same pick — post-training beats raw size)', smart: 'DeepSeek-V4-Flash (284 B MoE / 13 B active, UD-Q4_K_XL ≈ 155 GB — needs 192 GB+ unified memory; on 128 GB-class use 1–2 bit ternary)' },
         ],
-        note: 'Sizes are Q4_K_M quant (production, not fp16). Qwen3.6-27B scores 77.2% on SWE-bench Verified — the strongest open-weight model that runs on a 24 GB card. Below ~256 GB of unified memory, local Smart rarely beats a flat-fee token plan on quality-per-dollar; run local Smart only for privacy or air-gapped work.',
+        note: 'Sizes are quant (production, not fp16). The AxxB suffix on a MoE model means active parameters per token — it affects compute speed, not disk size; a GGUF/q4 stores every expert weight. Qwen3.6-27B scores 77.2% on SWE-bench Verified — the strongest open-weight model that runs on a 24 GB card. Below ~256 GB of unified memory, local Smart rarely beats a flat-fee token plan on quality-per-dollar; run local Smart only for privacy or air-gapped work.',
         bestFor: 'Cost-sensitive or air-gapped work; cloud only sees the hard turns.',
       },
       {
@@ -234,7 +261,7 @@ export const en: Translations = {
       },
       {
         q: 'Does this actually save money?',
-        a: 'Yes. Routine turns stay on your cheapest model instead of burning a flagship on every request. The judge itself costs a few thousand tokens at your fast-tier price — the savings dwarf it.',
+        a: 'Yes. Routine turns stay on your fast, value-priced model instead of burning a flagship on every request. The judge itself costs a few thousand tokens at your fast-tier price — the savings dwarf it.',
       },
       {
         q: 'Is it safe to try?',
@@ -242,7 +269,7 @@ export const en: Translations = {
       },
       {
         q: 'What exactly does the smart tier do?',
-        a: 'It\'s the architect role — for complex work it drives the whole turn: architecture, design review, security, multi-step plans, irreversible changes. It doesn\'t just advise or review; it writes the code and does the work itself.',
+        a: 'It\'s the CTO role — it sets direction, corrects course, reviews results, and takes on the hard problems itself: architecture, design review, security, multi-step plans, irreversible changes. High-stakes turns don\'t get dropped. It doesn\'t just advise or review; it writes the code and does the work.',
       },
       {
         q: 'Does the Judge add noticeable latency?',
@@ -250,7 +277,7 @@ export const en: Translations = {
       },
       {
         q: 'What if my primary model 429s or times out?',
-        a: 'You keep working. The failed model enters a short cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over automatically — even mid-turn. A successful response clears the cooldown.',
+        a: 'You keep working. The failed model enters an exponential-backoff cooldown — 5xx starts at 1m (1m → 4m → 16m → 1h → 4h… capped at 6h), while a failover-worthy 4xx (429 rate limit / quota) skips the first tiers and starts at 16m, because client-side limits usually outlive server blips. The next healthy model in the same tier takes over automatically — even mid-turn. A successful response clears the cooldown.',
       },
       {
         q: 'Can I force a specific model for one turn?',
@@ -262,7 +289,7 @@ export const en: Translations = {
       },
       {
         q: 'Can I monitor how it\'s performing?',
-        a: 'Yes — run /router stats to see window size and confidence distribution (high / mid / low / none), cumulative upgrade and downgrade counts, total output tokens, and current / average tokens-per-second. The status bar also shows live throughput: [🧠 kimi-k3 • 23 tok/s] after a message finishes streaming.',
+        a: 'Yes — run /router stats to see per-tier spend and savings, window size and confidence distribution (high / mid / low / none), cumulative upgrade and downgrade counts, and tokens-per-second. It reports cost telemetry: how much each tier spent and a baseline — what the session would have cost if every turn ran on your Smart model (i.e. no router). Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465, baseline $3.21, saved $2.74. The status bar also shows live throughput: [🧠 kimi-k3 • 23 tok/s].',
       },
       {
         q: 'How do I tune the downgrade behavior?',
@@ -270,13 +297,13 @@ export const en: Translations = {
       },
       {
         q: 'How is it different from pi-model-router and CC-Switch?',
-        a: 'They solve different problems and can be used together: pi-shift-router is an LLM-as-classifier with zero runtime deps and same-turn runtime failover — automatic per turn inside pi. pi-model-router adds 3 tiers, a USD budget cap, and keyword rules — heavier but with cross-session cost control. CC-Switch is a separate desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode, and others — manual switching, not per-turn routing.',
+        a: 'pi-model-router solves the same problem — per-turn routing in pi — with a different design. We think routing should need no rules: our Judge is pure LLM with JSON-mode enforcement, one readable prompt you can edit, and zero rule lists to maintain as new scenarios appear. It also fails over mid-turn on 429/5xx with exponential-backoff cooldown, where pi-model-router chains fallbacks at the profile level. Their extras — a hard USD budget cap, cross-session state, keyword pinning — are useful if you need those levers; ours stays a two-tier codebase you can read in an evening. CC-Switch is a different category entirely: a desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode and others. It switches configurations manually between sessions; pi-shift-router routes automatically within each turn — they can coexist.',
       },
     ],
   },
   footer: {
     brand: 'Pi Shift Router',
-    tagline: 'Auto-routing Pi coding agent turns between a fast Programmer and a smart CTO role.',
+    tagline: 'Auto-routing Pi coding agent turns between a fast engineer and a smart CTO role.',
     copyrightParts: {
       prefix: 'Open source under MIT · Built by ',
       author: { name: 'green-dalii', url: 'https://github.com/green-dalii' },

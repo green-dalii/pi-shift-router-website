@@ -4,7 +4,7 @@ export const zh: Translations = {
   meta: {
     title: 'Pi Shift Router — 别再手动挑模型，专心写代码',
     description:
-      '一个 pi-coding-agent 扩展：日常编码自动走便宜快速的模型，复杂任务自动升级到前沿模型。省 token、抗故障、零风险可试。',
+      '一个 pi-coding-agent 扩展：重要的事它是 CTO，跑量的活它是工程师。日常轮次留在便宜快速的模型上，重要工作自动升级到前沿模型。省 token、抗故障、零风险可试。',
     keywords:
       'pi shift router, pi 编码代理, 模型路由, llm router, ai 编程, 省钱, 降低 ai 成本, 快慢分层, provider 故障转移, deepseek, openrouter, pi 扩展',
   },
@@ -21,6 +21,7 @@ export const zh: Translations = {
   },
   hero: {
     badge: '为 pi-coding-agent 打造的开源扩展',
+    slogan: '重要的事它是 CTO，跑量的活它是工程师。',
     title1: '每一轮对话，',
     title2: '都用对的模型。',
     subtitle:
@@ -61,14 +62,40 @@ export const zh: Translations = {
       {
         title: '安装',
         desc: '一条命令。pi 会写入你的设置，下次启动自动加载 —— 不用重新编译，也不用改任何配置。',
+        hintTitle: '为什么可以放心装',
+        hintItems: [
+          '零依赖 —— 纯 TypeScript，node_modules 里不多一个包',
+          '零遥测 —— 不采集数据、不跟踪、不回传',
+          '零后端 —— 全部在本地 pi 会话内运行',
+          '超轻量 —— 一个很小的扩展，毫秒级加载',
+          '开源可审计 —— 整个代码库一晚上能读完',
+          '无绑定 —— 随时卸载，pi 自动回到默认模型',
+        ],
       },
       {
         title: '选好你的模型',
         desc: '运行 /router config，选一个 fast 模型和一个 smart 模型 —— 就用你已经在用的那两个。可以存到用户级或项目级。',
+        hintTitle: '怎么选',
+        hintItems: [
+          'Fast —— 你手里智价比最好的模型，而不是最便宜的（Judge 跑在它上面，它的判断力同样重要）',
+          'Smart —— 处理重要工作的前沿模型',
+          '每档加 2–3 个模型会自动形成 fallback 链，应对 429/5xx',
+        ],
+        link: {
+          label: '查看推荐配对',
+          href: '/zh/models',
+        },
       },
       {
         title: '看它自己工作',
         desc: '/router status 显示你的配置；下一轮就完成第一次分类。之后全自动 —— 想控制时用 /router quiet 和 /route-force 调整。',
+        hintTitle: '输出怎么看',
+        hintItems: [
+          'Spend —— 每档花了多少，以及基线：不装路由器会花多少',
+          'Turns / upgrades / downgrades —— 路由器升级或降级的频率',
+          'Cooldowns —— 429/5xx 后休息的模型；退避结束后自动恢复',
+          'Window —— 驱动降级门的最近 5 次分类',
+        ],
       },
     ],
   },
@@ -77,7 +104,7 @@ export const zh: Translations = {
     title: '一个简单的想法',
     subtitle: '每个任务有难度，每个模型有价格。pi-shift-router 自动把两者匹配起来。',
     intro:
-      '就像一支团队：程序员又快又便宜地把日常活干了；CTO 在关键时刻亲自接管整轮。同一件事，两种脑力 —— 你还没打完字，路由器就已经决定该用谁。',
+      '就像一支团队：工程师又快又便宜地把日常活干了；CTO 在关键时刻亲自接管整轮。同一件事，两种脑力 —— 你还没打完字，路由器就已经决定该用谁。',
     valueProps: [
       {
         title: '日常活保持便宜',
@@ -85,7 +112,7 @@ export const zh: Translations = {
       },
       {
         title: '判断本身几乎免费',
-        desc: '一次微型分类调用 —— 按你最低价计费几千 token，耗时 200ms–2s。相比避免误用 Smart 省下的钱，这点开销不值一提。',
+        desc: '一次微型分类调用 —— 按 fast 档价格计费几千 token，耗时 200ms–2s。相比避免误用 Smart 省下的钱，这点开销不值一提。',
       },
       {
         title: 'provider 掉线也不停',
@@ -94,9 +121,9 @@ export const zh: Translations = {
     ],
     fast: {
       tier: 'Fast',
-      role: '程序员',
+      role: '工程师',
       emoji: '🦾',
-      desc: '你的日常码农。日常活又快又稳 —— 写代码、跑测试、修 bug，不会为一次重命名或重构浪费前沿模型。',
+      desc: '你的日常工程师。日常活又快又稳 —— 写代码、跑测试、修 bug，不会为一次重命名或重构浪费前沿模型。',
       bullets: [
         '日常编码与修 bug',
         '测试与重复性改动',
@@ -107,7 +134,7 @@ export const zh: Translations = {
       tier: 'Smart',
       role: 'CTO',
       emoji: '🧠',
-      desc: '处理难题的架构师 —— 架构、设计 review、安全、多步规划、不可逆的改动。它不只是给意见，它亲自把活干完。',
+      desc: 'CTO —— 定方向、纠偏差、审结果，硬问题自己上手：架构、设计 review、安全、多步规划、不可逆的改动。高风险的轮次不会被敷衍。',
       bullets: [
         '架构与设计决策',
         '需要真判断的 review',
@@ -129,8 +156,8 @@ export const zh: Translations = {
     fallback: {
       label: '运行时故障转移',
       title: '故障，自动处理',
-      desc: 'provider 限流或报错时，那个模型进入冷却（1m → 30m），同层下一个健康模型接管 —— 你全程无感，继续干活。',
-      code: 'cooldown: 1m → 2m → 4m → 30m',
+      desc: 'provider 限流或报错时，那个模型进入指数退避冷却（5xx 从 1m 起步；429/配额 从 16m 起步，封顶 6h），同层下一个健康模型接管 —— 你全程无感，继续干活。',
+      code: 'cooldown: 1m → 4m → 16m → 1h → 4h → 6h',
     },
   },
   useCases: {
@@ -159,7 +186,7 @@ export const zh: Translations = {
   modelsPage: {
     label: '模型选择',
     title: '选出你的模型配对',
-    intro: '两条经验：Fast 档 —— 选能可靠解析 JSON 的最便宜模型（Judge 跑在它上面）；Smart 档 —— 留在云端前沿模型。80 GB 以下本地 Smart 不实用，96 GB 仍通常打不过包月套餐。',
+    intro: '两条经验：Fast 档 —— 选智价比最好的模型：每块钱买到最强的智能，因为这一档还兼任 Judge（默认首选 deepseek-v4-flash —— 0731 版质量逼近 Opus 5 / GLM-5.2，价格却在表格低端）。Smart 档 —— 留在云端前沿模型。80 GB 以下本地 Smart 不实用，96 GB 仍通常打不过包月套餐。',
     patterns: [
       {
         title: '编码订阅套餐',
@@ -183,13 +210,13 @@ export const zh: Translations = {
       },
       {
         title: '本地模型按内存选',
-        summary: 'Fast 档跑量化本地（q4-k-m / NVFP4 / AWQ-int4）。64+ GB 显存/统一内存后，Smart 也能本地跑。显存 ≈ 参数 × 0.6（Q4_K_M）。',
+        summary: 'Fast 档跑量化本地（q4-k-m / NVFP4 / MXFP4 / AWQ-int4 / 1–2 bit 三元）。64+ GB 显存/统一内存后，Smart 也能本地跑。显存 ≈ 参数 × 0.6（Q4_K_M）。',
         groupRows: [
-          { group: '< 32 GB', fast: 'Qwen3.6-27B（dense，q4 ≈ 14 GB）、Qwen3.6-35B-A3B（MoE，q4 ≈ 18 GB）、LFM2.5-8B-A1B', smart: '云端 —— 本地 Smart 需 64+ GB' },
-          { group: '32–128 GB', fast: 'Qwen3.6-35B-A3B（MoE，q4 ≈ 18 GB）、gemma-4-31B-it（q4 ≈ 16 GB）、Qwen3.6-27B（dense，q4 ≈ 14 GB）', smart: '云端 —— 本地 Smart 需要非常大的机器' },
-          { group: '128+ GB', fast: 'Qwen3.6-35B-A3B（MoE，q4 ≈ 18 GB）', smart: 'DeepSeek-V4-Flash（284 B MoE / 13 B active，Q4_K_M ≈ 175 GB —— 需 256 GB 统一内存）、GLM-5.2（2-bit ≈ 239 GB）' },
+          { group: '≤ 32 GB', fast: 'LFM2.5-8B-A1B（8.5B）、granite-4.1-8b（8.8B）、Qwen3.6-27B（dense，q4 ≈ 14 GB）、gemma-4-26b-a4b-it（q4 ≈ 13 GB）、Qwen3.6-35B-A3B（MoE 36B/3B，q4 ≈ 18 GB）、Laguna-XS-2.1（MoE 33B/3B，q4 ≈ 17 GB）、Ternary-Bonsai-27B（1.58-bit ≈ 7 GB，笔记本/手机级）', smart: '云端前沿模型' },
+          { group: '32–128 GB', fast: 'Fable-Fusion-711-NEO-MAX-MTP GGUF（27B，2026-07，最佳后训练）、gemma-4-31B-it（q4 ≈ 16 GB）、Laguna-S-2.1（117.6B，q4 ≈ 59 GB —— 需 64 GB+）', smart: 'Fable-Fusion-711 基础权重，或云端前沿' },
+          { group: '≥ 128 GB', fast: 'Fable-Fusion-711-NEO-MAX-MTP GGUF（同款 —— 后训练质量胜过原始大小）', smart: 'DeepSeek-V4-Flash（284 B MoE / 13 B active，UD-Q4_K_XL ≈ 155 GB —— 需 192 GB+ 统一内存；128 GB 级用 1–2 bit 三元）' },
         ],
-        note: '大小为 Q4_K_M 量化（生产环境，不是 fp16）。Qwen3.6-27B 在 SWE-bench Verified 拿 77.2% —— 24 GB 单卡上最强的开源权重模型。约 256 GB 统一内存以下，本地 Smart 在性价比上很少打得过包月套餐；只有隐私或离线场景才值得。',
+        note: '大小为量化值（生产环境，不是 fp16）。MoE 型号名里的 AxxB 是每 token 激活参数 —— 影响计算速度，不影响磁盘大小；GGUF/q4 存的是全部专家权重。Qwen3.6-27B 在 SWE-bench Verified 拿 77.2% —— 24 GB 单卡上最强的开源权重模型。约 256 GB 统一内存以下，本地 Smart 在性价比上很少打得过包月套餐；只有隐私或离线场景才值得。',
         bestFor: '成本敏感或离线场景；云端只能看到硬活那几轮。',
       },
       {
@@ -234,7 +261,7 @@ export const zh: Translations = {
       },
       {
         q: '真的能省钱吗？',
-        a: '能。日常任务继续用你最便宜的模型，而不是每个请求都烧旗舰。judge 本身按 fast 层价格计费几千 token —— 省下的钱远超这点开销。',
+        a: '能。日常任务继续用你快速、高性价比的模型，而不是每个请求都烧旗舰。judge 本身按 fast 层价格计费几千 token —— 省下的钱远超这点开销。',
       },
       {
         q: '试一下安全吗？',
@@ -242,7 +269,7 @@ export const zh: Translations = {
       },
       {
         q: 'Smart 层到底做什么？',
-        a: '它是架构师角色 —— 复杂工作由它驱动整轮：架构、设计 review、安全、多步规划、不可逆的改动。它不只是给建议或审查，它自己动手写代码、把活干完。',
+        a: '它是 CTO 角色 —— 定方向、纠偏差、审结果，硬问题自己上手：架构、设计 review、安全、多步规划、不可逆的改动。高风险的轮次不会被敷衍。它不只是给建议或审查，它自己动手写代码、把活干完。',
       },
       {
         q: 'Judge 会增加明显延迟吗？',
@@ -250,7 +277,7 @@ export const zh: Translations = {
       },
       {
         q: 'Primary 模型 429 或超时怎么办？',
-        a: '你继续干活就行。失败的模型进入短暂冷却（1m → 2m → 4m … 封顶 30m），同层下一个健康模型自动接管 —— 甚至在同一轮内。请求成功就立即清除冷却。',
+        a: '你继续干活就行。失败的模型进入指数退避冷却 —— 5xx 从 1m 起步（1m → 4m → 16m → 1h → 4h… 封顶 6h）；值得故障转移的 4xx（429 限流 / 配额）跳过前几档、从 16m 起步，因为客户端限流通常比服务端闪断活得更久。同层下一个健康模型自动接管 —— 甚至在同一轮内。请求成功就立即清除冷却。',
       },
       {
         q: '能强制指定某一轮用某个模型吗？',
@@ -262,7 +289,7 @@ export const zh: Translations = {
       },
       {
         q: '可以监控运行情况吗？',
-        a: '可以。/router stats 显示窗口大小、置信度分布（高/中/低/无）、累计升级/降级次数、总输出 token、当前与平均 tokens-per-second。状态栏也会在消息流式输出结束后显示实时吞吐：[🧠 kimi-k3 • 23 tok/s]。',
+        a: '可以。/router stats 显示每档花费与节省、窗口大小、置信度分布（高/中/低/无）、累计升级/降级次数、tokens-per-second。它还会报告成本遥测：每档花了多少，以及一个基线 —— 如果每一轮都跑你的 Smart 模型（即不装路由器）会花多少钱。例如 Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465，基线 $3.21，省下 $2.74。状态栏也会显示实时吞吐：[🧠 kimi-k3 • 23 tok/s]。',
       },
       {
         q: '怎么调节降级行为？',
@@ -270,13 +297,13 @@ export const zh: Translations = {
       },
       {
         q: '和 pi-model-router、CC-Switch 有什么区别？',
-        a: '它们解决不同问题，可以叠加使用：pi-shift-router 是 LLM 分类器 + 零依赖 + 同轮运行时故障转移 —— pi 里每轮全自动；pi-model-router 增加三层路由、USD 预算上限与关键词规则 —— 更重，但有跨会话成本控制；CC-Switch 是独立桌面应用，管理 Claude Code、Codex、Gemini CLI、OpenCode 等多个工具的 provider 配置 —— 手动切换，不是按轮路由。',
+        a: 'pi-model-router 解决同一个问题 —— pi 里按轮路由 —— 但设计不同。我们认为路由不需要规则：我们的 Judge 是纯 LLM + JSON 模式强制，一份你可以自己编辑的 prompt，无需维护会随新场景不断膨胀的规则列表；遇到 429/5xx 它还能在同一轮内故障转移（指数退避冷却），而 pi-model-router 是在 profile 层链式 fallback。它的附加能力 —— 硬性 USD 预算上限、跨会话状态、关键词钉选 —— 在你确实需要这些杠杆时有价值；而我们保持两层路由，代码一晚上就能读完。CC-Switch 完全是另一个类别：一个桌面应用，管理 Claude Code、Codex、Gemini CLI、OpenCode 等工具的 provider 配置。它在会话间手动切换；pi-shift-router 在每一轮内自动路由 —— 两者可以共存。',
       },
     ],
   },
   footer: {
     brand: 'Pi Shift Router',
-    tagline: '为 Pi 编码 Agent 自动选模型：日常活便宜又快，复杂活交给聪明模型。',
+    tagline: '为 Pi 编码 Agent 自动选模型：重要的事交给 CTO，跑量的活交给工程师。',
     copyrightParts: {
       prefix: 'MIT 开源 · 由 ',
       author: { name: 'green-dalii', url: 'https://github.com/green-dalii' },

@@ -44,11 +44,15 @@ const t = getTranslations(locale);
           <span class="block text-[clamp(2.5rem,6vw,5rem)] text-ink">{t.hero.title2}</span>
         </h1>
 
-        <p class="mt-7 text-lg sm:text-xl text-body leading-relaxed max-w-xl reveal" data-delay="2">
+        <p class="mt-5 font-mono text-sm sm:text-base text-ink/60 tracking-tight reveal" data-delay="2">
+          {t.hero.slogan}
+        </p>
+
+        <p class="mt-6 text-lg sm:text-xl text-body leading-relaxed max-w-xl reveal" data-delay="3">
           {t.hero.subtitle}
         </p>
 
-        <div class="mt-9 flex flex-wrap items-center gap-3 reveal" data-delay="3">
+        <div class="mt-9 flex flex-wrap items-center gap-3 reveal" data-delay="4">
           <a href="#quick-start" class="btn-primary">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             {t.hero.ctaPrimary}

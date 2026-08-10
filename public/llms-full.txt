@@ -1,6 +1,6 @@
 # pi-shift-router — Full documentation for LLM consumption
 
-> Auto-routing Pi coding agent turns between a fast Programmer and a smart CTO role. An LLM judge picks the right role per turn; multi-model fallback chains keep you running; zero runtime dependencies.
+> It's a CTO for the work that matters, an engineer for the workload. An LLM judge picks the right role per turn; multi-model fallback chains keep you running; zero runtime dependencies.
 
 ## Overview
 
@@ -10,10 +10,10 @@
 
 | Role | Tier | Emoji | What it does for the whole turn | When |
 |------|------|-------|----------------------------------|------|
-| **Programmer** | Fast | 🦾 | Executes: writes code, runs tests, fixes the bug, follows the established pattern | Routine, well-defined, low stakes |
+| **Engineer** | Fast | 🦾 | Handles the workload: writes code, runs tests, fixes the bug, follows the established pattern | Routine, well-defined, low stakes |
 | **CTO** | Smart | 🧠 | Drives the entire turn when the work is complex: architecture, design review, security audit, multi-step planning, irrecoverable actions, "very deep" reasoning | High stakes, irreversible, ambiguous, or user asks for depth |
 
-The fast tier is **not** a real Programmer — it's a model that handles execution; the smart tier is **not** a real CTO — it's the model that handles complex judgment, but it also **does all the work itself** (writes the code, calls the tools, runs the loop). The LLM Judge is a small one-shot classification call; the chosen tier then drives the entire agent run.
+The fast tier is **not** a real engineer — it's a model that handles execution; the smart tier is **not** a real CTO — it's the model that handles complex judgment, but it also **does all the work itself** (writes the code, calls the tools, runs the loop). The LLM Judge is a small one-shot classification call; the chosen tier then drives the entire agent run.
 
 **Zero behavior change by default** — both tiers start empty. The router does nothing until you assign models via `/router config`.
 
@@ -46,7 +46,7 @@ Three properties that matter:
 - **Downgrades need sustained trend** (≥60% of last 5 turns are Fast). Cache protection.
 - **One classification per turn.** No thrashing during tool calls.
 
-**JSON-mode enforcement**: OpenAI-compatible APIs use `response_format: { type: "json_object" }`; Anthropic uses assistant prefill `{` to force JSON-start output. While the Judge is in flight, the status bar shows `⚖ judging…`.
+**JSON-mode enforcement**: OpenAI-compatible APIs use `response_format: { type: "json_object" }`; Anthropic uses assistant prefill `{` to force JSON-start output. While the Judge is in flight, the status bar shows `🧭 judging…`.
 
 ### Runtime failover (v0.6.0)
 
@@ -130,11 +130,11 @@ Both tiers start empty. The router is a no-op; pi uses its default model. Run `/
 
 ### Does the Judge add noticeable latency?
 
-A Judge call costs a few thousand tokens at your Fast-tier pricing. End-to-end classification round-trip is typically 200ms–2s. The status bar shows `⚖ judging…` during the call.
+A Judge call costs a few thousand tokens at your Fast-tier pricing. End-to-end classification round-trip is typically 200ms–2s. The status bar shows `🧭 judging…` during the call.
 
 ### What if my primary model 429s or times out?
 
-Exponential-backoff cooldown (v0.6.0): primary goes into cooldown (1m → 2m → 4m … capped 30m) and the next healthy model in the same tier takes over. A 2xx response clears the cooldown immediately.
+Exponential-backoff cooldown: 5xx starts at 1m (1m → 4m → 16m → 1h → 4h… capped at 6h); a failover-worthy 4xx (429 rate limit / quota) skips the first tiers and starts at 16m, because client-side limits usually outlive server blips. The next healthy model in the same tier takes over — even mid-turn. A 2xx response clears the cooldown.
 
 ### Does this work across different providers?
 
@@ -146,9 +146,13 @@ Only when the **weighted** ratio of fast votes in the last 5 classified turns is
 
 ### Is there cost overhead from the Judge?
 
-The Judge uses the Fast-tier model (typically your cheapest). Savings from avoiding unnecessary Smart-tier turns dwarf this cost.
+The Judge runs on the Fast-tier model (typically a high value-per-dollar pick). Savings from avoiding unnecessary Smart-tier turns dwarf this cost.
+
+### Can I see what routing saves me?
+
+Yes — `/router status` reports cost telemetry: per-tier spend (USD + calls) and a savings baseline. The baseline answers *what would this session have cost if every turn ran on your configured Smart-tier model (priority 1) — i.e. no router?* Example: `Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465` → `baseline: all-turns-on-smart → $3.21` → `saved $2.74`. If pricing is missing (fully-local session with no `models-store.json` pricing), the baseline shows `unavailable` instead of a made-up number.
 
 ## Licensing
 
 - **Author & License** — pi-shift-router by [green-dalii](https://github.com/green-dalii), licensed under [MIT](LICENSE) © 2026.
-- **Related plugins** — [pi-model-router](https://github.com/yeliu84/pi-model-router) (3-tier routing, USD budget, keyword rules), [pi-smart-router](https://github.com/beettlle/pi-smart-router) (local ONNX ML inference). These are complementary, not competitive.
+- **Related plugins** — [pi-model-router](https://github.com/yeliu84/pi-model-router) (3-tier routing, USD budget, keyword rules) is complementary, not competitive. [CC-Switch](https://github.com/farion1231/cc-switch) is a separate desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode — manual switching, not per-turn routing.

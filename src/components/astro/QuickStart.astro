@@ -49,6 +49,32 @@ const t = getTranslations(locale);
                 <p class="text-[15px] text-body leading-relaxed">
                   {step.desc}
                 </p>
+
+                {step.hintTitle && step.hintItems && (
+                  <div class="mt-5 rounded-xl bg-canvas-soft/50 border border-ink/8 p-4">
+                    <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2.5">
+                      {step.hintTitle}
+                    </div>
+                    <ul class="space-y-2">
+                      {step.hintItems.map((item) => (
+                        <li class="flex items-start gap-2 text-[13px] text-body leading-relaxed">
+                          <svg class="w-3.5 h-3.5 mt-0.5 text-positive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {step.link && (
+                  <a
+                    href={step.link.href}
+                    class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-positive-deep hover:text-ink transition-colors group"
+                  >
+                    {step.link.label}
+                    <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                )}
               </div>
 
               <!-- macOS-style terminal window -->

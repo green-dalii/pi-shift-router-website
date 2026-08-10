@@ -21,6 +21,7 @@ export interface Translations {
   };
   hero: {
     badge: string;
+    slogan: string;
     title1: string;
     title2: string;
     subtitle: string;
@@ -50,6 +51,11 @@ export interface Translations {
     steps: {
       title: string;
       desc: string;
+      /** Optional hint block shown under desc (principles / status metrics) */
+      hintTitle?: string;
+      hintItems?: string[];
+      /** Optional CTA link shown under desc */
+      link?: { label: string; href: string };
     }[];
   };
   models: {
