@@ -53,7 +53,7 @@ export interface Translations {
       desc: string;
       /** Optional hint block shown under desc (principles / status metrics) */
       hintTitle?: string;
-      hintItems?: string[];
+      hintItems?: { label: string; desc: string }[];
       /** Optional CTA link shown under desc */
       link?: { label: string; href: string };
     }[];

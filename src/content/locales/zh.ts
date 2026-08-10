@@ -22,7 +22,7 @@ export const zh: Translations = {
   hero: {
     badge: '为 pi-coding-agent 打造的开源扩展',
     slogan: '重要的事它是 CTO，跑量的活它是工程师。',
-    title1: '每一轮对话，',
+    title1: '每个任务，',
     title2: '都用对的模型。',
     subtitle:
       '日常编码用便宜快速的模型，复杂问题交给聪明模型。某个服务商掉线或限流？自动切换到下一个 —— 任务不中断。',
@@ -64,12 +64,9 @@ export const zh: Translations = {
         desc: '一条命令。pi 会写入你的设置，下次启动自动加载 —— 不用重新编译，也不用改任何配置。',
         hintTitle: '为什么可以放心装',
         hintItems: [
-          '零依赖 —— 纯 TypeScript，node_modules 里不多一个包',
-          '零遥测 —— 不采集数据、不跟踪、不回传',
-          '零后端 —— 全部在本地 pi 会话内运行',
-          '超轻量 —— 一个很小的扩展，毫秒级加载',
-          '开源可审计 —— 整个代码库一晚上能读完',
-          '无绑定 —— 随时卸载，pi 自动回到默认模型',
+          { label: '零依赖、超轻量、无绑定', desc: '纯 TypeScript，node_modules 不多一个包，毫秒级加载；随时可卸载，pi 自动回到默认模型' },
+          { label: '零遥测、零后端', desc: '不采集、不跟踪、不回传；一切都在本地 pi 会话内运行' },
+          { label: '开源可审计', desc: '整个代码库一晚上能读完，装前装后都透明' },
         ],
       },
       {
@@ -77,9 +74,9 @@ export const zh: Translations = {
         desc: '运行 /router config，选一个 fast 模型和一个 smart 模型 —— 就用你已经在用的那两个。可以存到用户级或项目级。',
         hintTitle: '怎么选',
         hintItems: [
-          'Fast —— 你手里智价比最好的模型，而不是最便宜的（Judge 跑在它上面，它的判断力同样重要）',
-          'Smart —— 处理重要工作的前沿模型',
-          '每档加 2–3 个模型会自动形成 fallback 链，应对 429/5xx',
+          { label: 'Fast', desc: '你手里智价比最好的模型，而不是最便宜的（Judge 跑在它上面，它的判断力同样重要）' },
+          { label: 'Smart', desc: '处理重要工作的前沿模型' },
+          { label: 'Fallback 链', desc: '每档加 2–3 个模型会自动形成 fallback 链，应对 429/5xx' },
         ],
         link: {
           label: '查看推荐配对',
@@ -91,17 +88,17 @@ export const zh: Translations = {
         desc: '/router status 显示你的配置；下一轮就完成第一次分类。之后全自动 —— 想控制时用 /router quiet 和 /route-force 调整。',
         hintTitle: '输出怎么看',
         hintItems: [
-          'Spend —— 每档花了多少，以及基线：不装路由器会花多少',
-          'Turns / upgrades / downgrades —— 路由器升级或降级的频率',
-          'Cooldowns —— 429/5xx 后休息的模型；退避结束后自动恢复',
-          'Window —— 驱动降级门的最近 5 次分类',
+          { label: 'Spend', desc: '每档花了多少，以及基线：不装路由器会花多少' },
+          { label: 'Turns / upgrades / downgrades', desc: '路由器升级或降级的频率' },
+          { label: 'Cooldowns', desc: '429/5xx 后休息的模型；退避结束后自动恢复' },
+          { label: 'Window', desc: '驱动降级门的最近 5 次分类' },
         ],
       },
     ],
   },
   models: {
     label: '工作原理',
-    title: '一个简单的想法',
+    title: '一个简洁而优雅的想法',
     subtitle: '每个任务有难度，每个模型有价格。pi-shift-router 自动把两者匹配起来。',
     intro:
       '就像一支团队：工程师又快又便宜地把日常活干了；CTO 在关键时刻亲自接管整轮。同一件事，两种脑力 —— 你还没打完字，路由器就已经决定该用谁。',

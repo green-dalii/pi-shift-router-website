@@ -22,7 +22,7 @@ export const en: Translations = {
   hero: {
     badge: 'Open-source extension for pi-coding-agent',
     slogan: "It's a CTO for the work that matters, an engineer for the workload.",
-    title1: 'Every turn,',
+    title1: 'Every task,',
     title2: 'the right model.',
     subtitle:
       'Everyday coding runs on a cheap, fast model. Hard problems get the smart one. And when a provider stumbles, the router switches — automatically, mid-turn, so your work never stops.',
@@ -64,12 +64,9 @@ export const en: Translations = {
         desc: 'One command. pi registers the extension in your settings and loads it on the next launch — no rebuild, no config files to touch.',
         hintTitle: 'Why it\'s safe to install',
         hintItems: [
-          'Zero runtime dependencies — pure TypeScript, nothing new in node_modules',
-          'Zero telemetry — no analytics, no tracking, no phone-home',
-          'Zero backend — everything runs locally inside your pi session',
-          'Ultra-lightweight — one small extension, loads in milliseconds',
-          'Open source & auditable — read the whole codebase in an evening',
-          'No lock-in — uninstall anytime; pi falls back to your default model',
+          { label: 'Zero dependencies', desc: 'pure TypeScript — nothing new in node_modules, loads in milliseconds' },
+          { label: 'Zero telemetry, zero backend', desc: 'no data leaves your machine; everything runs inside your pi session' },
+          { label: 'Open source, no lock-in', desc: 'entire codebase readable in an evening; uninstall anytime and pi falls back to your default model' },
         ],
       },
       {
@@ -77,9 +74,9 @@ export const en: Translations = {
         desc: 'Run /router config and pick a Fast model and a Smart model — the pair you already use. Save to user or project scope.',
         hintTitle: 'How to pick',
         hintItems: [
-          'Fast — the best value-to-quality model in your stack, not the cheapest (the Judge runs on it, so its judgment matters too)',
-          'Smart — a frontier model for the work that matters',
-          'Add 2–3 models per tier and they form a fallback chain for 429/5xx',
+          { label: 'Fast', desc: 'the best value-to-quality model in your stack, not the cheapest (the Judge runs on it, so its judgment matters too)' },
+          { label: 'Smart', desc: 'a frontier model for the work that matters' },
+          { label: 'Fallback chain', desc: 'add 2–3 models per tier and they form a fallback chain for 429/5xx' },
         ],
         link: {
           label: 'See recommended pairings',
@@ -91,17 +88,17 @@ export const en: Translations = {
         desc: '/router status shows your setup; the next turn runs the first classification. From there it\'s automatic — tune later with /router quiet and /route-force when you want control.',
         hintTitle: 'What the output means',
         hintItems: [
-          'Spend — how much each tier cost, and the baseline: what it would have cost without the router',
-          'Turns / upgrades / downgrades — how often the router escalated or settled',
-          'Cooldowns — models resting after a 429/5xx; they resume after backoff',
-          'Window — the last 5 classifications driving the downgrade gate',
+          { label: 'Spend', desc: 'how much each tier cost, and the baseline: what it would have cost without the router' },
+          { label: 'Turns / upgrades / downgrades', desc: 'how often the router escalated or settled' },
+          { label: 'Cooldowns', desc: 'models resting after a 429/5xx; they resume after backoff' },
+          { label: 'Window', desc: 'the last 5 classifications driving the downgrade gate' },
         ],
       },
     ],
   },
   models: {
     label: 'How it works',
-    title: 'One simple idea',
+    title: 'One simple, elegant idea',
     subtitle: 'Every task has a difficulty. Every model has a price. pi-shift-router matches the two — automatically.',
     intro:
       'Think of it like a team: the engineer handles the day-to-day fast and cheap; the CTO takes over the whole turn when the work matters. Same task, two minds — the router decides which one you need before you finish typing.',
