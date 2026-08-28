@@ -27,6 +27,7 @@ export interface Translations {
     subtitle: string;
     ctaPrimary: string;
     ctaSecondary: string;
+    ctaTertiary: string;
     /** Mock terminal panel copy — keep it concise. */
     terminal: {
       title: string;
@@ -44,18 +45,38 @@ export interface Translations {
     };
     trustStrip: { label: string; desc: string }[];
   };
+  /** The Shift-Router family: two editions, one routing idea. */
+  family: {
+    label: string;
+    title: string;
+    subtitle: string;
+    products: {
+      name: string;
+      version: string;
+      edition: string;
+      desc: string;
+      highlights: string[];
+      links: { label: string; href: string }[];
+    }[];
+    note: string;
+  };
   quickStart: {
     label: string;
     title: string;
     subtitle: string;
-    steps: {
-      title: string;
-      desc: string;
-      /** Optional hint block shown under desc (principles / status metrics) */
-      hintTitle?: string;
-      hintItems?: { label: string; desc: string }[];
-      /** Optional CTA link shown under desc */
-      link?: { label: string; href: string };
+    /** One tab per edition of the router (pi / DeepSeek Harness). */
+    runtimes: {
+      id: string;
+      name: string;
+      steps: {
+        title: string;
+        desc: string;
+        /** Optional hint block shown under desc (principles / status metrics) */
+        hintTitle?: string;
+        hintItems?: { label: string; desc: string }[];
+        /** Optional CTA link shown under desc */
+        link?: { label: string; href: string };
+      }[];
     }[];
   };
   models: {
@@ -98,6 +119,12 @@ export interface Translations {
       title: string;
       desc: string;
       code: string;
+    };
+    orchestration: {
+      label: string;
+      title: string;
+      desc: string;
+      bullets: string[];
     };
   };
   useCases: {

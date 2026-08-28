@@ -52,7 +52,7 @@ const jsonLd = {
       name: t.footer.brand,
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Cross-platform',
-      softwareVersion: '0.8.2',
+      softwareVersion: '1.0.0',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
       license: 'https://opensource.org/licenses/MIT',
       description,
@@ -90,7 +90,7 @@ const jsonLd = {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonical} />
     <!-- LLM-readable product summary (GEO: picked up by AI crawlers) -->
-    <!-- name: pi-shift-router | type: software / npm package / pi-coding-agent extension | license: MIT | language: TypeScript | runtime: Node.js >= 24 | dependencies: zero runtime deps | npm: https://www.npmjs.com/package/pi-shift-router | repo: https://github.com/green-dalii/pi-shift-router | features: two-tier routing, LLM judge, JSON-mode classifier, sliding-window downgrade gate, multi-model fallback chains, exponential-backoff runtime failover (429/5xx), zero-config defaults | author: green-dalii -->
+    <!-- name: shift-router | type: software / npm package / pi-coding-agent extension + DeepSeek Harness plugin | license: MIT | language: TypeScript | runtime: Node.js >= 24 | dependencies: zero runtime deps | npm: https://www.npmjs.com/package/pi-shift-router | repo: https://github.com/green-dalii/pi-shift-router (pi) / https://github.com/green-dalii/dsh-shift-router (DSH) | features: two-tier routing, LLM judge, JSON-mode classifier, sliding-window downgrade gate, multi-model fallback chains, cache-aware routing, exponential-backoff runtime failover (429/5xx), task-level orchestration (Smart CTO delegates to Fast subagents), zero-config defaults | author: green-dalii -->
     {hreflangEntries.map((h) => (
       <link rel="alternate" hreflang={h.code} href={h.href} />
     ))}

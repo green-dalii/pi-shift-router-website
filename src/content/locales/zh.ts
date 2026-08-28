@@ -2,11 +2,11 @@ import type { Translations } from './types';
 
 export const zh: Translations = {
   meta: {
-    title: 'Pi Shift Router — 别再手动挑模型，专心写代码',
+    title: 'Shift Router — 别再手动挑模型，专心写代码',
     description:
-      '一个 pi-coding-agent 扩展：重要的事它是 CTO，跑量的活它是工程师。日常轮次留在便宜快速的模型上，重要工作自动升级到前沿模型。省 token、抗故障、零风险可试。',
+      '一个模型路由器家族，同时支持 pi-coding-agent 与 DeepSeek Harness：重要的事它是 CTO，跑量的活它是工程师。日常轮次留在便宜快速的模型上，重要工作自动升级到前沿模型 —— 复杂任务还会委派给 Fast 子代理。省 token、抗故障、零风险可试。',
     keywords:
-      'pi shift router, pi 编码代理, 模型路由, llm router, ai 编程, 省钱, 降低 ai 成本, 快慢分层, provider 故障转移, deepseek, openrouter, pi 扩展',
+      'shift router, pi shift router, dsh shift router, 模型路由, llm router, ai 编程, 省钱, 降低 ai 成本, 快慢分层, 任务编排, provider 故障转移, deepseek, openrouter, pi 扩展, deepseek harness',
   },
   nav: {
     quickStart: '快速上手',
@@ -20,14 +20,15 @@ export const zh: Translations = {
     zhLabel: '中文',
   },
   hero: {
-    badge: '为 pi-coding-agent 打造的开源扩展',
+    badge: '一个路由器，适配 pi 与 DeepSeek Harness',
     slogan: '重要的事它是 CTO，跑量的活它是工程师。',
     title1: '每个任务，',
     title2: '都用对的模型。',
     subtitle:
-      '日常编码用便宜快速的模型，复杂问题交给聪明模型。某个服务商掉线或限流？自动切换到下一个 —— 任务不中断。',
+      '日常编码用便宜快速的模型，复杂问题交给聪明模型。服务商掉线或限流？自动切换 —— 任务不中断。任务真的复杂时，Smart 层还会亲自规划、委派给 Fast 子代理 —— 在 pi 和 DeepSeek Harness 上通用。',
     ctaPrimary: '快速上手',
-    ctaSecondary: '查看文档',
+    ctaSecondary: 'pi-shift-router 文档',
+    ctaTertiary: 'dsh-shift-router 文档',
     terminal: {
       title: 'pi-shift-router — 在 pi 中',
       subtitle: '状态栏 · toast · 自动',
@@ -54,44 +55,113 @@ export const zh: Translations = {
       { label: 'MIT 开源', desc: '零运行时依赖' },
     ],
   },
+  family: {
+    label: '家族产品',
+    title: '一种路由思路，两个版本',
+    subtitle: '同样的 LLM 裁判路由、同样的回退链、同样的任务级编排 —— 适配你实际在用的 agent。',
+    products: [
+      {
+        name: 'pi-shift-router',
+        version: 'v1.0.0',
+        edition: 'for pi-coding-agent',
+        desc: '原版。一条命令装进 pi，在 Fast 与 Smart 之间路由每一轮，复杂任务还会委派给 Fast 子代理来编排执行。',
+        highlights: ['零运行时依赖 · 约 196 kB', '任务级编排默认开启', '202 个单元测试'],
+        links: [
+          { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
+          { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
+        ],
+      },
+      {
+        name: 'dsh-shift-router',
+        version: 'v0.1.0',
+        edition: 'for DeepSeek Harness',
+        desc: 'DSH 版本。通过 cordis.patch.yml 接入 harness，走它自己的 agent 管线，配置可以在设置面板或 /router config 里实时改。',
+        highlights: ['复用 harness 的 agent/request 管线', 'GUI + 命令实时配置', '52 个测试 · 免凭据 e2e'],
+        links: [{ label: 'GitHub', href: 'https://github.com/green-dalii/dsh-shift-router' }],
+      },
+    ],
+    note: '一晚上就能读完的代码库，两个版本。挑匹配你那个 agent 的就行。',
+  },
   quickStart: {
     label: '快速上手',
     title: '三步就能跑起来',
     subtitle: '装完什么都不变 —— 只有你选好模型后路由才开始工作。随时可卸载，没有任何绑定。',
-    steps: [
+    runtimes: [
       {
-        title: '安装',
-        desc: '一条命令。pi 会写入你的设置，下次启动自动加载 —— 不用重新编译，也不用改任何配置。',
-        hintTitle: '为什么可以放心装',
-        hintItems: [
-          { label: '零依赖、超轻量、无绑定', desc: '纯 TypeScript，node_modules 不多一个包，毫秒级加载；随时可卸载，pi 自动回到默认模型' },
-          { label: '零遥测、零后端', desc: '不采集、不跟踪、不回传；一切都在本地 pi 会话内运行' },
-          { label: '开源可审计', desc: '整个代码库一晚上能读完，装前装后都透明' },
+        id: 'pi',
+        name: 'pi-shift-router',
+        steps: [
+          {
+            title: '安装',
+            desc: '一条命令。pi 会写入你的设置，下次启动自动加载 —— 不用重新编译，也不用改任何配置。',
+            hintTitle: '为什么可以放心装',
+            hintItems: [
+              { label: '零依赖、超轻量、无绑定', desc: '纯 TypeScript，node_modules 不多一个包，毫秒级加载；随时可卸载，pi 自动回到默认模型' },
+              { label: '零遥测、零后端', desc: '不采集、不跟踪、不回传；一切都在本地 pi 会话内运行' },
+              { label: '开源可审计', desc: '整个代码库一晚上能读完，装前装后都透明' },
+            ],
+          },
+          {
+            title: '选好你的模型',
+            desc: '运行 /router config，选一个 fast 模型和一个 smart 模型 —— 就用你已经在用的那两个。可以存到用户级或项目级。',
+            hintTitle: '怎么选',
+            hintItems: [
+              { label: 'Fast', desc: '你手里智价比最好的模型，而不是最便宜的（Judge 跑在它上面，它的判断力同样重要）' },
+              { label: 'Smart', desc: '处理重要工作的前沿模型' },
+              { label: 'Fallback 链', desc: '每档加 2–3 个模型会自动形成 fallback 链，应对 429/5xx' },
+            ],
+            link: {
+              label: '查看推荐配对',
+              href: '/zh/models',
+            },
+          },
+          {
+            title: '看它自己工作',
+            desc: '/router status 显示你的配置；下一轮就完成第一次分类。之后全自动 —— 想控制时用 /router quiet 和 /route-force 调整。',
+            hintTitle: '输出怎么看',
+            hintItems: [
+              { label: 'Spend', desc: '每档花了多少，以及基线：不装路由器会花多少' },
+              { label: 'Turns / upgrades / downgrades', desc: '路由器升级或降级的频率' },
+              { label: 'Cooldowns', desc: '429/5xx 后休息的模型；退避结束后自动恢复' },
+              { label: 'Window', desc: '驱动降级门的最近 5 次分类' },
+            ],
+          },
         ],
       },
       {
-        title: '选好你的模型',
-        desc: '运行 /router config，选一个 fast 模型和一个 smart 模型 —— 就用你已经在用的那两个。可以存到用户级或项目级。',
-        hintTitle: '怎么选',
-        hintItems: [
-          { label: 'Fast', desc: '你手里智价比最好的模型，而不是最便宜的（Judge 跑在它上面，它的判断力同样重要）' },
-          { label: 'Smart', desc: '处理重要工作的前沿模型' },
-          { label: 'Fallback 链', desc: '每档加 2–3 个模型会自动形成 fallback 链，应对 429/5xx' },
-        ],
-        link: {
-          label: '查看推荐配对',
-          href: '/zh/models',
-        },
-      },
-      {
-        title: '看它自己工作',
-        desc: '/router status 显示你的配置；下一轮就完成第一次分类。之后全自动 —— 想控制时用 /router quiet 和 /route-force 调整。',
-        hintTitle: '输出怎么看',
-        hintItems: [
-          { label: 'Spend', desc: '每档花了多少，以及基线：不装路由器会花多少' },
-          { label: 'Turns / upgrades / downgrades', desc: '路由器升级或降级的频率' },
-          { label: 'Cooldowns', desc: '429/5xx 后休息的模型；退避结束后自动恢复' },
-          { label: 'Window', desc: '驱动降级门的最近 5 次分类' },
+        id: 'dsh',
+        name: 'dsh-shift-router',
+        steps: [
+          {
+            title: '安装',
+            desc: '克隆、构建、注册到 harness profile —— 全程在 shell 里完成，无需任何凭据，所有默认值都安全。',
+            hintTitle: 'bundle 方式',
+            hintItems: [
+              { label: '准备', desc: 'git clone …/dsh-shift-router && npm install && npm run build' },
+              { label: '注册', desc: 'dsh plugin --profile web add /path/to/dsh-shift-router' },
+              { label: '实时配置', desc: 'Settings → shift-router 或 /router config —— 持久化，无需重启' },
+            ],
+          },
+          {
+            title: '选好你的模型',
+            desc: '在 GUI 设置面板（Settings → shift-router）或用 /router config 命令设置 Fast 与 Smart 层模型链 —— 两者共用同一个存储。',
+            hintTitle: '怎么选',
+            hintItems: [
+              { label: 'Fast', desc: '你手里智价比最好的模型 —— Judge 也跑在它上面' },
+              { label: 'Smart', desc: '处理重要工作的前沿模型' },
+              { label: 'Fallback 链', desc: '每档加 2–3 个模型会自动形成 fallback 链，应对 429/5xx' },
+            ],
+          },
+          {
+            title: '看它自己工作',
+            desc: '/router status 显示你的分层与编排模式；下一个顶层轮次就完成第一次分类。子代理保持被钉住的模型。',
+            hintTitle: '输出怎么看',
+            hintItems: [
+              { label: 'Tiers', desc: 'Fast 链（同时是 Judge）与 Smart 链' },
+              { label: 'Orchestration', desc: '🪄 auto（空闲）—— 复杂任务会委派给 Fast 子代理' },
+              { label: '成本遥测', desc: '每档花费，以及全跑 Smart 的基线对比' },
+            ],
+          },
         ],
       },
     ],
@@ -99,9 +169,9 @@ export const zh: Translations = {
   models: {
     label: '工作原理',
     title: '一个简洁而优雅的想法',
-    subtitle: '每个任务有难度，每个模型有价格。pi-shift-router 自动把两者匹配起来。',
+    subtitle: '每个任务有难度，每个模型有价格。Shift Router 自动把两者匹配起来。',
     intro:
-      '就像一支团队：工程师又快又便宜地把日常活干了；CTO 在关键时刻亲自接管整轮。同一件事，两种脑力 —— 你还没打完字，路由器就已经决定该用谁。',
+      '就像一支团队：工程师又快又便宜地把日常活干了；CTO 在关键时刻亲自接管整轮。同一件事，两种脑力 —— 你还没打完字，路由器就已经决定该用谁。而 CTO 的任务足够大时，它也不只会单打独斗：它会把实现委派给 Fast 子代理，再逐个审查。',
     valueProps: [
       {
         title: '日常活保持便宜',
@@ -156,6 +226,17 @@ export const zh: Translations = {
       desc: 'provider 限流或报错时，那个模型进入指数退避冷却（5xx 从 1m 起步；429/配额 从 16m 起步，封顶 6h），同层下一个健康模型接管 —— 你全程无感，继续干活。',
       code: 'cooldown: 1m → 4m → 16m → 1h → 4h → 6h',
     },
+    orchestration: {
+      label: '任务级编排',
+      title: 'CTO 不单打独斗',
+      desc: '当 Judge 判定任务复杂且编排处于 auto 模式（默认）时，Smart 层以 CTO 身份运行：规划工作、把实现委派给 Fast 工程师子代理、逐个审查结果并迭代，直到活干干净。简单任务永不编排 —— 它们留在普通路由器上。',
+      bullets: [
+        '规划 → 委派 → 审查 → 迭代 → 验收',
+        'fresh-context 子代理：小而快又便宜（约 $0.004 对比 fork 的约 $0.06）',
+        '硬上限：maxRounds 3 · escalationThreshold 2',
+        '需要 pi-subagents；没有时优雅降级',
+      ],
+    },
   },
   useCases: {
     label: '使用场景',
@@ -183,7 +264,7 @@ export const zh: Translations = {
   modelsPage: {
     label: '模型选择',
     title: '选出你的模型配对',
-    intro: '两条经验：Fast 档 —— 选智价比最好的模型：每块钱买到最强的智能，因为这一档还兼任 Judge（默认首选 deepseek-v4-flash —— 0731 版质量逼近 Opus 5 / GLM-5.2，价格却在表格低端）。Smart 档 —— 留在云端前沿模型。80 GB 以下本地 Smart 不实用，96 GB 仍通常打不过包月套餐。',
+    intro: '两条经验在 pi 和 DeepSeek Harness 上都适用：Fast 档 —— 选智价比最好的模型：每块钱买到最强的智能，因为这一档还兼任 Judge（默认首选 deepseek-v4-flash —— 0731 版质量逼近 Opus 5 / GLM-5.2，价格却在表格低端）。Smart 档 —— 留在云端前沿模型。80 GB 以下本地 Smart 不实用，96 GB 仍通常打不过包月套餐。',
     patterns: [
       {
         title: '编码订阅套餐',
@@ -234,6 +315,7 @@ export const zh: Translations = {
         title: '跨 Provider 混合',
         summary: '每档取各家最强。默认：Fast 走 deepseek-v4-flash，Smart 走 claude-opus-5。要加固再加 fallback。',
         groupRows: [
+          { group: 'DeepSeek Harness（DSH）', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
           { group: '最低成本', fast: 'deepseek-v4-flash', smart: 'claude-opus-5' },
           { group: '多 provider 备份', fast: 'deepseek-v4-flash + glm-5.2', smart: 'claude-opus-5 + gpt-5.6-sol + kimi-k3' },
           { group: '包月', fast: 'opencode-go/deepseek-v4-flash', smart: 'opencode-go/glm-5.2' },
@@ -277,6 +359,14 @@ export const zh: Translations = {
         a: '你继续干活就行。失败的模型进入指数退避冷却 —— 5xx 从 1m 起步（1m → 4m → 16m → 1h → 4h… 封顶 6h）；值得故障转移的 4xx（429 限流 / 配额）跳过前几档、从 16m 起步，因为客户端限流通常比服务端闪断活得更久。同层下一个健康模型自动接管 —— 甚至在同一轮内。请求成功就立即清除冷却。',
       },
       {
+        q: '什么是任务级编排？',
+        a: '当 Judge 判定任务复杂时，Smart 层以 CTO 身份运行：规划工作、把实现委派给 Fast 工程师子代理（fresh context，模型取自你的 Fast 层）、逐个审查结果、用具体反馈迭代，最后做一次终验。简单任务永不编排 —— 它们留在普通路由器上。编排默认开启（auto 模式），/router orchestrate off 可关闭。它需要 pi-subagents 扩展 —— 没有它，复杂任务直接在 Smart 层运行，和以前完全一样。',
+      },
+      {
+        q: '编排会更费钱吗？',
+        a: '不会 —— 这正是它的意义。Smart 层负责规划和审查，实现交给 fresh-context 的 Fast 子代理，每个都很小很便宜：窄任务约 $0.004，对比继承 176k-token fork 的约 $0.06。硬上限把花费锁在范围内：maxRounds 3、escalationThreshold 2。如果任务其实很简单，编排机制根本不会启动。',
+      },
+      {
         q: '能强制指定某一轮用某个模型吗？',
         a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定具体模型。/route-force auto 清除覆盖。',
       },
@@ -294,13 +384,21 @@ export const zh: Translations = {
       },
       {
         q: '和 pi-model-router、CC-Switch 有什么区别？',
-        a: 'pi-model-router 解决同一个问题 —— pi 里按轮路由 —— 但设计不同。我们认为路由不需要规则：我们的 Judge 是纯 LLM + JSON 模式强制，一份你可以自己编辑的 prompt，无需维护会随新场景不断膨胀的规则列表；遇到 429/5xx 它还能在同一轮内故障转移（指数退避冷却），而 pi-model-router 是在 profile 层链式 fallback。它的附加能力 —— 硬性 USD 预算上限、跨会话状态、关键词钉选 —— 在你确实需要这些杠杆时有价值；而我们保持两层路由，代码一晚上就能读完。CC-Switch 完全是另一个类别：一个桌面应用，管理 Claude Code、Codex、Gemini CLI、OpenCode 等工具的 provider 配置。它在会话间手动切换；pi-shift-router 在每一轮内自动路由 —— 两者可以共存。',
+        a: 'pi-model-router 解决同一个问题 —— pi 里按轮路由 —— 但设计不同。我们认为路由不需要规则：我们的 Judge 是纯 LLM + JSON 模式强制，一份你可以自己编辑的 prompt，无需维护会随新场景不断膨胀的规则列表；遇到 429/5xx 它还能在同一轮内故障转移（指数退避冷却），而 pi-model-router 是在 profile 层链式 fallback。我们还多了任务级编排：复杂任务时 Smart 层会规划并把实现委派给 Fast 子代理 —— pi-model-router 只做按轮选模型。它的附加能力 —— 硬性 USD 预算上限、跨会话状态、关键词钉选 —— 在你确实需要这些杠杆时有价值；而我们保持两层路由，代码一晚上就能读完。CC-Switch 完全是另一个类别：一个桌面应用，管理 Claude Code、Codex、Gemini CLI、OpenCode 等工具的 provider 配置。它在会话间手动切换；Shift Router 在每一轮内自动路由 —— 两者可以共存。',
+      },
+      {
+        q: '有 DeepSeek Harness 版本吗？',
+        a: '有 —— dsh-shift-router（v0.1.0），同一个路由器的 DSH 适配版。通过 cordis.patch.yml 接入 harness，走它自己的 agent/request 管线，配置可以在 GUI 设置面板或 /router config 命令里实时改，能力完全一致：LLM 裁判、缓存感知路由、运行时故障转移、任务级编排、成本遥测。52 个单元测试加一个免凭据的 headless e2e。安装：git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build，然后 dsh plugin --profile web add <路径>。',
+      },
+      {
+        q: '在 DeepSeek Harness 上，子代理也会被路由吗？',
+        a: '不会。subagent 工具派生的子代理带有 origin === \'subagent\' 标记，保持它们被钉住的模型 —— 路由器只驱动顶层 agent。编排时 CTO 委派给 Fast 子代理，其模型由部署配置钉住（tool-subagent 的 agentOptions），所以子代理永远按 Fast 层的价格运行。',
       },
     ],
   },
   footer: {
-    brand: 'Pi Shift Router',
-    tagline: '为 Pi 编码 Agent 自动选模型：重要的事交给 CTO，跑量的活交给工程师。',
+    brand: 'Shift Router',
+    tagline: '为 agent 自动选模型：重要的事交给 CTO，跑量的活交给工程师 —— pi-coding-agent 与 DeepSeek Harness 通用。',
     copyrightParts: {
       prefix: 'MIT 开源 · 由 ',
       author: { name: 'green-dalii', url: 'https://github.com/green-dalii' },
@@ -318,8 +416,9 @@ export const zh: Translations = {
       resources: {
         title: '资源',
         links: [
-          { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
-          { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
+          { label: 'pi-shift-router（GitHub）', href: 'https://github.com/green-dalii/pi-shift-router' },
+          { label: 'pi-shift-router（npm）', href: 'https://www.npmjs.com/package/pi-shift-router' },
+          { label: 'dsh-shift-router（GitHub）', href: 'https://github.com/green-dalii/dsh-shift-router' },
           { label: 'Issues', href: 'https://github.com/green-dalii/pi-shift-router/issues' },
           { label: 'Discussions', href: 'https://github.com/green-dalii/pi-shift-router/discussions' },
         ],

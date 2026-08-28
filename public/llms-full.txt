@@ -1,10 +1,10 @@
-# pi-shift-router — Full documentation for LLM consumption
+# shift-router — Full documentation for LLM consumption
 
-> It's a CTO for the work that matters, an engineer for the workload. An LLM judge picks the right role per turn; multi-model fallback chains keep you running; zero runtime dependencies.
+> It's a CTO for the work that matters, an engineer for the workload. An LLM judge picks the right role per turn; multi-model fallback chains keep you running; complex tasks are orchestrated by a Smart CTO that delegates to Fast subagents; zero runtime dependencies. Two editions: pi-coding-agent and DeepSeek Harness.
 
 ## Overview
 
-**pi-shift-router** is a [pi-coding-agent](https://github.com/earendil-works/pi-coding-agent) extension that routes every turn to either a fast execution model or a smart judgment model. Before each turn, a small LLM Judge (the fast-tier model itself) classifies the task as `fast` or `smart`. The chosen model then drives the whole turn — all thinking, all tool calls, all message content — at that tier's intelligence level.
+**shift-router** is a family of task-level model routers. **pi-shift-router** (v1.0.0) is a [pi-coding-agent](https://github.com/earendil-works/pi-coding-agent) extension; **dsh-shift-router** (v0.1.0) is a DeepSeek Harness plugin. Both route every turn to either a fast execution model or a smart judgment model. Before each turn, a small LLM Judge (the fast-tier model itself) classifies the task as `fast` or `smart`. The chosen model then drives the whole turn — all thinking, all tool calls, all message content — at that tier's intelligence level. On complex tasks, the Smart tier runs as a CTO that plans and delegates implementation to Fast subagents (task-level orchestration).
 
 ### Roles
 
@@ -52,13 +52,29 @@ Three properties that matter:
 
 When the primary model hits 429 / 5xx / quota / Token-Plan exhaustion, pi retries first (provider ×3, agent ×3), then the router takes over:
 
-1. Mark the failing model into **exponential-backoff cooldown** (1m, 2m, 4m, … capped at 30m).
+1. Mark the failing model into **exponential-backoff cooldown** (1m → 4m → 16m → 1h → 4h… capped at 6h; a failover-worthy 4xx / 429 / quota starts at 16m).
 2. Immediately `setModel` to the next healthy model **in the same tier** (no cross-tier).
 3. pi's pending retry continues with the fallback — same-turn failover.
 4. Subsequent turns skip cooled models in `before_agent_start`.
 5. A 2xx response clears the cooldown; session restart resets everything.
 
 The Judge also walks the full fast-tier chain before giving up, sharing the same cooldown map as routing. Manual override (`/route-force`) always bypasses cooldowns. Auth/config errors (400/401) never trigger failover.
+
+## Task-level orchestration (v1.0.0)
+
+When the Judge says a task is complex and orchestration is in `auto` mode (default), the router hands the turn to the Smart tier as a **CTO**: it plans the work, delegates implementation to Fast engineer subagents, reviews each result, iterates with concrete feedback, and does a final acceptance pass. Simple tasks (`fast` verdict) never orchestrate — they stay on the plain router.
+
+1. **Enter.** Judge says `smart` → the router switches the main agent to the Smart model and injects an orchestrator instruction. Status shows `🪄 orchestrating`.
+2. **Plan.** The Smart agent decomposes the task into phases, each with acceptance criteria.
+3. **Delegate.** For each phase it spawns a Fast subagent (`context: "fresh"`, model pinned from the Fast tier) with a self-contained task contract.
+4. **Review.** It reads each worker's result against the phase's acceptance criteria; failed phases go back with feedback or are taken over by Smart.
+5. **Accept.** Final CTO summary + acceptance pass.
+
+**Hard caps** (the router's part, independent of the Smart agent): `orchestration.maxRounds` (default 3) and `orchestration.escalationThreshold` (default 2 — after N worker failures on a phase, Smart takes over that phase itself). The loop stops when the Smart agent says done or a cap is hit.
+
+**Why fresh-context workers:** workers run with no inherited session history; the task string is their world. Each is small, fast, cheap (~$0.004 narrow task vs ~$0.06 inherited 176k-token fork) and keeps thinking enabled on anthropic-compatible endpoints.
+
+**When it doesn't engage:** simple tasks (`fast` verdict) never orchestrate; without `pi-subagents` installed, complex tasks run directly on the Smart tier exactly as before; `/router orchestrate off` returns to plain two-tier routing. Prerequisite: `pi install npm:pi-subagents`.
 
 ## Quick Start
 
@@ -84,11 +100,12 @@ Inside pi, run `/router config` and pick one Fast + one Smart model. Save to use
 
 | Command | What it does |
 |---------|--------------|
-| `/router status` | Show tier, model, window, config summary |
+| `/router status` | Show tier, model, window, orchestration mode, cost telemetry, config summary |
 | `/router on` / `/router off` | Enable / disable routing |
 | `/router config` | Launch the TUI configuration wizard |
 | `/router quiet` | Toggle inline toast notifications |
 | `/router verbose` | Toggle verbose console logging |
+| `/router orchestrate auto\|off` | Task-level orchestration (default `auto`) or plain two-tier routing |
 | `/route-force <tier>` | Pin Smart or Fast for the next turn |
 | `/route-force <provider>/<model>` | Pin a specific model for the next turn |
 | `/route-force auto` | Clear manual override |
@@ -108,6 +125,7 @@ Two-layer config: user (`~/.pi/agent/pi-shift-router.json`) + project (`<cwd>/.p
     "smart": { "models": [{ "provider": "kimi", "model": "kimi-k3", "priority": 1 }] }
   },
   "routing": { "mode": "auto", "judgeTimeout": 5000, "window": { "size": 5, "threshold": 0.6 } },
+  "orchestration": { "mode": "auto", "maxRounds": 3, "escalationThreshold": 2 },
   "ux": { "quietMode": false, "statusBar": true, "inlineToast": true, "routerLogVerbose": false }
 }
 ```
@@ -118,6 +136,7 @@ Two-layer config: user (`~/.pi/agent/pi-shift-router.json`) + project (`<cwd>/.p
 | `tiers.<tier>.models[]` | `[]` | Ordered by `priority`. First hit wins; rest are run-time fallbacks. |
 | `routing.judgeTimeout` | `5000` | ms. Judge API call timeout. |
 | `routing.window.size` / `threshold` | `5` / `0.6` | Sliding-window downgrade gate. |
+| `orchestration.mode` / `maxRounds` / `escalationThreshold` | `auto` / `3` / `2` | Task-level orchestration switch + hard caps. |
 | `ux.quietMode` / `statusBar` / `inlineToast` / `routerLogVerbose` | various | Surface controls. |
 
 Each tier's `models` array is an **ordered priority list** — first entry is the primary; later entries stand by as fallback. Configure multiple models via `/router config`'s TUI chain editor (`a` add, `x` remove, `J`/`K` reorder, `d` save, `Esc` cancel).
@@ -148,11 +167,20 @@ Only when the **weighted** ratio of fast votes in the last 5 classified turns is
 
 The Judge runs on the Fast-tier model (typically a high value-per-dollar pick). Savings from avoiding unnecessary Smart-tier turns dwarf this cost.
 
+### What is task-level orchestration?
+
+A `smart` verdict on a complex task makes the Smart tier run as a **CTO**: plan → delegate implementation to Fast subagents → review → iterate → accept. Hard caps (maxRounds 3, escalationThreshold 2) are enforced by the router. Simple tasks (`fast` verdict) never orchestrate. `/router orchestrate off` disables it; it requires the `pi-subagents` extension (pi) or a deployment-pinned worker model (DSH).
+
+### Does orchestration cost more?
+
+No — the Smart tier plans and reviews; Fast subagents implement in fresh contexts that are small and cheap (~$0.004 for a narrow task vs ~$0.06 for an inherited 176k-token fork). If a task turns out simple, the machinery never engages.
+
 ### Can I see what routing saves me?
 
 Yes — `/router status` reports cost telemetry: per-tier spend (USD + calls) and a savings baseline. The baseline answers *what would this session have cost if every turn ran on your configured Smart-tier model (priority 1) — i.e. no router?* Example: `Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465` → `baseline: all-turns-on-smart → $3.21` → `saved $2.74`. If pricing is missing (fully-local session with no `models-store.json` pricing), the baseline shows `unavailable` instead of a made-up number.
 
 ## Licensing
 
-- **Author & License** — pi-shift-router by [green-dalii](https://github.com/green-dalii), licensed under [MIT](LICENSE) © 2026.
-- **Related plugins** — [pi-model-router](https://github.com/yeliu84/pi-model-router) (3-tier routing, USD budget, keyword rules) is complementary, not competitive. [CC-Switch](https://github.com/farion1231/cc-switch) is a separate desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode — manual switching, not per-turn routing.
+- **Author & License** — shift-router family by [green-dalii](https://github.com/green-dalii): pi-shift-router + dsh-shift-router, both licensed under [MIT](LICENSE) © 2026.
+- **Direct alternative** — [pi-model-router](https://github.com/yeliu84/pi-model-router) solves the same per-turn routing problem in pi with a different design (3-tier + USD budget + keyword rules, profile-level fallback). Choose one. **Different category** — [CC-Switch](https://github.com/farion1231/cc-switch) is a desktop app for manually switching provider configs across Claude Code, Codex, Gemini CLI, OpenCode between sessions — it can coexist with per-turn routing.
+- **Related project** — [dsh-shift-router](https://github.com/green-dalii/dsh-shift-router), the DeepSeek Harness adaptation of pi-shift-router.

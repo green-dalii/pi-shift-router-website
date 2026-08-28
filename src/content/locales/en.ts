@@ -2,11 +2,11 @@ import type { Translations } from './types';
 
 export const en: Translations = {
   meta: {
-    title: 'Pi Shift Router — Stop picking models, start coding',
+    title: 'Shift Router — Stop picking models, start coding',
     description:
-      'A pi-coding-agent extension: a CTO for the work that matters, an engineer for the workload. Routine turns stay on a fast, cheap model; important work escalates to a frontier one automatically. Saves tokens, survives provider outages, zero risk to try.',
+      'A model router family for pi-coding-agent and DeepSeek Harness: a CTO for the work that matters, an engineer for the workload. Routine turns stay on a fast, cheap model; important work escalates to a frontier one automatically — and complex tasks get delegated to Fast subagents. Saves tokens, survives provider outages, zero risk to try.',
     keywords:
-      'pi shift router, pi coding agent, llm router, model routing, ai coding, save tokens, reduce ai cost, fast smart tier, provider fallback, deepseek, openrouter, pi extension',
+      'shift router, pi shift router, dsh shift router, model routing, llm router, ai coding, save tokens, reduce ai cost, fast smart tier, task orchestration, provider fallback, deepseek, openrouter, pi extension, deepseek harness',
   },
   nav: {
     quickStart: 'Quick Start',
@@ -20,14 +20,15 @@ export const en: Translations = {
     zhLabel: '中文',
   },
   hero: {
-    badge: 'Open-source extension for pi-coding-agent',
+    badge: 'One router for pi and DeepSeek Harness',
     slogan: "It's a CTO for the work that matters, an engineer for the workload.",
     title1: 'Every task,',
     title2: 'the right model.',
     subtitle:
-      'Everyday coding runs on a cheap, fast model. Hard problems get the smart one. And when a provider stumbles, the router switches — automatically, mid-turn, so your work never stops.',
+      'Everyday coding runs on a cheap, fast model. Hard problems get the smart one. When a provider stumbles, the router switches — automatically, mid-turn. And when a task is genuinely complex, the Smart tier plans and delegates it to Fast subagents — on pi and DeepSeek Harness alike. Your work never stops.',
     ctaPrimary: 'Get Started',
-    ctaSecondary: 'Read the Docs',
+    ctaSecondary: 'pi-shift-router docs',
+    ctaTertiary: 'dsh-shift-router docs',
     terminal: {
       title: 'pi-shift-router — in pi',
       subtitle: 'status bar · toasts · auto',
@@ -54,44 +55,113 @@ export const en: Translations = {
       { label: 'Open source MIT', desc: 'zero runtime deps' },
     ],
   },
+  family: {
+    label: 'The family',
+    title: 'One routing idea, two editions',
+    subtitle: 'Same LLM-judge routing, same fallback chains, same task-level orchestration — adapted to the agent you actually run.',
+    products: [
+      {
+        name: 'pi-shift-router',
+        version: 'v1.0.0',
+        edition: 'for pi-coding-agent',
+        desc: 'The original. Installs into pi in one command, routes every turn between Fast and Smart, and orchestrates complex tasks by delegating them to Fast subagents.',
+        highlights: ['Zero runtime deps · ~196 kB', 'Task-level orchestration on by default', '202 unit tests'],
+        links: [
+          { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
+          { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
+        ],
+      },
+      {
+        name: 'dsh-shift-router',
+        version: 'v0.1.0',
+        edition: 'for DeepSeek Harness',
+        desc: 'The DSH edition. Plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent pipeline, and configures live from the settings panel or /router config.',
+        highlights: ['Rides the harness\'s agent/request pipeline', 'Live config via GUI + commands', '52 tests · credential-free e2e'],
+        links: [{ label: 'GitHub', href: 'https://github.com/green-dalii/dsh-shift-router' }],
+      },
+    ],
+    note: 'One codebase to read in an evening, two editions. Pick the one that matches your agent.',
+  },
   quickStart: {
     label: 'Quick Start',
     title: 'Up and running in three steps',
     subtitle: 'Install it and nothing changes — routing only starts once you pick your models. Fully reversible, no lock-in.',
-    steps: [
+    runtimes: [
       {
-        title: 'Install',
-        desc: 'One command. pi registers the extension in your settings and loads it on the next launch — no rebuild, no config files to touch.',
-        hintTitle: 'Why it\'s safe to install',
-        hintItems: [
-          { label: 'Zero dependencies', desc: 'pure TypeScript — nothing new in node_modules, loads in milliseconds' },
-          { label: 'Zero telemetry, zero backend', desc: 'no data leaves your machine; everything runs inside your pi session' },
-          { label: 'Open source, no lock-in', desc: 'entire codebase readable in an evening; uninstall anytime and pi falls back to your default model' },
+        id: 'pi',
+        name: 'pi-shift-router',
+        steps: [
+          {
+            title: 'Install',
+            desc: 'One command. pi registers the extension in your settings and loads it on the next launch — no rebuild, no config files to touch.',
+            hintTitle: 'Why it\'s safe to install',
+            hintItems: [
+              { label: 'Zero dependencies', desc: 'pure TypeScript — nothing new in node_modules, loads in milliseconds' },
+              { label: 'Zero telemetry, zero backend', desc: 'no data leaves your machine; everything runs inside your pi session' },
+              { label: 'Open source, no lock-in', desc: 'entire codebase readable in an evening; uninstall anytime and pi falls back to your default model' },
+            ],
+          },
+          {
+            title: 'Pick your models',
+            desc: 'Run /router config and pick a Fast model and a Smart model — the pair you already use. Save to user or project scope.',
+            hintTitle: 'How to pick',
+            hintItems: [
+              { label: 'Fast', desc: 'the best value-to-quality model in your stack, not the cheapest (the Judge runs on it, so its judgment matters too)' },
+              { label: 'Smart', desc: 'a frontier model for the work that matters' },
+              { label: 'Fallback chain', desc: 'add 2–3 models per tier and they form a fallback chain for 429/5xx' },
+            ],
+            link: {
+              label: 'See recommended pairings',
+              href: '/models',
+            },
+          },
+          {
+            title: 'Watch it work',
+            desc: '/router status shows your setup; the next turn runs the first classification. From there it\'s automatic — tune later with /router quiet and /route-force when you want control.',
+            hintTitle: 'What the output means',
+            hintItems: [
+              { label: 'Spend', desc: 'how much each tier cost, and the baseline: what it would have cost without the router' },
+              { label: 'Turns / upgrades / downgrades', desc: 'how often the router escalated or settled' },
+              { label: 'Cooldowns', desc: 'models resting after a 429/5xx; they resume after backoff' },
+              { label: 'Window', desc: 'the last 5 classifications driving the downgrade gate' },
+            ],
+          },
         ],
       },
       {
-        title: 'Pick your models',
-        desc: 'Run /router config and pick a Fast model and a Smart model — the pair you already use. Save to user or project scope.',
-        hintTitle: 'How to pick',
-        hintItems: [
-          { label: 'Fast', desc: 'the best value-to-quality model in your stack, not the cheapest (the Judge runs on it, so its judgment matters too)' },
-          { label: 'Smart', desc: 'a frontier model for the work that matters' },
-          { label: 'Fallback chain', desc: 'add 2–3 models per tier and they form a fallback chain for 429/5xx' },
-        ],
-        link: {
-          label: 'See recommended pairings',
-          href: '/models',
-        },
-      },
-      {
-        title: 'Watch it work',
-        desc: '/router status shows your setup; the next turn runs the first classification. From there it\'s automatic — tune later with /router quiet and /route-force when you want control.',
-        hintTitle: 'What the output means',
-        hintItems: [
-          { label: 'Spend', desc: 'how much each tier cost, and the baseline: what it would have cost without the router' },
-          { label: 'Turns / upgrades / downgrades', desc: 'how often the router escalated or settled' },
-          { label: 'Cooldowns', desc: 'models resting after a 429/5xx; they resume after backoff' },
-          { label: 'Window', desc: 'the last 5 classifications driving the downgrade gate' },
+        id: 'dsh',
+        name: 'dsh-shift-router',
+        steps: [
+          {
+            title: 'Install',
+            desc: 'Clone, build, and register the plugin in your harness profile — all from a shell. No credentials needed; all defaults are safe.',
+            hintTitle: 'The bundle',
+            hintItems: [
+              { label: 'Prepare', desc: 'git clone …/dsh-shift-router && npm install && npm run build' },
+              { label: 'Register', desc: 'dsh plugin --profile web add /path/to/dsh-shift-router' },
+              { label: 'Live config', desc: 'Settings → shift-router or /router config — persisted, no restart' },
+            ],
+          },
+          {
+            title: 'Pick your models',
+            desc: 'Set the Fast and Smart tier chains — via the GUI settings panel (Settings → shift-router) or /router config commands. Both share the same store.',
+            hintTitle: 'How to pick',
+            hintItems: [
+              { label: 'Fast', desc: 'the best value-to-quality model in your stack — the Judge runs on it too' },
+              { label: 'Smart', desc: 'a frontier model for the work that matters' },
+              { label: 'Fallback chain', desc: 'add 2–3 models per tier and they form a fallback chain for 429/5xx' },
+            ],
+          },
+          {
+            title: 'Watch it work',
+            desc: '/router status shows your tiers and orchestration mode; the next top-level turn runs the first classification. Subagents keep their pinned model.',
+            hintTitle: 'What the output means',
+            hintItems: [
+              { label: 'Tiers', desc: 'Fast chain (also the Judge) and Smart chain' },
+              { label: 'Orchestration', desc: '🪄 auto (idle) — complex tasks get delegated to Fast subagents' },
+              { label: 'Cost telemetry', desc: 'per-tier spend and the all-turns-on-Smart baseline' },
+            ],
+          },
         ],
       },
     ],
@@ -99,9 +169,9 @@ export const en: Translations = {
   models: {
     label: 'How it works',
     title: 'One simple, elegant idea',
-    subtitle: 'Every task has a difficulty. Every model has a price. pi-shift-router matches the two — automatically.',
+    subtitle: 'Every task has a difficulty. Every model has a price. Shift Router matches the two — automatically.',
     intro:
-      'Think of it like a team: the engineer handles the day-to-day fast and cheap; the CTO takes over the whole turn when the work matters. Same task, two minds — the router decides which one you need before you finish typing.',
+      'Think of it like a team: the engineer handles the day-to-day fast and cheap; the CTO takes over the whole turn when the work matters. Same task, two minds — the router decides which one you need before you finish typing. And when the CTO\'s job is big enough, it doesn\'t just do it alone: it delegates to Fast subagents and reviews their work.',
     valueProps: [
       {
         title: 'Routine work stays cheap',
@@ -156,6 +226,17 @@ export const en: Translations = {
       desc: 'When a provider rate-limits or errors, that model cools down with exponential backoff (5xx from 1m; 429/quota from 16m, capped at 6h) and the next healthy one in the same tier takes over — you keep working through the outage.',
       code: 'cooldown: 1m → 4m → 16m → 1h → 4h → 6h',
     },
+    orchestration: {
+      label: 'Task-level orchestration',
+      title: 'The CTO doesn\'t work alone',
+      desc: 'When the Judge says the task is complex and orchestration is in auto mode (default), the Smart tier runs as a CTO: it plans the work, delegates implementation to Fast engineer subagents, reviews each result, and iterates until the work is clean. Simple tasks never orchestrate — they stay on the plain router.',
+      bullets: [
+        'Plan → delegate → review → iterate → accept',
+        'Fresh-context workers: small, fast, cheap (~$0.004 vs ~$0.06 per fork)',
+        'Hard caps: maxRounds 3 · escalationThreshold 2',
+        'Requires pi-subagents; degrades gracefully without it',
+      ],
+    },
   },
   useCases: {
     label: 'Use cases',
@@ -183,7 +264,7 @@ export const en: Translations = {
   modelsPage: {
     label: 'Models',
     title: 'Pick your model pair',
-    intro: 'Two rules of thumb: Fast tier — pick the best value in your stack: strong quality per dollar, because this tier also powers the Judge (deepseek-v4-flash is the default pick — 0731 quality near Opus 5/GLM-5.2 territory at the low end of the price table). Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins.',
+    intro: 'Two rules of thumb that hold on both pi and DeepSeek Harness: Fast tier — pick the best value in your stack: strong quality per dollar, because this tier also powers the Judge (deepseek-v4-flash is the default pick — 0731 quality near Opus 5/GLM-5.2 territory at the low end of the price table). Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins.',
     patterns: [
       {
         title: 'Coding subscription plans',
@@ -234,6 +315,7 @@ export const en: Translations = {
         title: 'Cross-provider pairing',
         summary: 'Best-of-breed regardless of vendor. Default: deepseek-v4-flash for Fast, claude-opus-5 for Smart. Add fallbacks for resilience.',
         groupRows: [
+          { group: 'DeepSeek Harness (DSH)', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
           { group: 'Lowest cost', fast: 'deepseek-v4-flash', smart: 'claude-opus-5' },
           { group: 'Multi-provider fallback', fast: 'deepseek-v4-flash + glm-5.2', smart: 'claude-opus-5 + gpt-5.6-sol + kimi-k3' },
           { group: 'Flat-fee', fast: 'opencode-go/deepseek-v4-flash', smart: 'opencode-go/glm-5.2' },
@@ -277,6 +359,14 @@ export const en: Translations = {
         a: 'You keep working. The failed model enters an exponential-backoff cooldown — 5xx starts at 1m (1m → 4m → 16m → 1h → 4h… capped at 6h), while a failover-worthy 4xx (429 rate limit / quota) skips the first tiers and starts at 16m, because client-side limits usually outlive server blips. The next healthy model in the same tier takes over automatically — even mid-turn. A successful response clears the cooldown.',
       },
       {
+        q: 'What is task-level orchestration?',
+        a: 'When the Judge says a task is complex, the Smart tier runs as a CTO: it plans the work, delegates implementation to Fast engineer subagents (fresh context, model pinned from your Fast tier), reviews each result, iterates with concrete feedback, and does a final acceptance pass. Simple tasks never orchestrate — they stay on the plain router. Orchestration is on by default (auto mode); /router orchestrate off disables it. It needs the pi-subagents extension — without it, complex tasks run directly on the Smart tier, exactly as before.',
+      },
+      {
+        q: 'Does orchestration cost more?',
+        a: 'No — that\'s the point. The Smart tier plans and reviews; Fast subagents implement, each in a fresh context that\'s small and cheap: ~$0.004 for a narrow task vs ~$0.06 for an inherited 176k-token fork. Hard caps keep it bounded: maxRounds 3 and escalationThreshold 2. If a task turns out simple, the machinery never engages.',
+      },
+      {
         q: 'Can I force a specific model for one turn?',
         a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins an exact model. /route-force auto clears the override.',
       },
@@ -294,13 +384,21 @@ export const en: Translations = {
       },
       {
         q: 'How is it different from pi-model-router and CC-Switch?',
-        a: 'pi-model-router solves the same problem — per-turn routing in pi — with a different design. We think routing should need no rules: our Judge is pure LLM with JSON-mode enforcement, one readable prompt you can edit, and zero rule lists to maintain as new scenarios appear. It also fails over mid-turn on 429/5xx with exponential-backoff cooldown, where pi-model-router chains fallbacks at the profile level. Their extras — a hard USD budget cap, cross-session state, keyword pinning — are useful if you need those levers; ours stays a two-tier codebase you can read in an evening. CC-Switch is a different category entirely: a desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode and others. It switches configurations manually between sessions; pi-shift-router routes automatically within each turn — they can coexist.',
+        a: 'pi-model-router solves the same problem — per-turn routing in pi — with a different design. We think routing should need no rules: our Judge is pure LLM with JSON-mode enforcement, one readable prompt you can edit, and zero rule lists to maintain as new scenarios appear. It also fails over mid-turn on 429/5xx with exponential-backoff cooldown, where pi-model-router chains fallbacks at the profile level. And we add task-level orchestration: on complex tasks our Smart tier plans and delegates implementation to Fast subagents — pi-model-router is per-turn model selection only. Their extras — a hard USD budget cap, cross-session state, keyword pinning — are useful if you need those levers; ours stays a two-tier codebase you can read in an evening. CC-Switch is a different category entirely: a desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode and others. It switches configurations manually between sessions; Shift Router routes automatically within each turn — they can coexist.',
+      },
+      {
+        q: 'Is there a version for DeepSeek Harness?',
+        a: 'Yes — dsh-shift-router (v0.1.0), a DSH adaptation of the same router. It plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent/request pipeline, configures live from the GUI settings panel or /router config commands, and keeps all the same capabilities: LLM Judge, cache-aware routing, runtime failover, task-level orchestration, cost telemetry. 52 unit tests plus a credential-free headless e2e. Install: git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build, then dsh plugin --profile web add <path>.',
+      },
+      {
+        q: 'On DeepSeek Harness, are subagents routed too?',
+        a: 'No. Subagents spawned by the subagent tool carry origin === \'subagent\' and keep their pinned model — the router only drives top-level agents. During orchestration, the CTO delegates to Fast workers whose model is pinned by deployment configuration (tool-subagent agentOptions), so workers always run at the Fast tier\'s price.',
       },
     ],
   },
   footer: {
-    brand: 'Pi Shift Router',
-    tagline: 'Auto-routing Pi coding agent turns between a fast engineer and a smart CTO role.',
+    brand: 'Shift Router',
+    tagline: 'Auto-route agent turns between a fast engineer and a smart CTO — on pi-coding-agent and DeepSeek Harness alike.',
     copyrightParts: {
       prefix: 'Open source under MIT · Built by ',
       author: { name: 'green-dalii', url: 'https://github.com/green-dalii' },
@@ -318,8 +416,9 @@ export const en: Translations = {
       resources: {
         title: 'Resources',
         links: [
-          { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
-          { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
+          { label: 'pi-shift-router (GitHub)', href: 'https://github.com/green-dalii/pi-shift-router' },
+          { label: 'pi-shift-router (npm)', href: 'https://www.npmjs.com/package/pi-shift-router' },
+          { label: 'dsh-shift-router (GitHub)', href: 'https://github.com/green-dalii/dsh-shift-router' },
           { label: 'Issues', href: 'https://github.com/green-dalii/pi-shift-router/issues' },
           { label: 'Discussions', href: 'https://github.com/green-dalii/pi-shift-router/discussions' },
         ],

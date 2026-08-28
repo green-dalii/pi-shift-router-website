@@ -1,0 +1,90 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+---
+
+<section id="family" class="relative py-24 sm:py-32 bg-canvas-soft/40">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-2xl mb-14 sm:mb-20">
+      <span class="eyebrow">{t.family.label}</span>
+      <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
+        {t.family.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
+        {t.family.subtitle}
+      </p>
+    </div>
+
+    <!-- Two product cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
+      {t.family.products.map((p, idx) => (
+        <article class="bg-canvas p-7 sm:p-9 flex flex-col h-full rounded-2xl border border-ink/10 shadow-sm reveal" data-delay={idx}>
+          <div class="flex items-baseline justify-between gap-3 mb-3">
+            <h3 class="text-2xl font-extrabold tracking-tight text-ink leading-tight font-mono">
+              {p.name}
+            </h3>
+            <span class="text-[11px] font-mono text-mute whitespace-nowrap border border-ink/10 rounded-pill px-2.5 py-1">
+              {p.version}
+            </span>
+          </div>
+          <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-positive-deep mb-4">
+            {p.edition}
+          </div>
+          <p class="text-[15px] text-body leading-relaxed mb-6">
+            {p.desc}
+          </p>
+
+          <ul class="space-y-2 mb-6">
+            {p.highlights.map((h) => (
+              <li class="flex items-start gap-2.5 text-sm text-ink/85">
+                <svg class="w-4 h-4 mt-0.5 text-positive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>{h}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- Links -->
+          <div class="mt-auto flex flex-wrap items-center gap-3 pt-5 border-t border-ink/10">
+            {p.links.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 text-sm font-semibold text-positive-deep hover:text-ink transition-colors group"
+              >
+                {link.label}
+                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- Family note -->
+    <div class="mt-12 sm:mt-16 text-center">
+      <p class="text-sm text-mute leading-relaxed max-w-2xl mx-auto">
+        {t.family.note}
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="0"] { animation-delay: 0.05s; }
+  .reveal[data-delay="1"] { animation-delay: 0.18s; }
+</style>

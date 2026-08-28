@@ -9,13 +9,16 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = getTranslations(locale);
+
+const runtimes = t.quickStart.runtimes;
+const activeId = runtimes[0]?.id ?? 'pi';
 ---
 
 <section id="quick-start" class="relative py-24 sm:py-32 bg-canvas">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
     <!-- Section header -->
-    <div class="max-w-2xl mb-14 sm:mb-20">
+    <div class="max-w-2xl mb-10 sm:mb-14">
       <span class="eyebrow">{t.quickStart.label}</span>
       <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
         {t.quickStart.title}
@@ -25,79 +28,140 @@ const t = getTranslations(locale);
       </p>
     </div>
 
-    <!-- Steps -->
-    <ol class="space-y-6 sm:space-y-8">
-      {t.quickStart.steps.map((step, idx) => {
-        const term = quickStartTerminals[idx];
+    <!-- Browser-style tabs: a chrome strip on top, active tab fused with the panel below -->
+    <div class="qs-window mb-10 sm:mb-14">
+      <div class="qs-tabbar" role="tablist" aria-label={t.quickStart.label}>
+        {runtimes.map((rt, idx) => (
+          <button
+            type="button"
+            role="tab"
+            id={`qs-tab-${rt.id}`}
+            aria-selected={idx === 0}
+            aria-controls={`qs-panel-${rt.id}`}
+            data-qs-tab={rt.id}
+            class={`qs-tab ${idx === 0 ? 'qs-active' : ''}`}
+          >
+            <span class="qs-tab-dot" aria-hidden="true"></span>
+            {rt.name}
+          </button>
+        ))}
+        <span class="qs-tabbar-spacer" aria-hidden="true"></span>
+      </div>
+
+      <!-- Steps per runtime -->
+      {runtimes.map((rt, rIdx) => {
+        const steps = rt.steps;
+        const terminals = quickStartTerminals[rt.id as 'pi' | 'dsh'] ?? quickStartTerminals.pi;
         return (
-          <li class="reveal" data-delay={idx * 2}>
+          <div
+            role="tabpanel"
+            id={`qs-panel-${rt.id}`}
+            aria-labelledby={`qs-tab-${rt.id}`}
+            data-qs-panel={rt.id}
+            class={`qs-panel ${rIdx === 0 ? '' : 'hidden'}`}
+          >
+          <ol class="space-y-6 sm:space-y-8">
+            {steps.map((step, idx) => {
+              const term = terminals[idx];
+              return (
+                <li class="reveal" data-delay={idx * 2}>
 
-            <!-- Step meta -->
-            <div class="flex items-center gap-3 mb-4 max-w-2xl">
-              <span class="font-mono text-xs text-mute tracking-wider">
-                {String(idx + 1).padStart(2, '0')} / {String(t.quickStart.steps.length).padStart(2, '0')}
-              </span>
-              <h3 class="text-base font-bold text-ink tracking-tight">{step.title}</h3>
-              <span class="h-px flex-1 bg-ink/10"></span>
-            </div>
-
-            <!-- Two-column on md+: description + terminal -->
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-7">
-
-              <!-- Description -->
-              <div class="md:col-span-5">
-                <p class="text-[15px] text-body leading-relaxed">
-                  {step.desc}
-                </p>
-
-                {step.hintTitle && step.hintItems && (
-                  <div class="mt-5 rounded-xl bg-canvas-soft/50 border border-ink/8 p-4">
-                    <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2.5">
-                      {step.hintTitle}
-                    </div>
-                    <ul class="space-y-2">
-                      {step.hintItems.map((item) => (
-                        <li class="flex items-start gap-2 text-[13px] text-body leading-relaxed">
-                          <svg class="w-3.5 h-3.5 mt-0.5 text-positive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                          <span><strong class="font-semibold text-ink">{item.label}</strong> — {item.desc}</span>
-                        </li>
-                      ))}
-                    </ul>
+                  <!-- Step meta -->
+                  <div class="flex items-center gap-3 mb-4 max-w-2xl">
+                    <span class="font-mono text-xs text-mute tracking-wider">
+                      {String(idx + 1).padStart(2, '0')} / {String(steps.length).padStart(2, '0')}
+                    </span>
+                    <h3 class="text-base font-bold text-ink tracking-tight">{step.title}</h3>
+                    <span class="h-px flex-1 bg-ink/10"></span>
                   </div>
-                )}
 
-                {step.link && (
-                  <a
-                    href={step.link.href}
-                    class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-positive-deep hover:text-ink transition-colors group"
-                  >
-                    {step.link.label}
-                    <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  </a>
-                )}
-              </div>
+                  <!-- Two-column on md+: description + terminal -->
+                  <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-7">
 
-              <!-- macOS-style terminal window -->
-              <div class="md:col-span-7">
-                <TerminalWindow title={term.title}>
-                  <div class="terminal-body">
-                    <div class="terminal-line">
-                      <span class="terminal-prompt">{term.prompt}</span>
-                      <span class="terminal-cmd">{term.command}</span>
+                    <!-- Description -->
+                    <div class="md:col-span-5">
+                      <p class="text-[15px] text-body leading-relaxed">
+                        {step.desc}
+                      </p>
+
+                      {step.hintTitle && step.hintItems && (
+                        <div class="mt-5 rounded-xl bg-canvas-soft/50 border border-ink/8 p-4">
+                          <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2.5">
+                            {step.hintTitle}
+                          </div>
+                          <ul class="space-y-2">
+                            {step.hintItems.map((item) => (
+                              <li class="flex items-start gap-2 text-[13px] text-body leading-relaxed">
+                                <svg class="w-3.5 h-3.5 mt-0.5 text-positive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span><strong class="font-semibold text-ink">{item.label}</strong> — {item.desc}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {step.link && (
+                        <a
+                          href={step.link.href}
+                          class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-positive-deep hover:text-ink transition-colors group"
+                        >
+                          {step.link.label}
+                          <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                      )}
                     </div>
-                    {term.output.map((line) => (
-                      <div class="terminal-line output">{line}</div>
-                    ))}
+
+                    <!-- macOS-style terminal window -->
+                    <div class="md:col-span-7">
+                      <TerminalWindow title={term.title}>
+                        <div class="terminal-body">
+                          <div class="terminal-line">
+                            <span class="terminal-prompt">{term.prompt}</span>
+                            <span class="terminal-cmd">{term.command}</span>
+                          </div>
+                          {term.output.map((line) => (
+                            <div class="terminal-line output">{line}</div>
+                          ))}
+                        </div>
+                      </TerminalWindow>
+                    </div>
                   </div>
-                </TerminalWindow>
-              </div>
-            </div>
-          </li>
-        );
-      })}
-    </ol>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      );
+    })}
+
   </div>
 </section>
+
+<script is:inline>
+(function () {
+  var tabs = document.querySelectorAll('[data-qs-tab]');
+  var panels = document.querySelectorAll('[data-qs-panel]');
+  if (!tabs.length) return;
+
+  function activate(id) {
+    tabs.forEach(function (tab) {
+      var on = tab.getAttribute('data-qs-tab') === id;
+      tab.setAttribute('aria-selected', on ? 'true' : 'false');
+      tab.classList.toggle('qs-active', on);
+    });
+    panels.forEach(function (panel) {
+      var on = panel.getAttribute('data-qs-panel') === id;
+      panel.classList.toggle('hidden', !on);
+    });
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      activate(tab.getAttribute('data-qs-tab'));
+    });
+  });
+})();
+</script>
 
 <style>
   .terminal-body {
@@ -122,6 +186,101 @@ const t = getTranslations(locale);
 
   .terminal-cmd {
     color: #e8ebe6;
+  }
+
+  /* ── Browser-style tab chrome ──────────────────────────────── */
+  .qs-window {
+    border-radius: 14px;
+    border: 1px solid rgba(14, 15, 12, 0.12);
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(14, 15, 12, 0.04), 0 8px 24px -12px rgba(14, 15, 12, 0.12);
+  }
+
+  /* Tab bar: a recessed strip behind the tabs */
+  .qs-tabbar {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    padding: 10px 14px 0;
+    background: #eef0eb;
+    border-bottom: 1px solid rgba(14, 15, 12, 0.1);
+  }
+
+  /* Tab: rounded top corners, no bottom border — the active tab's
+     bottom edge melts into the panel so it reads as one page. */
+  .qs-tab {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px 9px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: rgba(14, 15, 12, 0.55);
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 9px 9px 0 0;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .qs-tab:hover {
+    color: #0e0f0c;
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .qs-tab.qs-active {
+    color: #0e0f0c;
+    background: #ffffff;
+    border-color: rgba(14, 15, 12, 0.12);
+    position: relative;
+  }
+
+  /* White continuation strip so the active tab + panel look joined */
+  .qs-tab.qs-active::after {
+    content: "";
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    height: 1px;
+    background: #ffffff;
+  }
+
+  /* Favicon-style dot: lime when active, neutral when not */
+  .qs-tab-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(14, 15, 12, 0.18);
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+  }
+
+  .qs-tab.qs-active .qs-tab-dot {
+    background: #9fe870;
+  }
+
+  /* Fill the rest of the tab bar */
+  .qs-tabbar-spacer {
+    flex: 1;
+    height: 1px;
+    margin: 0 0 10px 4px;
+    background: rgba(14, 15, 12, 0.1);
+  }
+
+  /* Panel: white surface under the active tab */
+  .qs-panel {
+    padding: 24px 20px 26px;
+  }
+
+  @media (min-width: 640px) {
+    .qs-panel {
+      padding: 32px 34px 36px;
+    }
   }
 
   /* Reveal animation */

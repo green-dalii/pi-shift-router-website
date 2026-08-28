@@ -1,6 +1,6 @@
-# Pi Shift Router — Website
+# Shift Router — Website
 
-Product website for the [Pi Shift Router](https://github.com/green-dalii/pi-shift-router) extension.
+Product website for the Shift Router family: the [pi-shift-router](https://github.com/green-dalii/pi-shift-router) pi-coding-agent extension and the [dsh-shift-router](https://github.com/green-dalii/dsh-shift-router) DeepSeek Harness plugin.
 
 A static Astro site built with Tailwind CSS, following the
 [Wise-inspired design system](./DESIGN.md).
