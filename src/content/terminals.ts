@@ -28,7 +28,7 @@ export const quickStartTerminals: Record<'pi' | 'dsh', StepTerminal[]> = {
       prompt: '$',
       command: 'pi install npm:pi-shift-router',
       output: [
-        'Resolving pi-shift-router@1.0.0...',
+        'Resolving pi-shift-router@1.3.0...',
         '✔ Downloaded and registered',
         '✔ Added to ~/.pi/agent/settings.json',
         'ℹ Loaded on next pi launch — nothing else to do.',
@@ -63,6 +63,7 @@ export const quickStartTerminals: Record<'pi' | 'dsh', StepTerminal[]> = {
         'Session:',
         '  Mode: AUTO  Enabled: ✅  Quiet: 🔊',
         '  Orchestration: 🪄 auto (idle)',
+        '  Last audit: ✓ clean',
         '  Turns: 12  (↑upgrade 1 · ↓downgrade 0)',
         '  Manual: ✗ None',
         '  Cooldowns: none',

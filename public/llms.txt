@@ -4,25 +4,25 @@
 
 ## About
 
-shift-router is a family of task-level model routers — **pi-shift-router** (v1.0.0, pi-coding-agent extension) and **dsh-shift-router** (v0.1.0, DeepSeek Harness plugin). Both classify every turn and route between two roles:
+shift-router is a family of task-level model routers — **pi-shift-router** (v1.3.0, pi-coding-agent extension) and **dsh-shift-router** (v0.5.0, DeepSeek Harness plugin). Both classify every turn and route between two roles:
 
 - **Fast = Engineer** — handles the workload: writes code, runs tests, fixes bugs, follows established patterns. For routine, well-defined, low-stakes work.
 - **Smart = CTO** — for the work that matters: sets direction, corrects course, reviews results, and takes on the hard problems itself — architecture, design review, security audit, multi-step planning, irrecoverable actions.
 
 A small LLM Judge (the fast-tier model itself, JSON mode) classifies each turn as fast or smart. Upgrades are immediate; downgrades need a sustained trend (fast votes ≥ 60% of the last 5 turns). On 429/5xx, the failing model enters exponential-backoff cooldown — 5xx starts at 1m (1m → 4m → 16m → 1h → 4h… capped 6h), while a failover-worthy 4xx (429/quota) starts at 16m — and the next healthy model in the same tier takes over.
 
-**Task-level orchestration (v1.0.0):** when the Judge says a task is complex and orchestration is in auto mode (default), the Smart tier runs as a CTO that plans the work, delegates implementation to Fast engineer subagents (fresh context, model pinned from the Fast tier), reviews each result, and iterates until clean. Simple tasks never orchestrate. Hard caps: maxRounds 3, escalationThreshold 2. Requires pi-subagents; without it, complex tasks run directly on Smart (no crash, no deadlock).
+**Task-level orchestration (v1.3.0):** when the Judge says a task is complex and orchestration is in auto mode (default), the Smart tier runs as a CTO that plans the work, delegates implementation to Fast engineer subagents (fresh context, model pinned from the Fast tier), reviews each result, and iterates until clean. Simple tasks never orchestrate. Hard caps: maxRounds 3, escalationThreshold 2. Every orchestrated turn ends with an **acceptance audit** (v1.3.0): deterministic checks always run (every worker reported back, a CTO summary is present, no silent hard-cap hit), plus an optional fast-tier LLM audit that checks grounding, goal alignment, and delivered quality — findings surface as console.warn + toast and `/router status → Last audit`. Re-delegations must carry a structured failure report (convergence protocol). Requires pi-subagents; without it, complex tasks run directly on Smart (no crash, no deadlock).
 
 ## The family
 
 | | pi-shift-router | dsh-shift-router |
 |---|---|---|
 | Runtime | pi-coding-agent extension | DeepSeek Harness plugin |
-| Version | v1.0.0 | v0.1.0 |
+| Version | v1.3.0 | v0.5.0 |
 | Install | `pi install npm:pi-shift-router` | `git clone …/dsh-shift-router && npm install && npm run build` + `dsh plugin --profile web add <path>` |
 | Config | `/router config` wizard | GUI settings panel + `/router config` commands |
 | Capabilities | same LLM Judge, cache-aware routing, failover, orchestration, cost telemetry | same |
-| Tests | 202 unit tests | 52 unit tests + credential-free headless e2e |
+| Tests | 369 unit tests | 109 unit tests + credential-free headless e2e |
 
 ## Key facts
 

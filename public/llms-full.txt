@@ -4,7 +4,7 @@
 
 ## Overview
 
-**shift-router** is a family of task-level model routers. **pi-shift-router** (v1.0.0) is a [pi-coding-agent](https://github.com/earendil-works/pi-coding-agent) extension; **dsh-shift-router** (v0.1.0) is a DeepSeek Harness plugin. Both route every turn to either a fast execution model or a smart judgment model. Before each turn, a small LLM Judge (the fast-tier model itself) classifies the task as `fast` or `smart`. The chosen model then drives the whole turn — all thinking, all tool calls, all message content — at that tier's intelligence level. On complex tasks, the Smart tier runs as a CTO that plans and delegates implementation to Fast subagents (task-level orchestration).
+**shift-router** is a family of task-level model routers. **pi-shift-router** (v1.3.0) is a [pi-coding-agent](https://github.com/earendil-works/pi-coding-agent) extension; **dsh-shift-router** (v0.5.0) is a DeepSeek Harness plugin. Both route every turn to either a fast execution model or a smart judgment model. Before each turn, a small LLM Judge (the fast-tier model itself) classifies the task as `fast` or `smart`. The chosen model then drives the whole turn — all thinking, all tool calls, all message content — at that tier's intelligence level. On complex tasks, the Smart tier runs as a CTO that plans and delegates implementation to Fast subagents (task-level orchestration).
 
 ### Roles
 
@@ -60,7 +60,7 @@ When the primary model hits 429 / 5xx / quota / Token-Plan exhaustion, pi retrie
 
 The Judge also walks the full fast-tier chain before giving up, sharing the same cooldown map as routing. Manual override (`/route-force`) always bypasses cooldowns. Auth/config errors (400/401) never trigger failover.
 
-## Task-level orchestration (v1.0.0)
+## Task-level orchestration (v1.3.0)
 
 When the Judge says a task is complex and orchestration is in `auto` mode (default), the router hands the turn to the Smart tier as a **CTO**: it plans the work, delegates implementation to Fast engineer subagents, reviews each result, iterates with concrete feedback, and does a final acceptance pass. Simple tasks (`fast` verdict) never orchestrate — they stay on the plain router.
 
@@ -73,6 +73,10 @@ When the Judge says a task is complex and orchestration is in `auto` mode (defau
 **Hard caps** (the router's part, independent of the Smart agent): `orchestration.maxRounds` (default 3) and `orchestration.escalationThreshold` (default 2 — after N worker failures on a phase, Smart takes over that phase itself). The loop stops when the Smart agent says done or a cap is hit.
 
 **Why fresh-context workers:** workers run with no inherited session history; the task string is their world. Each is small, fast, cheap (~$0.004 narrow task vs ~$0.06 inherited 176k-token fork) and keeps thinking enabled on anthropic-compatible endpoints.
+
+**Convergence protocol (v1.2.0):** every re-delegation must carry a structured `## Failure report` (what failed, where, the exact acceptance test to re-run); re-sending identical feedback is forbidden and triggers a takeover by the Smart CTO.
+
+**Acceptance audit (v1.3.0):** because review is the CTO's own judgment, the router adds a hard fallback audit at the end of every orchestrated turn. Deterministic checks always run (every spawned worker reported back, the final message carries a CTO summary, whether the run ended at a hard cap). An optional small fast-tier LLM audit (`orchestration.audit.enabled`, default on) then checks three dimensions against the captured user goal: **grounding** (acceptance claims backed by results), **goal alignment** (the delivered work addresses the request), and **delivered quality** (no placeholders/empty results passed off as done). Findings never block the finished turn — they surface as `console.warn` + toast and `/router status → Last audit`.
 
 **When it doesn't engage:** simple tasks (`fast` verdict) never orchestrate; without `pi-subagents` installed, complex tasks run directly on the Smart tier exactly as before; `/router orchestrate off` returns to plain two-tier routing. Prerequisite: `pi install npm:pi-subagents`.
 
@@ -137,6 +141,7 @@ Two-layer config: user (`~/.pi/agent/pi-shift-router.json`) + project (`<cwd>/.p
 | `routing.judgeTimeout` | `5000` | ms. Judge API call timeout. |
 | `routing.window.size` / `threshold` | `5` / `0.6` | Sliding-window downgrade gate. |
 | `orchestration.mode` / `maxRounds` / `escalationThreshold` | `auto` / `3` / `2` | Task-level orchestration switch + hard caps. |
+| `orchestration.audit.enabled` | `true` | Post-turn acceptance audit (deterministic checks + optional LLM audit on grounding / goal alignment / delivered quality). |
 | `ux.quietMode` / `statusBar` / `inlineToast` / `routerLogVerbose` | various | Surface controls. |
 
 Each tier's `models` array is an **ordered priority list** — first entry is the primary; later entries stand by as fallback. Configure multiple models via `/router config`'s TUI chain editor (`a` add, `x` remove, `J`/`K` reorder, `d` save, `Esc` cancel).
@@ -175,6 +180,10 @@ A `smart` verdict on a complex task makes the Smart tier run as a **CTO**: plan 
 
 No — the Smart tier plans and reviews; Fast subagents implement in fresh contexts that are small and cheap (~$0.004 for a narrow task vs ~$0.06 for an inherited 176k-token fork). If a task turns out simple, the machinery never engages.
 
+### What keeps an orchestrated turn honest?
+
+Two safety nets. The convergence protocol (v1.2.0) requires every re-delegation to carry a structured failure report (what failed, where, the exact acceptance test to re-run) — re-sending identical feedback is forbidden and the CTO takes the phase over. On top of that, a post-turn acceptance audit (v1.3.0) runs after every orchestrated turn: deterministic checks always run, plus an optional small fast-tier LLM audit of grounding, goal alignment, and delivered quality. Findings never block the finished turn — they surface as `console.warn` + toast and `/router status → Last audit` (`orchestration.audit.enabled`, default on).
+
 ### Can I see what routing saves me?
 
 Yes — `/router status` reports cost telemetry: per-tier spend (USD + calls) and a savings baseline. The baseline answers *what would this session have cost if every turn ran on your configured Smart-tier model (priority 1) — i.e. no router?* Example: `Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465` → `baseline: all-turns-on-smart → $3.21` → `saved $2.74`. If pricing is missing (fully-local session with no `models-store.json` pricing), the baseline shows `unavailable` instead of a made-up number.
@@ -182,5 +191,5 @@ Yes — `/router status` reports cost telemetry: per-tier spend (USD + calls) an
 ## Licensing
 
 - **Author & License** — shift-router family by [green-dalii](https://github.com/green-dalii): pi-shift-router + dsh-shift-router, both licensed under [MIT](LICENSE) © 2026.
-- **Direct alternative** — [pi-model-router](https://github.com/yeliu84/pi-model-router) solves the same per-turn routing problem in pi with a different design (3-tier + USD budget + keyword rules, profile-level fallback). Choose one. **Different category** — [CC-Switch](https://github.com/farion1231/cc-switch) is a desktop app for manually switching provider configs across Claude Code, Codex, Gemini CLI, OpenCode between sessions — it can coexist with per-turn routing.
+- **Direct alternatives** — [@tenchi4u/pi-bifrost](https://pi.dev/packages/@tenchi4u/pi-bifrost?name=router&type=extension) (7-step rules + history tricks, 4 tiers, saves subscription quota) and [pi-smart-router](https://pi.dev/packages/pi-smart-router?name=router&type=extension) (12-step local pipeline, no LLM, local tier, formula-based cost estimate) solve the same per-turn routing problem in pi with different designs. Choose one. **Different category** — [CC-Switch](https://github.com/farion1231/cc-switch) is a desktop app for manually switching provider configs across Claude Code, Codex, Gemini CLI, OpenCode between sessions — it can coexist with per-turn routing.
 - **Related project** — [dsh-shift-router](https://github.com/green-dalii/dsh-shift-router), the DeepSeek Harness adaptation of pi-shift-router.

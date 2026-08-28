@@ -62,10 +62,10 @@ export const en: Translations = {
     products: [
       {
         name: 'pi-shift-router',
-        version: 'v1.0.0',
+        version: 'v1.3.0',
         edition: 'for pi-coding-agent',
         desc: 'The original. Installs into pi in one command, routes every turn between Fast and Smart, and orchestrates complex tasks by delegating them to Fast subagents.',
-        highlights: ['Zero runtime deps · ~196 kB', 'Task-level orchestration on by default', '202 unit tests'],
+        highlights: ['Zero runtime deps · ~409 kB', 'Task-level orchestration on by default', '369 unit tests'],
         links: [
           { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
           { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
@@ -73,10 +73,10 @@ export const en: Translations = {
       },
       {
         name: 'dsh-shift-router',
-        version: 'v0.1.0',
+        version: 'v0.5.0',
         edition: 'for DeepSeek Harness',
-        desc: 'The DSH edition. Plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent pipeline, and configures live from the settings panel or /router config.',
-        highlights: ['Rides the harness\'s agent/request pipeline', 'Live config via GUI + commands', '52 tests · credential-free e2e'],
+        desc: 'The DSH edition. Plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent pipeline, and configures live from the GUI "Shift-Router" card or /router config.',
+        highlights: ['Rides the harness\'s agent/request pipeline', 'GUI config card + live commands', '109 tests · credential-free e2e'],
         links: [{ label: 'GitHub', href: 'https://github.com/green-dalii/dsh-shift-router' }],
       },
     ],
@@ -144,7 +144,7 @@ export const en: Translations = {
           },
           {
             title: 'Pick your models',
-            desc: 'Set the Fast and Smart tier chains — via the GUI settings panel (Settings → shift-router) or /router config commands. Both share the same store.',
+            desc: 'Set the Fast and Smart tier chains — in the GUI (Settings → Plugins → Plugin configuration → the "Shift-Router" card) or with /router config commands. Both share the same store.',
             hintTitle: 'How to pick',
             hintItems: [
               { label: 'Fast', desc: 'the best value-to-quality model in your stack — the Judge runs on it too' },
@@ -232,8 +232,9 @@ export const en: Translations = {
       desc: 'When the Judge says the task is complex and orchestration is in auto mode (default), the Smart tier runs as a CTO: it plans the work, delegates implementation to Fast engineer subagents, reviews each result, and iterates until the work is clean. Simple tasks never orchestrate — they stay on the plain router.',
       bullets: [
         'Plan → delegate → review → iterate → accept',
+        'Post-turn acceptance audit — grounding · goal alignment · delivered quality',
         'Fresh-context workers: small, fast, cheap (~$0.004 vs ~$0.06 per fork)',
-        'Hard caps: maxRounds 3 · escalationThreshold 2',
+        'Hard caps: maxRounds 3 · escalationThreshold 2 · Last audit in /router status',
         'Requires pi-subagents; degrades gracefully without it',
       ],
     },
@@ -367,6 +368,10 @@ export const en: Translations = {
         a: 'No — that\'s the point. The Smart tier plans and reviews; Fast subagents implement, each in a fresh context that\'s small and cheap: ~$0.004 for a narrow task vs ~$0.06 for an inherited 176k-token fork. Hard caps keep it bounded: maxRounds 3 and escalationThreshold 2. If a task turns out simple, the machinery never engages.',
       },
       {
+        q: 'What keeps an orchestrated turn honest?',
+        a: 'Two safety nets. The convergence protocol requires every re-delegation to carry a structured failure report — what failed, where, the exact acceptance test to re-run — and re-sending identical feedback is forbidden (the CTO takes the phase over). On top of that, a post-turn acceptance audit (v1.3.0) runs after every orchestrated turn: deterministic checks always run (every worker reported back, the final message carries a CTO summary, whether a hard cap was hit), plus an optional small fast-tier LLM audit that checks grounding, goal alignment, and delivered quality against your original request. Findings never block the finished turn — they surface as console.warn + toast and in /router status as "Last audit". Toggle with orchestration.audit.enabled (default on).',
+      },
+      {
         q: 'Can I force a specific model for one turn?',
         a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins an exact model. /route-force auto clears the override.',
       },
@@ -383,12 +388,12 @@ export const en: Translations = {
         a: 'Two thresholds: `threshold` (default 0.6) controls how many of the last 5 classified turns must weigh toward fast before a downgrade happens; `minConfidence` (default 0.5) sets the floor below which votes are ignored entirely. Raise `threshold` to 0.8 to stay on Smart longer. Upgrades are always instant — only downgrades wait.',
       },
       {
-        q: 'How is it different from pi-model-router and CC-Switch?',
-        a: 'pi-model-router solves the same problem — per-turn routing in pi — with a different design. We think routing should need no rules: our Judge is pure LLM with JSON-mode enforcement, one readable prompt you can edit, and zero rule lists to maintain as new scenarios appear. It also fails over mid-turn on 429/5xx with exponential-backoff cooldown, where pi-model-router chains fallbacks at the profile level. And we add task-level orchestration: on complex tasks our Smart tier plans and delegates implementation to Fast subagents — pi-model-router is per-turn model selection only. Their extras — a hard USD budget cap, cross-session state, keyword pinning — are useful if you need those levers; ours stays a two-tier codebase you can read in an evening. CC-Switch is a different category entirely: a desktop app for managing provider configs across Claude Code, Codex, Gemini CLI, OpenCode and others. It switches configurations manually between sessions; Shift Router routes automatically within each turn — they can coexist.',
+        q: 'How is it different from pi-bifrost and pi-smart-router?',
+        a: 'Both are pi routers with the same goal. @tenchi4u/pi-bifrost decides with 7-step rules + history tricks across 4 tiers — more cases, but harder to reason about; it saves subscription quota rather than dollars, and its circuit breaker can switch tiers on failure. pi-smart-router runs a 12-step local pipeline (no LLM) with 3 tiers including a local one, estimates cost with a formula, and needs a local DB + ML model (~2.5 MB plus downloads) and 15+ env vars. Shift Router keeps the decision to one readable LLM prompt (auditable plain text, JSON-mode enforced), two tiers with one mental model, orchestration (the Smart CTO delegates to Fast subagents), dollars-saved cost telemetry, same-tier failover with a cooldown shared with the judge, and ~409 KB with zero deps. CC-Switch is a different category entirely: a desktop app for manually switching provider configs between sessions — it coexists fine.',
       },
       {
         q: 'Is there a version for DeepSeek Harness?',
-        a: 'Yes — dsh-shift-router (v0.1.0), a DSH adaptation of the same router. It plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent/request pipeline, configures live from the GUI settings panel or /router config commands, and keeps all the same capabilities: LLM Judge, cache-aware routing, runtime failover, task-level orchestration, cost telemetry. 52 unit tests plus a credential-free headless e2e. Install: git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build, then dsh plugin --profile web add <path>.',
+        a: 'Yes — dsh-shift-router (v0.5.0), a DSH adaptation of the same router. It plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent/request pipeline, and configures live two ways: a full GUI card (Settings → Plugins → Plugin configuration — the "Shift-Router" card, with both tier chains editable) and an interactive /router config editor (get/set/unset/diff). Same capabilities as pi: LLM Judge, cache-aware routing, runtime failover, task-level orchestration, cost telemetry — with orchestration caps enforced by the plugin, not just prompted. 109 unit tests plus a credential-free headless e2e. Install: git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build, then dsh plugin --profile web add <path>.',
       },
       {
         q: 'On DeepSeek Harness, are subagents routed too?',
@@ -426,6 +431,7 @@ export const en: Translations = {
       more: {
         title: 'More projects',
         links: [
+          { label: 'greenerai.top', href: 'https://greenerai.top' },
           { label: 'Karpathy LLM Wiki', href: 'https://llmwiki.greenerai.top' },
         ],
       },

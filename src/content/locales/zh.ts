@@ -62,10 +62,10 @@ export const zh: Translations = {
     products: [
       {
         name: 'pi-shift-router',
-        version: 'v1.0.0',
+        version: 'v1.3.0',
         edition: 'for pi-coding-agent',
         desc: '原版。一条命令装进 pi，在 Fast 与 Smart 之间路由每一轮，复杂任务还会委派给 Fast 子代理来编排执行。',
-        highlights: ['零运行时依赖 · 约 196 kB', '任务级编排默认开启', '202 个单元测试'],
+        highlights: ['零运行时依赖 · 约 409 kB', '任务级编排默认开启', '369 个单元测试'],
         links: [
           { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
           { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
@@ -73,10 +73,10 @@ export const zh: Translations = {
       },
       {
         name: 'dsh-shift-router',
-        version: 'v0.1.0',
+        version: 'v0.5.0',
         edition: 'for DeepSeek Harness',
-        desc: 'DSH 版本。通过 cordis.patch.yml 接入 harness，走它自己的 agent 管线，配置可以在设置面板或 /router config 里实时改。',
-        highlights: ['复用 harness 的 agent/request 管线', 'GUI + 命令实时配置', '52 个测试 · 免凭据 e2e'],
+        desc: 'DSH 版本。通过 cordis.patch.yml 接入 harness，走它自己的 agent 管线，配置可以在 GUI 的 “Shift-Router” 卡片或 /router config 里实时改。',
+        highlights: ['复用 harness 的 agent/request 管线', 'GUI 配置卡片 + 实时命令', '109 个测试 · 免凭据 e2e'],
         links: [{ label: 'GitHub', href: 'https://github.com/green-dalii/dsh-shift-router' }],
       },
     ],
@@ -144,7 +144,7 @@ export const zh: Translations = {
           },
           {
             title: '选好你的模型',
-            desc: '在 GUI 设置面板（Settings → shift-router）或用 /router config 命令设置 Fast 与 Smart 层模型链 —— 两者共用同一个存储。',
+            desc: '在 GUI（Settings → Plugins → Plugin configuration → “Shift-Router” 卡片）或用 /router config 命令设置 Fast 与 Smart 层模型链 —— 两者共用同一个存储。',
             hintTitle: '怎么选',
             hintItems: [
               { label: 'Fast', desc: '你手里智价比最好的模型 —— Judge 也跑在它上面' },
@@ -232,8 +232,9 @@ export const zh: Translations = {
       desc: '当 Judge 判定任务复杂且编排处于 auto 模式（默认）时，Smart 层以 CTO 身份运行：规划工作、把实现委派给 Fast 工程师子代理、逐个审查结果并迭代，直到活干干净。简单任务永不编排 —— 它们留在普通路由器上。',
       bullets: [
         '规划 → 委派 → 审查 → 迭代 → 验收',
+        '每轮编排后的验收审计 —— 落地性 · 目标对齐 · 交付质量',
         'fresh-context 子代理：小而快又便宜（约 $0.004 对比 fork 的约 $0.06）',
-        '硬上限：maxRounds 3 · escalationThreshold 2',
+        '硬上限：maxRounds 3 · escalationThreshold 2 · /router status 显示 Last audit',
         '需要 pi-subagents；没有时优雅降级',
       ],
     },
@@ -367,6 +368,10 @@ export const zh: Translations = {
         a: '不会 —— 这正是它的意义。Smart 层负责规划和审查，实现交给 fresh-context 的 Fast 子代理，每个都很小很便宜：窄任务约 $0.004，对比继承 176k-token fork 的约 $0.06。硬上限把花费锁在范围内：maxRounds 3、escalationThreshold 2。如果任务其实很简单，编排机制根本不会启动。',
       },
       {
+        q: '怎么保证编排轮次真的被验收了？',
+        a: '两道保险。收敛协议要求每次重新委派都必须带上结构化的失败报告 —— 哪里失败、在哪、要重跑的确切验收检查 —— 并且禁止原样重发同样的反馈（此时 CTO 会自己接管该阶段）。之上还有一轮验收审计（v1.3.0）：每次编排轮次结束后，确定性检查必定运行（所有子代理都已回报、最终消息带 CTO 总结、是否撞上硬上限），外加一个可选的小型 fast 档 LLM 审计，对照你最初的目标检查三个维度：落地性（验收声明有实际结果支撑）、目标对齐（交付回答了请求）、交付质量（没有拿占位符当完成）。审计结果绝不回退已完成的轮次 —— 它通过 console.warn + 提示以及 /router status 的 “Last audit” 呈现。可用 orchestration.audit.enabled 开关（默认开）。',
+      },
+      {
         q: '能强制指定某一轮用某个模型吗？',
         a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定具体模型。/route-force auto 清除覆盖。',
       },
@@ -383,12 +388,12 @@ export const zh: Translations = {
         a: '两个阈值：`threshold`（默认 0.6）控制最近 5 轮分类中要多大比例倾向 Fast 才触发降级；`minConfidence`（默认 0.5）设了一个门槛，低于它的票直接忽略。把 `threshold` 调到 0.8 能让 Smart 档停留更久。升级始终是即时的 —— 只有降级会等。',
       },
       {
-        q: '和 pi-model-router、CC-Switch 有什么区别？',
-        a: 'pi-model-router 解决同一个问题 —— pi 里按轮路由 —— 但设计不同。我们认为路由不需要规则：我们的 Judge 是纯 LLM + JSON 模式强制，一份你可以自己编辑的 prompt，无需维护会随新场景不断膨胀的规则列表；遇到 429/5xx 它还能在同一轮内故障转移（指数退避冷却），而 pi-model-router 是在 profile 层链式 fallback。我们还多了任务级编排：复杂任务时 Smart 层会规划并把实现委派给 Fast 子代理 —— pi-model-router 只做按轮选模型。它的附加能力 —— 硬性 USD 预算上限、跨会话状态、关键词钉选 —— 在你确实需要这些杠杆时有价值；而我们保持两层路由，代码一晚上就能读完。CC-Switch 完全是另一个类别：一个桌面应用，管理 Claude Code、Codex、Gemini CLI、OpenCode 等工具的 provider 配置。它在会话间手动切换；Shift Router 在每一轮内自动路由 —— 两者可以共存。',
+        q: '和 pi-bifrost、pi-smart-router 有什么区别？',
+        a: '两者都是同类 pi 路由器。@tenchi4u/pi-bifrost 用 7 步规则 + 历史技巧、4 个档位决策 —— 覆盖更多场景，但更难推演；它省的是订阅额度而不是钱，故障时断路器还可能跨档切换。pi-smart-router 跑一条 12 步本地管线（无 LLM），3 个档位还带本地档，用公式估算成本，需要本地 DB + ML 模型（约 2.5 MB 加下载）和 15+ 个环境变量。Shift Router 把决策收敛到一份可读的 LLM prompt（纯文本可审计、JSON 模式强制）、两档一个心智模型、任务级编排（Smart CTO 委派给 Fast 子代理）、省了多少钱的成本遥测、与 Judge 共用冷却的同档故障转移，以及零依赖约 409 KB。CC-Switch 是另一个类别：桌面应用，在会话之间手动切换 provider 配置 —— 可以和逐轮路由共存。',
       },
       {
         q: '有 DeepSeek Harness 版本吗？',
-        a: '有 —— dsh-shift-router（v0.1.0），同一个路由器的 DSH 适配版。通过 cordis.patch.yml 接入 harness，走它自己的 agent/request 管线，配置可以在 GUI 设置面板或 /router config 命令里实时改，能力完全一致：LLM 裁判、缓存感知路由、运行时故障转移、任务级编排、成本遥测。52 个单元测试加一个免凭据的 headless e2e。安装：git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build，然后 dsh plugin --profile web add <路径>。',
+        a: '有 —— dsh-shift-router（v0.5.0），同一个路由器的 DSH 适配版。通过 cordis.patch.yml 接入 harness，走它自己的 agent/request 管线，配置有两种实时方式：完整的 GUI 卡片（Settings → Plugins → Plugin configuration 里的 “Shift-Router” 卡片，两档模型链都能直接编辑）和交互式 /router config 编辑器（get / set / unset / diff）。能力和 pi 版一致：LLM 裁判、缓存感知路由、运行时故障转移、任务级编排、成本遥测 —— 而且编排硬上限由插件强制，不只是提示。109 个单元测试加一个免凭据的 headless e2e。安装：git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build，然后 dsh plugin --profile web add <路径>。',
       },
       {
         q: '在 DeepSeek Harness 上，子代理也会被路由吗？',
@@ -426,6 +431,7 @@ export const zh: Translations = {
       more: {
         title: '更多项目',
         links: [
+          { label: 'greenerai.top', href: 'https://greenerai.top' },
           { label: 'Karpathy LLM Wiki', href: 'https://llmwiki.greenerai.top' },
         ],
       },
