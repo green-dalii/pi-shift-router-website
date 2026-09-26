@@ -4,9 +4,9 @@ export const en: Translations = {
   meta: {
     title: 'Shift Router — Stop picking models, start coding',
     description:
-      'A model router family for pi-coding-agent and DeepSeek Harness: a CTO for the work that matters, an engineer for the workload. Routine turns stay on a fast, cheap model; important work escalates to a frontier one automatically — and complex tasks get delegated to Fast subagents. Saves tokens, survives provider outages, zero risk to try.',
+      'A model router family for pi-coding-agent and DeepSeek Harness: stop paying flagship prices for routine turns, and stop handing your hardest turns to a cheap model. An LLM judge (or an opt-in decision model) picks the tier by expected cost; multi-model fallback chains keep you running; complex tasks are orchestrated by a Smart CTO that delegates to Fast subagents. Saves tokens, survives provider outages, zero risk to try.',
     keywords:
-      'shift router, pi shift router, dsh shift router, model routing, llm router, ai coding, save tokens, reduce ai cost, fast smart tier, task orchestration, provider fallback, deepseek, openrouter, pi extension, deepseek harness',
+      'shift router, pi shift router, dsh shift router, model routing, llm router, ai coding, save tokens, reduce ai cost, fast smart tier, expected cost routing, gear presets, decision model judge, task orchestration, provider fallback, deepseek, openrouter, pi extension, deepseek harness',
   },
   nav: {
     quickStart: 'Quick Start',
@@ -21,11 +21,11 @@ export const en: Translations = {
   },
   hero: {
     badge: 'One router for pi and DeepSeek Harness',
-    slogan: "It's a CTO for the work that matters, an engineer for the workload.",
+    slogan: 'Stop paying flagship prices for routine turns — and stop handing your hardest turns to a cheap model.',
     title1: 'Every task,',
     title2: 'the right model.',
     subtitle:
-      'Everyday coding runs on a cheap, fast model. Hard problems get the smart one. When a provider stumbles, the router switches — automatically, mid-turn. And when a task is genuinely complex, the Smart tier plans and delegates it to Fast subagents — on pi and DeepSeek Harness alike. Your work never stops.',
+      'Everyday coding runs on a cheap, fast model. Hard problems get the smart one. The judge weighs the odds and switches by expected cost — automatically, mid-turn, never guessing when it is unsure. When a provider stumbles, the router steps down a ladder instead of stalling. And when a task is genuinely complex, the Smart tier plans and delegates it to Fast subagents — on pi and DeepSeek Harness alike. Your work never stops.',
     ctaPrimary: 'Get Started',
     ctaSecondary: 'pi-shift-router docs',
     ctaTertiary: 'dsh-shift-router docs',
@@ -36,23 +36,23 @@ export const en: Translations = {
       statusModel: 'MiniMax-M3',
       statusTier: 'tier',
       statusTierValue: 'fast',
-      statusMode: 'auto',
+      statusMode: 'default',
       judgeLabel: 'judge',
       judgeValue: '🧭 judging…',
-      windowLabel: 'window',
-      windowValue: '4/5 fast',
+      windowLabel: 'gear',
+      windowValue: 'default',
       logLines: [
         { time: '🦾', text: '[MiniMax-M3] → fix the failing test' },
         { time: '🧭', text: 'judging…' },
         { time: '🧠', text: '[kimi-k3] ← upgraded for the architecture question' },
         { time: '⚠️', text: 'MiniMax-M3 429 → switching to deepseek-v4-flash — retry in 1m' },
-        { time: '🦾', text: '[deepseek-v4-flash] ← same-tier failover (v0.6.0)' },
+        { time: '🦾', text: '[deepseek-v4-flash] ← same-tier failover' },
       ],
     },
     trustStrip: [
       { label: 'Multi-provider', desc: 'auto-switch keeps your task running' },
       { label: 'No extra servers', desc: 'runs inside your Pi process' },
-      { label: 'Open source MIT', desc: 'zero runtime deps' },
+      { label: 'Open source MIT', desc: 'one host dependency' },
     ],
   },
   family: {
@@ -62,10 +62,10 @@ export const en: Translations = {
     products: [
       {
         name: 'pi-shift-router',
-        version: 'v1.3.0',
+        version: 'v1.7.0',
         edition: 'for pi-coding-agent',
-        desc: 'The original. Installs into pi in one command, routes every turn between Fast and Smart, and orchestrates complex tasks by delegating them to Fast subagents.',
-        highlights: ['Zero runtime deps · ~409 kB', 'Task-level orchestration on by default', '369 unit tests'],
+        desc: 'The original. Installs into pi in one command, routes every turn between Fast and Smart by expected cost, and orchestrates complex tasks by delegating them to Fast subagents.',
+        highlights: ['One host dependency · ~409 kB', 'Judge modes: LLM chain or decision model', '577 unit tests'],
         links: [
           { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
           { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
@@ -73,10 +73,10 @@ export const en: Translations = {
       },
       {
         name: 'dsh-shift-router',
-        version: 'v0.5.0',
+        version: 'v0.6.0',
         edition: 'for DeepSeek Harness',
         desc: 'The DSH edition. Plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent pipeline, and configures live from the GUI "Shift-Router" card or /router config.',
-        highlights: ['Rides the harness\'s agent/request pipeline', 'GUI config card + live commands', '109 tests · credential-free e2e'],
+        highlights: ['Zero runtime deps', 'GUI config card + live commands', '424 tests · credential-free e2e'],
         links: [{ label: 'GitHub', href: 'https://github.com/green-dalii/dsh-shift-router' }],
       },
     ],
@@ -209,21 +209,21 @@ export const en: Translations = {
       ],
     },
     judge: {
-      label: 'LLM Judge',
+      label: 'The judge',
       title: 'A tiny call decides',
-      desc: 'One small classification — by the fast-tier model itself — reads your request and picks fast or smart. No heavy reasoning, no delay you\'ll notice.',
-      code: 'judgeTimeout: 5000',
+      desc: 'One small classification — by the fast-tier model itself — reads your request and returns a tier plus a confidence. That confidence is read as the probability this turn needs the strong model, so the router weighs cost instead of counting votes.',
+      code: 'judge: { mode: fast-chain | custom | decision }',
     },
     window: {
-      label: 'Downgrade gate',
-      title: 'No flip-flopping',
-      desc: 'Upgrades are instant when you need depth. Downgrades wait for a clear trend — fast votes in 5 of the last 5 classified turns — so the router never flickers between models mid-flow.',
-      code: 'window: { size: 5, threshold: 0.6 }',
+      label: 'Expected-cost gate',
+      title: 'Spend where it changes the outcome',
+      desc: 'The bar is not 50/50. Upgrading a routine turn wastes the price gap once; keeping a hard turn cheap costs a redo, the smart model anyway, and your time. So the router runs Smart whenever the odds clear θ = 1 / reworkPenalty (default θ ≈ 0.33) — a price-independent rule, because the price gap cancels out and all that matters is how badly a wrong call hurts. Below minConfidence (0.5) it holds position rather than guess.',
+      code: 'economics: { reworkPenalty: 3, downgradeMemory: 2 }',
     },
     fallback: {
       label: 'Runtime failover',
       title: 'Failures, handled',
-      desc: 'When a provider rate-limits or errors, that model cools down with exponential backoff (5xx from 1m; 429/quota from 16m, capped at 6h) and the next healthy one in the same tier takes over — you keep working through the outage.',
+      desc: 'When a provider rate-limits or errors, that model cools down with exponential backoff (5xx from 1m; 429/quota/402 balance from 16m, capped at 6h) and the next healthy one in the same tier takes over — you keep working through the outage. If the judge itself is unavailable, the router steps down a ladder instead of stalling: next judge source, then no routing at all — it never guesses.',
       code: 'cooldown: 1m → 4m → 16m → 1h → 4h → 6h',
     },
     orchestration: {
@@ -233,11 +233,48 @@ export const en: Translations = {
       bullets: [
         'Plan → delegate → review → iterate → accept',
         'Post-turn acceptance audit — grounding · goal alignment · delivered quality',
+        'Per-worker cost ledger — delegation spend never hides in the main agent',
         'Fresh-context workers: small, fast, cheap (~$0.004 vs ~$0.06 per fork)',
         'Hard caps: maxRounds 3 · escalationThreshold 2 · Last audit in /router status',
         'Requires pi-subagents; degrades gracefully without it',
       ],
     },
+  },
+  judgeModes: {
+    label: 'Judge modes',
+    title: 'Three judges, one verdict',
+    subtitle: 'The verdict can come from the Fast chain, a dedicated Judge chain, or a decision model that answers with a probability instead of prose.',
+    modes: [
+      {
+        id: 'fast-chain',
+        name: 'Fast chain',
+        badge: 'default',
+        desc: 'Reuses your Fast tier chain — no extra configuration, and the default path is unchanged.',
+      },
+      {
+        id: 'custom',
+        name: 'Dedicated Judge',
+        badge: '',
+        desc: 'A separate Judge chain you edit like a tier, when you want the verdict made by a different model than the one doing the work.',
+      },
+      {
+        id: 'decision',
+        name: 'Decision model',
+        badge: 'Beta',
+        desc: 'A decision model (TypeSafe Jev / System One class) returns a typed choice with a probability — no JSON parsing, so there is no malformed-reply failure class. About $0.0001 per turn.',
+      },
+    ],
+    honest: 'Jev is opt-in and labelled Beta on purpose: it is fast to integrate but currently slow per verdict (1.4–6.6 s while provider capacity ramps), and a September 2026 independent evaluation found decision models behind the best LLM on 14 of 15 annotation tasks. It is a good fit for batch and background routing; for interactive turns the LLM judge is still the better default. The router steps down to your LLM judge if the decision model stops answering, and to no routing at all if that fails too.',
+  },
+  gearPresets: {
+    label: 'Gear presets',
+    title: 'Three gears, one dial',
+    subtitle: 'Routing leans toward spending by default. The presets move the bar in one command when your workload does not.',
+    gears: [
+      { id: 'eco', name: 'eco', threshold: 'θ 0.5', desc: 'Conservative — only clearly-needed turns run Smart. Cheapest.' },
+      { id: 'default', name: 'default', threshold: 'θ 0.33', desc: 'Balanced — borderline verdicts lean Smart. The default.' },
+      { id: 'sport', name: 'sport', threshold: 'θ 0.2', desc: 'Eager — any real chance of needing Smart escalates. Safest for architecture-heavy work.' },
+    ],
   },
   useCases: {
     label: 'Use cases',
@@ -265,23 +302,23 @@ export const en: Translations = {
   modelsPage: {
     label: 'Models',
     title: 'Pick your model pair',
-    intro: 'Two rules of thumb that hold on both pi and DeepSeek Harness: Fast tier — pick the best value in your stack: strong quality per dollar, because this tier also powers the Judge (deepseek-v4-flash is the default pick — 0731 quality near Opus 5/GLM-5.2 territory at the low end of the price table). Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins.',
+    intro: 'Two rules of thumb that hold on both pi and DeepSeek Harness. Fast tier — pick the best value in your stack: strong quality per dollar, because this tier also powers the judge by default, so its judgment matters too. Smart tier — keep it on a frontier cloud model; local Smart is impractical under ~80 GB of VRAM, and even at 96 GB a flat-fee token plan usually wins. We list tier names (Flash, Luna, Haiku, K3…) rather than dated model IDs on purpose: the exact IDs change with every release, the tier names do not. After you install, run /model to see which one is current in your setup.',
     patterns: [
       {
         title: 'Coding subscription plans',
         summary: 'One subscription, many models. Use a token gateway (one key proxying every major provider) or reuse a coding-tool subscription you already pay for — most expose an OpenAI-compatible endpoint.',
         fast: {
           models: [
-            'deepseek-v4-flash',
-            'gpt-5.6-luna  (OpenCode Zen / Go)',
-            'qwen3.6-flash',
+            'any Flash class  (DeepSeek V4 / Qwen Flash / MiMo Flash)',
+            'Luna  (OpenAI · OpenCode Zen / Go)',
+            'Haiku  (Anthropic)',
           ],
         },
         smart: {
           models: [
-            'gpt-5.6-sol  (OpenCode Zen / Go)',
-            'qwen3.8-max',
-            'kimi-k3',
+            'Sol / Terra  (OpenAI · OpenCode Zen / Go)',
+            'Qwen Max',
+            'Kimi K3',
           ],
         },
         note: 'Reusable subscriptions: OpenCode Zen (OpenAI-compatible endpoint), GitHub Copilot (BYOK — OpenAI + Anthropic), Cursor (Pro / Pro+ / Ultra pools), OpenAI Codex (bundled with ChatGPT Plus / Pro / Business).',
@@ -300,35 +337,36 @@ export const en: Translations = {
       },
       {
         title: 'Same-provider tier ladder',
-        summary: 'One provider, two tiers — simplest setup. Use this when you already pay for one vendor and don\'t want to juggle keys.',
+        summary: 'One provider, two tiers — simplest setup. Use this when you already pay for one vendor and don\'t want to juggle keys. The right-hand column lists the ladder in ascending order, which doubles as your fallback chain.',
         groupRows: [
-          { group: 'Anthropic', fast: 'sonnet-5', smart: 'opus-5 / fable-5' },
-          { group: 'OpenAI', fast: 'gpt-5.6-luna', smart: 'gpt-5.6-sol' },
-          { group: 'Google', fast: 'gemini-3.5-flash-lite', smart: 'gemini-3.6-flash' },
-          { group: 'Qwen (AliBaba)', fast: 'qwen3.7-plus', smart: 'qwen3.8-max' },
-          { group: 'DeepSeek', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
-          { group: 'Z.AI (GLM)', fast: 'glm-5 / glm-5-turbo', smart: 'glm-5.2' },
-          { group: 'xAI (Grok)', fast: 'grok-4.5-fast', smart: 'grok-4.5' },
+          { group: 'Anthropic', fast: 'Haiku', smart: 'Sonnet → Opus → Fable' },
+          { group: 'OpenAI', fast: 'Luna', smart: 'Terra → Sol → Astra' },
+          { group: 'Google', fast: 'Flash-Lite', smart: 'Flash → Pro' },
+          { group: 'Alibaba (Qwen)', fast: 'Plus / Flash', smart: 'Max' },
+          { group: 'DeepSeek', fast: 'Flash', smart: 'Pro' },
+          { group: 'Z.AI (GLM)', fast: 'Flash / Highspeed', smart: 'mainline' },
+          { group: 'Moonshot (Kimi)', fast: 'K2.x / K2.7-Code', smart: 'K3' },
+          { group: 'Xiaomi (MiMo)', fast: 'Flash', smart: 'Pro / UltraSpeed' },
+          { group: 'xAI (Grok)', fast: 'Fast', smart: 'mainline' },
         ],
-        bestFor: 'Simplest path from zero to routing — just two model IDs.',
+        bestFor: 'Simplest path from zero to routing — one vendor, one bill, one rate-limit pool.',
       },
       {
         title: 'Cross-provider pairing',
-        summary: 'Best-of-breed regardless of vendor. Default: deepseek-v4-flash for Fast, claude-opus-5 for Smart. Add fallbacks for resilience.',
+        summary: 'Best-of-breed regardless of vendor. This is where routing earns its keep: the cost asymmetry does the saving, and the family asymmetry does the resilience — a chain drawn from two families survives any single outage.',
         groupRows: [
-          { group: 'DeepSeek Harness (DSH)', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
-          { group: 'Lowest cost', fast: 'deepseek-v4-flash', smart: 'claude-opus-5' },
-          { group: 'Multi-provider fallback', fast: 'deepseek-v4-flash + glm-5.2', smart: 'claude-opus-5 + gpt-5.6-sol + kimi-k3' },
-          { group: 'Flat-fee', fast: 'opencode-go/deepseek-v4-flash', smart: 'opencode-go/glm-5.2' },
-          { group: '1 M context, long repo', fast: 'deepseek-v4-flash', smart: 'gemini-3.6-pro / kimi-k3' },
-          { group: 'Multimodal', fast: 'deepseek-v4-flash', smart: 'claude-opus-5 (vision) / gemini-3.6-pro' },
-          { group: 'Multilingual / Chinese-first', fast: 'deepseek-v4-flash', smart: 'qwen3.8-max' },
-          { group: 'GDPR / Europe', fast: 'deepseek-v4-flash (via OpenRouter)', smart: 'mistral-medium-2604' },
+          { group: 'Coding, lowest cost', fast: 'any DeepSeek V4 Flash', smart: 'any Anthropic Opus class' },
+          { group: 'Coding, multi-provider fallback', fast: 'DeepSeek V4 Flash + GLM-5.x-Flash', smart: 'Anthropic Opus + GPT-5.x Sol + Kimi K3' },
+          { group: 'Coding, flat-fee (best $/quality)', fast: 'OpenCode Go Flash class', smart: 'OpenCode Go strongest (Grok / GPT Luna / Kimi K3)' },
+          { group: '1 M context, long repo or PDF research', fast: 'any Flash class with 1 M ctx', smart: 'Kimi K3 or Gemini Pro' },
+          { group: 'Multimodal (image / video)', fast: 'any Flash class', smart: 'Anthropic Opus (vision) or Gemini Pro' },
+          { group: 'Multilingual, Chinese-first', fast: 'any Flash class', smart: 'Qwen Max' },
+          { group: 'Europe / GDPR preference', fast: 'DeepSeek Flash (via OpenRouter)', smart: 'Mistral medium' },
         ],
         bestFor: 'Strongest model in each tier, regardless of who sells it.',
       },
     ],
-    note: 'Pricing and model availability change monthly — refresh with `curl -s https://models.dev/api.json | jq` to see the latest. Full per-provider catalog lives at models.dev.',
+    note: 'One more thing the judge needs: a JSON-mode endpoint. Any modern Flash-class model supports it (Qwen 3.5+, Gemma 4, MiMo V2.x); a local judge adds roughly 0.5–2 s per turn. A solid starting point is a local Fast tier with a cloud Smart tier, and the judge running on whichever Smart model you trust for that kind of work. Model IDs and prices change monthly — the upstream docs track this with `curl -s https://models.dev/api.json | jq`, and the full per-provider catalog lives at models.dev.',
   },
   faq: {
     label: 'FAQ',
@@ -345,7 +383,7 @@ export const en: Translations = {
       },
       {
         q: 'Is it safe to try?',
-        a: 'Completely. The router does nothing until you configure it, it is pure TypeScript with zero runtime dependencies, and /router off disables it instantly. No lock-in.',
+        a: 'Completely. The router does nothing until you configure it, it is pure TypeScript with a single host-provided dependency, and /router off disables it instantly. No lock-in.',
       },
       {
         q: 'What exactly does the smart tier do?',
@@ -372,8 +410,16 @@ export const en: Translations = {
         a: 'Two safety nets. The convergence protocol requires every re-delegation to carry a structured failure report — what failed, where, the exact acceptance test to re-run — and re-sending identical feedback is forbidden (the CTO takes the phase over). On top of that, a post-turn acceptance audit (v1.3.0) runs after every orchestrated turn: deterministic checks always run (every worker reported back, the final message carries a CTO summary, whether a hard cap was hit), plus an optional small fast-tier LLM audit that checks grounding, goal alignment, and delivered quality against your original request. Findings never block the finished turn — they surface as console.warn + toast and in /router status as "Last audit". Toggle with orchestration.audit.enabled (default on).',
       },
       {
+        q: 'How does it compare to OpenRouter Auto Router?',
+        a: 'OpenRouter Auto Router is zero-config and market-driven — a good fit for a raw API call, and it optimizes for quality rather than your bill (their docs are explicit that routing to an expensive model is working as designed). You do not define the tiers, you do not see the verdict, and you do not control the failure mode. Shift Router routes on the shape of the task, inside your agent, between two chains you define, and every verdict is visible in /router status. Cloudflare AI Gateway Dynamic Routing is a third option: versioned flows with quotas and fallbacks, but you author the graph per gateway and it sees requests rather than tasks — it has no notion of "this turn is architecture work". Doing it by hand is free until the first time you forget to switch back.',
+      },
+      {
+        q: 'How is it different from other pi routers?',
+        a: 'pi-bifrost decides with 7-step rules plus history heuristics across 4 tiers — more cases, but harder to reason about, and it saves subscription quota rather than dollars. pi-smart-router runs a 12-step local pipeline with no LLM, estimates cost with a formula, and needs a local DB and ML model. Shift Router keeps the decision to one readable prompt (or a decision model), two tiers with one mental model, orchestration where the Smart CTO delegates to Fast subagents, dollars-saved telemetry, and a judge ladder that degrades to no routing rather than stalling. CC-Switch is a different category: a desktop app for manually switching provider configs between sessions — it coexists fine.',
+      },
+      {
         q: 'Can I force a specific model for one turn?',
-        a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins an exact model. /route-force auto clears the override.',
+        a: 'Yes. /route-force <tier> pins Smart or Fast for the next turn; /route-force <provider>/<model> pins an exact model. /route-force auto clears the override. Note that while routing is on, the router owns model selection: using pi\'s own /model switcher applies to the current turn, and the next routing point re-asserts the tier chain. For full manual control run /router off.',
       },
       {
         q: 'Does it work with models from different providers?',
@@ -381,23 +427,31 @@ export const en: Translations = {
       },
       {
         q: 'Can I monitor how it\'s performing?',
-        a: 'Yes — run /router stats to see per-tier spend and savings, window size and confidence distribution (high / mid / low / none), cumulative upgrade and downgrade counts, and tokens-per-second. It reports cost telemetry: how much each tier spent and a baseline — what the session would have cost if every turn ran on your Smart model (i.e. no router). Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465, baseline $3.21, saved $2.74. The status bar also shows live throughput: [🧠 kimi-k3 • 23 tok/s].',
+        a: 'Yes — `/router status` opens a TUI dashboard: the live model, the last decision and why, the tier chains with inline cooldowns, per-model context-window and cache-hit gauges, and a Money section with per-tier spend, the savings baseline, and — when delegation happened — an orchestration line (orchestration $0.0689, 5 workers). The baseline asks what the session would have cost with every turn on your Smart model; if pricing is missing it shows unavailable rather than a made-up number.',
       },
       {
         q: 'How do I tune the downgrade behavior?',
-        a: 'Two thresholds: `threshold` (default 0.6) controls how many of the last 5 classified turns must weigh toward fast before a downgrade happens; `minConfidence` (default 0.5) sets the floor below which votes are ignored entirely. Raise `threshold` to 0.8 to stay on Smart longer. Upgrades are always instant — only downgrades wait.',
+        a: 'One dial: `reworkPenalty` (R, default 3) — the bar is θ = 1/R, the expected cost at which running Smart pays for itself. Lower R (2) is conservative and cheaper; higher R (5) is eager and safer for architecture-heavy work. You do not have to touch the math: `/router eco`, `/router default`, and `/router sport` set it for you and are tab-completable. Separately, `minConfidence` (default 0.5) sets the floor below which a verdict is discarded and the router holds position. Upgrades are always immediate — only downgrades wait, and then for `downgradeMemory` (default 2) consecutive decisive fast turns.',
       },
       {
-        q: 'How is it different from pi-bifrost and pi-smart-router?',
-        a: 'Both are pi routers with the same goal. @tenchi4u/pi-bifrost decides with 7-step rules + history tricks across 4 tiers — more cases, but harder to reason about; it saves subscription quota rather than dollars, and its circuit breaker can switch tiers on failure. pi-smart-router runs a 12-step local pipeline (no LLM) with 3 tiers including a local one, estimates cost with a formula, and needs a local DB + ML model (~2.5 MB plus downloads) and 15+ env vars. Shift Router keeps the decision to one readable LLM prompt (auditable plain text, JSON-mode enforced), two tiers with one mental model, orchestration (the Smart CTO delegates to Fast subagents), dollars-saved cost telemetry, same-tier failover with a cooldown shared with the judge, and ~409 KB with zero deps. CC-Switch is a different category entirely: a desktop app for manually switching provider configs between sessions — it coexists fine.',
+        q: 'What happens when the judge itself is unavailable?',
+        a: 'It holds, then steps down — it never guesses. A failed judge call no longer fabricates a fast verdict (which used to be able to silently downgrade a Smart session after two outages). Instead the router walks an availability ladder: the configured judge chain, then the LLM judge, then no routing at all. The last rung behaves as if the plugin were not installed — no model switch, orchestration cleared, your session model restored — and it tells you once per session. A 429 on one judge source falls through to the next immediately rather than holding.',
+      },
+      {
+        q: 'What is a decision model, and should I use one as the judge?',
+        a: 'Instead of asking a language model for JSON and parsing it, a decision model (the TypeSafe Jev / System One class) is handed a typed question and returns a typed answer with a probability. The router compares that probability against θ directly, so there is no parse step and no malformed-reply failure class, and a verdict costs input tokens only — about $0.0001 per turn. LiteLLM measured a jev classifier 5.43× faster and 96% cheaper than a Haiku-class one in their own Auto Router. The honest catch: it is currently slow per verdict (1.4–6.6 s while provider capacity ramps) and a September 2026 independent evaluation found decision models behind the best LLM on 14 of 15 annotation tasks — so it is opt-in, labelled Beta, and third in the menu. Good for batch and background routing; the LLM judge is still the better default for interactive turns. If it stops answering, the router steps down to your LLM judge.',
+      },
+      {
+        q: 'My provider ran out of credit — does the router notice?',
+        a: 'Yes. HTTP 402 (including "Insufficient Balance" and 余额不足) and Codex usage-limit exhaustion ("The usage limit has been reached") are both recognized as rate-limit-class failures, so the exhausted model takes a 16m cooldown and the next healthy model in the same tier takes over — mid-turn, without you switching anything.',
       },
       {
         q: 'Is there a version for DeepSeek Harness?',
-        a: 'Yes — dsh-shift-router (v0.5.0), a DSH adaptation of the same router. It plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent/request pipeline, and configures live two ways: a full GUI card (Settings → Plugins → Plugin configuration — the "Shift-Router" card, with both tier chains editable) and an interactive /router config editor (get/set/unset/diff). Same capabilities as pi: LLM Judge, cache-aware routing, runtime failover, task-level orchestration, cost telemetry — with orchestration caps enforced by the plugin, not just prompted. 109 unit tests plus a credential-free headless e2e. Install: git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build, then dsh plugin --profile web add <path>.',
+        a: 'Yes — dsh-shift-router (v0.6.0), a DSH adaptation of the same router, realigned with upstream through v1.6.0. It plugs into the harness via cordis.patch.yml, routes through the harness\'s own agent/request pipeline, and has zero runtime dependencies of its own. Config lives two ways: a full GUI card (Settings → Plugins → Plugin configuration — the "Shift-Router" card, both tier chains editable) and an interactive /router config editor (get/set/unset/diff). Same capabilities as pi, including the acceptance audit and the three judge modes, plus /router allow-workers on|off, which writes your Fast chain into the harness\'s own subagent allowlist so delegated workers actually run on Fast. 424 unit tests plus a credential-free headless e2e. Install: git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build, then dsh plugin --profile web add <path>.',
       },
       {
         q: 'On DeepSeek Harness, are subagents routed too?',
-        a: 'No. Subagents spawned by the subagent tool carry origin === \'subagent\' and keep their pinned model — the router only drives top-level agents. During orchestration, the CTO delegates to Fast workers whose model is pinned by deployment configuration (tool-subagent agentOptions), so workers always run at the Fast tier\'s price.',
+        a: 'No. Subagents spawned by the subagent tool carry origin === \'subagent\' and keep their model — the router only drives top-level agents. The worker model is pinned by deployment configuration (tool-subagent agentOptions), which by default means a worker inherits its parent\'s model. Since v0.6.0 you can fix that with /router allow-workers on: it writes your Fast-tier chain into the harness\'s subagent-model-selection allowlist so the orchestrator can pin workers to Fast. /router status shows the live counters (round x/max, esc y/threshold).',
       },
     ],
   },

@@ -1,0 +1,102 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const jm = t.judgeModes;
+
+const modeStyles: Record<string, { ring: string; chip: string; icon: string }> = {
+  'fast-chain': {
+    ring: 'border-ink/10 bg-canvas',
+    chip: 'bg-canvas-soft text-body',
+    icon: 'M4 7h16M4 12h10M4 17h7',
+  },
+  custom: {
+    ring: 'border-ink/10 bg-canvas',
+    chip: 'bg-canvas-soft text-body',
+    icon: 'M12 3v18M3 12h18',
+  },
+  decision: {
+    ring: 'border-primary/60 bg-primary-pale',
+    chip: 'bg-ink text-primary',
+    icon: 'M4 18l5-6 4 3 7-9',
+  },
+};
+---
+
+<section id="judge-modes" class="relative py-20 sm:py-24 bg-canvas">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-2xl mb-10 sm:mb-12">
+      <span class="eyebrow">{jm.label}</span>
+      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.08]">
+        {jm.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
+        {jm.subtitle}
+      </p>
+    </div>
+
+    <!-- Three modes -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {jm.modes.map((mode, idx) => {
+        const s = modeStyles[mode.id] ?? modeStyles['fast-chain'];
+        return (
+          <div class={`rounded-2xl border p-6 sm:p-7 reveal ${s.ring}`} data-delay={idx * 2}>
+            <div class="flex items-center gap-3 mb-4">
+              <span class="w-9 h-9 rounded-xl bg-ink flex items-center justify-center shrink-0" aria-hidden="true">
+                <svg class="w-4.5 h-4.5 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d={s.icon} />
+                </svg>
+              </span>
+              <h3 class="text-base font-extrabold tracking-tight text-ink">{mode.name}</h3>
+              {mode.badge && (
+                <span class={`ml-auto text-[10px] font-mono uppercase tracking-[0.12em] px-2 py-1 rounded-full ${s.chip}`}>
+                  {mode.badge}
+                </span>
+              )}
+            </div>
+            <p class="text-sm text-body leading-relaxed">
+              {mode.desc}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- The honest caveat: Beta means Beta -->
+    <div class="mt-6 rounded-2xl border border-ink/10 bg-canvas-soft/50 p-6 sm:p-7 reveal" data-delay="6">
+      <div class="flex items-start gap-3.5">
+        <span class="shrink-0 w-7 h-7 rounded-full border border-ink/20 flex items-center justify-center mt-0.5" aria-hidden="true">
+          <span class="text-[13px] font-bold text-ink">i</span>
+        </span>
+        <div>
+          <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2">
+            {locale === 'zh' ? '为什么默认关闭' : 'Why it is off by default'}
+          </div>
+          <p class="text-sm text-body leading-relaxed max-w-3xl">
+            {jm.honest}
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="0"] { animation-delay: 0.05s; }
+  .reveal[data-delay="2"] { animation-delay: 0.18s; }
+  .reveal[data-delay="4"] { animation-delay: 0.32s; }
+  .reveal[data-delay="6"] { animation-delay: 0.44s; }
+</style>

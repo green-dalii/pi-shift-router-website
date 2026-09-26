@@ -127,6 +127,29 @@ export interface Translations {
       bullets: string[];
     };
   };
+  judgeModes: {
+    label: string;
+    title: string;
+    subtitle: string;
+    modes: {
+      id: string;
+      name: string;
+      badge: string;
+      desc: string;
+    }[];
+    honest: string;
+  };
+  gearPresets: {
+    label: string;
+    title: string;
+    subtitle: string;
+    gears: {
+      id: string;
+      name: string;
+      threshold: string;
+      desc: string;
+    }[];
+  };
   useCases: {
     label: string;
     title: string;

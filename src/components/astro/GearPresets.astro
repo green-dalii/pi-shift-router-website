@@ -1,0 +1,83 @@
+---
+import { getTranslations, type Locale } from '../../content/locales';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const gp = t.gearPresets;
+
+/** Filled-share of the bar per gear — visual echo of θ (lower θ = more eager). */
+const barShare: Record<string, number> = {
+  eco: 40,
+  default: 62,
+  sport: 88,
+};
+---
+
+<section id="gear-presets" class="relative py-20 sm:py-24 bg-canvas-soft">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <!-- Section header -->
+    <div class="max-w-2xl mb-10 sm:mb-12">
+      <span class="eyebrow">{gp.label}</span>
+      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.08]">
+        {gp.title}
+      </h2>
+      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
+        {gp.subtitle}
+      </p>
+    </div>
+
+    <!-- Gears -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      {gp.gears.map((gear, idx) => {
+        const isDefault = gear.id === 'default';
+        const share = barShare[gear.id] ?? 60;
+        return (
+          <div class={`rounded-2xl border p-6 sm:p-7 reveal ${isDefault ? 'border-ink bg-ink text-canvas' : 'border-ink/10 bg-canvas'}`} data-delay={idx * 2}>
+            <div class="flex items-baseline gap-3 mb-1">
+              <code class={`text-lg font-extrabold tracking-tight ${isDefault ? 'text-primary' : 'text-ink'}`}>
+                /router {gear.name}
+              </code>
+              {isDefault && (
+                <span class="text-[10px] font-mono uppercase tracking-[0.12em] px-2 py-0.5 rounded-full bg-primary/15 text-primary">
+                  {locale === 'zh' ? '默认' : 'default'}
+                </span>
+              )}
+            </div>
+            <div class={`font-mono text-xs mb-4 ${isDefault ? 'text-canvas-soft/60' : 'text-mute'}`}>
+              {gear.threshold}
+            </div>
+
+            <!-- Eagerness bar: higher θ = more turns stay cheap -->
+            <div class={`h-1.5 rounded-full overflow-hidden mb-4 ${isDefault ? 'bg-canvas-soft/15' : 'bg-canvas-soft'}`} aria-hidden="true">
+              <div
+                class="h-full rounded-full"
+                style={`width: ${share}%; background: ${isDefault ? '#9fe870' : '#454745'};`}
+              ></div>
+            </div>
+
+            <p class={`text-sm leading-relaxed ${isDefault ? 'text-canvas-soft/85' : 'text-body'}`}>
+              {gear.desc}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .reveal[data-delay="0"] { animation-delay: 0.05s; }
+  .reveal[data-delay="2"] { animation-delay: 0.18s; }
+  .reveal[data-delay="4"] { animation-delay: 0.32s; }
+</style>

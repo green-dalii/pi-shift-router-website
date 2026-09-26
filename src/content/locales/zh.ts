@@ -4,9 +4,9 @@ export const zh: Translations = {
   meta: {
     title: 'Shift Router — 别再手动挑模型，专心写代码',
     description:
-      '一个模型路由器家族，同时支持 pi-coding-agent 与 DeepSeek Harness：重要的事它是 CTO，跑量的活它是工程师。日常轮次留在便宜快速的模型上，重要工作自动升级到前沿模型 —— 复杂任务还会委派给 Fast 子代理。省 token、抗故障、零风险可试。',
+      '一个模型路由器家族，同时支持 pi-coding-agent 与 DeepSeek Harness：别再为日常琐事付旗舰模型的钱，也别把最难的活交给廉价模型。LLM 裁判（或可选的决策模型）按期望成本选层，配上多模型回退链，复杂任务还会由 Smart CTO 编排并委派给 Fast 子代理。省 token、抗故障、零风险可试。',
     keywords:
-      'shift router, pi shift router, dsh shift router, 模型路由, llm router, ai 编程, 省钱, 降低 ai 成本, 快慢分层, 任务编排, provider 故障转移, deepseek, openrouter, pi 扩展, deepseek harness',
+      'shift router, pi shift router, dsh shift router, 模型路由, llm router, ai 编程, 省钱, 降低 ai 成本, 快慢分层, 期望成本路由, 档位预设, 决策模型裁判, 任务编排, provider 故障转移, deepseek, openrouter, pi 扩展, deepseek harness',
   },
   nav: {
     quickStart: '快速上手',
@@ -21,11 +21,11 @@ export const zh: Translations = {
   },
   hero: {
     badge: '一个路由器，适配 pi 与 DeepSeek Harness',
-    slogan: '重要的事它是 CTO，跑量的活它是工程师。',
+    slogan: '别再为日常琐事付旗舰模型的钱，也别把最难的活交给廉价模型。',
     title1: '每个任务，',
     title2: '都用对的模型。',
     subtitle:
-      '日常编码用便宜快速的模型，复杂问题交给聪明模型。服务商掉线或限流？自动切换 —— 任务不中断。任务真的复杂时，Smart 层还会亲自规划、委派给 Fast 子代理 —— 在 pi 和 DeepSeek Harness 上通用。',
+      '日常编码用便宜快速的模型，复杂问题交给聪明模型。裁判会权衡胜算、按期望成本切换 —— 全自动，就在这一轮里；没把握时它从不通猜。服务商掉线时，路由器沿着可用性阶梯逐级下调，而不是卡住。任务真的复杂时，Smart 层还会亲自规划、委派给 Fast 子代理 —— 在 pi 和 DeepSeek Harness 上通用。',
     ctaPrimary: '快速上手',
     ctaSecondary: 'pi-shift-router 文档',
     ctaTertiary: 'dsh-shift-router 文档',
@@ -36,23 +36,23 @@ export const zh: Translations = {
       statusModel: 'MiniMax-M3',
       statusTier: '档位',
       statusTierValue: 'fast',
-      statusMode: 'auto',
+      statusMode: 'default',
       judgeLabel: 'judge',
       judgeValue: '🧭 judging…',
-      windowLabel: '窗口',
-      windowValue: '4/5 fast',
+      windowLabel: '档位',
+      windowValue: 'default',
       logLines: [
         { time: '🦾', text: '[MiniMax-M3] → 修这个失败的测试' },
         { time: '🧭', text: 'judging…' },
         { time: '🧠', text: '[kimi-k3] ← 架构问题自动升级到 Smart' },
         { time: '⚠️', text: 'MiniMax-M3 429 → 切换到 deepseek-v4-flash — 1 分钟后重试' },
-        { time: '🦾', text: '[deepseek-v4-flash] ← 同层 failover（v0.6.0）' },
+        { time: '🦾', text: '[deepseek-v4-flash] ← 同层 failover' },
       ],
     },
     trustStrip: [
       { label: '多 Provider', desc: '自动切换，任务不中断' },
       { label: '无第三方服务器', desc: '跑在你的 Pi 进程里' },
-      { label: 'MIT 开源', desc: '零运行时依赖' },
+      { label: 'MIT 开源', desc: '仅一个宿主依赖' },
     ],
   },
   family: {
@@ -62,10 +62,10 @@ export const zh: Translations = {
     products: [
       {
         name: 'pi-shift-router',
-        version: 'v1.3.0',
+        version: 'v1.7.0',
         edition: 'for pi-coding-agent',
-        desc: '原版。一条命令装进 pi，在 Fast 与 Smart 之间路由每一轮，复杂任务还会委派给 Fast 子代理来编排执行。',
-        highlights: ['零运行时依赖 · 约 409 kB', '任务级编排默认开启', '369 个单元测试'],
+        desc: '原版。一条命令装进 pi，按期望成本在 Fast 与 Smart 之间路由每一轮，复杂任务还会委派给 Fast 子代理来编排执行。',
+        highlights: ['仅一个宿主依赖 · 约 409 kB', '裁判三模式：LLM 链或决策模型', '577 个单元测试'],
         links: [
           { label: 'GitHub', href: 'https://github.com/green-dalii/pi-shift-router' },
           { label: 'npm', href: 'https://www.npmjs.com/package/pi-shift-router' },
@@ -73,10 +73,10 @@ export const zh: Translations = {
       },
       {
         name: 'dsh-shift-router',
-        version: 'v0.5.0',
+        version: 'v0.6.0',
         edition: 'for DeepSeek Harness',
         desc: 'DSH 版本。通过 cordis.patch.yml 接入 harness，走它自己的 agent 管线，配置可以在 GUI 的 “Shift-Router” 卡片或 /router config 里实时改。',
-        highlights: ['复用 harness 的 agent/request 管线', 'GUI 配置卡片 + 实时命令', '109 个测试 · 免凭据 e2e'],
+        highlights: ['零运行时依赖', 'GUI 配置卡片 + 实时命令', '424 个测试 · 免凭据 e2e'],
         links: [{ label: 'GitHub', href: 'https://github.com/green-dalii/dsh-shift-router' }],
       },
     ],
@@ -209,21 +209,21 @@ export const zh: Translations = {
       ],
     },
     judge: {
-      label: 'LLM Judge',
+      label: '裁判',
       title: '一个小调用就决定',
-      desc: '一次轻量分类 —— 由 fast 层模型自己完成 —— 读你的请求，选出 fast 或 smart。没有重推理，也没有你能察觉的延迟。',
-      code: 'judgeTimeout: 5000',
+      desc: '一次轻量分类 —— 由 fast 层模型自己完成 —— 读你的请求，返回一个档位和置信度。这个置信度被读作「本轮需要强模型的概率」，所以路由器是在权衡成本，而不是数票。',
+      code: 'judge: { mode: fast-chain | custom | decision }',
     },
     window: {
-      label: '降级门',
-      title: '不来回抖',
-      desc: '需要深度时升级立即生效。降级要等明确趋势 —— 最近 5 轮分类中多数是 fast —— 路由绝不中途在两个模型间来回跳。',
-      code: 'window: { size: 5, threshold: 0.6 }',
+      label: '期望成本门',
+      title: '把钱花在能改变结果的地方',
+      desc: '门槛不是五五开。把日常轮次升级到强模型，只浪费一次价差；把架构轮次留在便宜模型上，代价是返工、之后还得买强模型，以及你的时间。所以只要胜算超过 θ = 1 / reworkPenalty（默认 θ ≈ 0.33）就切 Smart —— 这条规则与价格无关，因为价差会约掉，剩下的只有「判错有多痛」。低于 minConfidence（0.5）时它保持不动，而不是猜。',
+      code: 'economics: { reworkPenalty: 3, downgradeMemory: 2 }',
     },
     fallback: {
       label: '运行时故障转移',
       title: '故障，自动处理',
-      desc: 'provider 限流或报错时，那个模型进入指数退避冷却（5xx 从 1m 起步；429/配额 从 16m 起步，封顶 6h），同层下一个健康模型接管 —— 你全程无感，继续干活。',
+      desc: 'provider 限流或报错时，那个模型进入指数退避冷却（5xx 从 1m 起步；429/配额/402 余额不足 从 16m 起步，封顶 6h），同层下一个健康模型接管 —— 你全程无感，继续干活。如果裁判本身不可用，路由器沿可用性阶梯逐级下调而不是卡住：换一个裁判源，再不行就完全不路由 —— 它从不通猜。',
       code: 'cooldown: 1m → 4m → 16m → 1h → 4h → 6h',
     },
     orchestration: {
@@ -233,11 +233,48 @@ export const zh: Translations = {
       bullets: [
         '规划 → 委派 → 审查 → 迭代 → 验收',
         '每轮编排后的验收审计 —— 落地性 · 目标对齐 · 交付质量',
+        'per-worker 成本账本 —— 委派花费不再藏在主 agent 里',
         'fresh-context 子代理：小而快又便宜（约 $0.004 对比 fork 的约 $0.06）',
         '硬上限：maxRounds 3 · escalationThreshold 2 · /router status 显示 Last audit',
         '需要 pi-subagents；没有时优雅降级',
       ],
     },
+  },
+  judgeModes: {
+    label: '裁判模式',
+    title: '三种裁判，一个结论',
+    subtitle: '结论可以来自 Fast 链、专属裁判链，或者一个用概率而不是散文回答的决策模型。',
+    modes: [
+      {
+        id: 'fast-chain',
+        name: 'Fast 链',
+        badge: '默认',
+        desc: '复用你的 Fast 层模型链 —— 无需任何额外配置，默认路径行为不变。',
+      },
+      {
+        id: 'custom',
+        name: '专属裁判',
+        badge: '',
+        desc: '一条像层一样可编辑的独立裁判链 —— 当你想让结论由一个不同于执行层的模型给出。',
+      },
+      {
+        id: 'decision',
+        name: '决策模型',
+        badge: 'Beta',
+        desc: '决策模型（TypeSafe Jev / System One 类）直接返回带概率的结构化答案 —— 无需解析 JSON，也就没有「回复格式不对」这一整类故障。每次判定约 $0.0001。',
+      },
+    ],
+    honest: 'Jev 默认关闭并标为 Beta，这是有意为之：它集成容易，但单次判定目前较慢（1.4–6.6 秒，供给侧产能爬坡中），且 2026 年 9 月一份独立评测发现决策模型在 15 个标注任务中有 14 个落后于最优 LLM。它适合批量、后台和高频路由；交互式轮次里 LLM 裁判仍是更好的默认。决策模型不应答时，路由器会退到你的 LLM 裁判；如果那个也不行，就完全不路由。',
+  },
+  gearPresets: {
+    label: '档位预设',
+    title: '三个档位，一个旋钮',
+    subtitle: '默认偏保守（愿意花钱）。当你的工作负载不是这样时，一条命令就能移动门槛。',
+    gears: [
+      { id: 'eco', name: 'eco', threshold: 'θ 0.5', desc: '保守 —— 只有明确需要的轮次才跑 Smart。最便宜。' },
+      { id: 'default', name: 'default', threshold: 'θ 0.33', desc: '均衡 —— 模糊的结论偏向 Smart。默认值。' },
+      { id: 'sport', name: 'sport', threshold: 'θ 0.2', desc: '积极 —— 只要有一丁点可能需要 Smart 就升级。适合架构密集的活。' },
+    ],
   },
   useCases: {
     label: '使用场景',
@@ -265,23 +302,23 @@ export const zh: Translations = {
   modelsPage: {
     label: '模型选择',
     title: '选出你的模型配对',
-    intro: '两条经验在 pi 和 DeepSeek Harness 上都适用：Fast 档 —— 选智价比最好的模型：每块钱买到最强的智能，因为这一档还兼任 Judge（默认首选 deepseek-v4-flash —— 0731 版质量逼近 Opus 5 / GLM-5.2，价格却在表格低端）。Smart 档 —— 留在云端前沿模型。80 GB 以下本地 Smart 不实用，96 GB 仍通常打不过包月套餐。',
+    intro: '两条经验在 pi 和 DeepSeek Harness 上都适用。Fast 档 —— 选智价比最好的模型：每块钱买到最强的智能，而且默认情况下这一档还兼任裁判，所以它的判断力同样重要。Smart 档 —— 留在云端前沿模型。80 GB 以下本地 Smart 不实用，96 GB 仍通常打不过包月套餐。我们故意列档位名（Flash、Luna、Haiku、K3……）而不是会过期的具体模型 ID：ID 随每次发布变，档位名不会变。装好之后跑 /model 就能看到你环境里当前是哪个。',
     patterns: [
       {
         title: '编码订阅套餐',
         summary: '一份订阅，多家模型。要么用 Token 网关（一把 key 代发各家主流模型），要么复用你已经付费的编码工具订阅 —— 大多数都暴露 OpenAI 兼容端点。',
         fast: {
           models: [
-            'deepseek-v4-flash',
-            'gpt-5.6-luna  （OpenCode Zen / Go）',
-            'qwen3.6-flash',
+            '任意 Flash 类（DeepSeek V4 / Qwen Flash / MiMo Flash）',
+            'Luna（OpenAI · OpenCode Zen / Go）',
+            'Haiku（Anthropic）',
           ],
         },
         smart: {
           models: [
-            'gpt-5.6-sol  （OpenCode Zen / Go）',
-            'qwen3.8-max',
-            'kimi-k3',
+            'Sol / Terra（OpenAI · OpenCode Zen / Go）',
+            'Qwen Max',
+            'Kimi K3',
           ],
         },
         note: '可直接复用的订阅：OpenCode Zen（OpenAI 兼容端点）、GitHub Copilot（BYOK —— OpenAI + Anthropic）、Cursor（Pro / Pro+ / Ultra 套餐池）、OpenAI Codex（随 ChatGPT Plus / Pro / Business）。',
@@ -300,35 +337,36 @@ export const zh: Translations = {
       },
       {
         title: '同 Provider 分层',
-        summary: '一家 provider 两档 —— 最简配置。你已经在某家付费、不想换 key 时用这个。',
+        summary: '一家 provider 两档 —— 最简配置。你已经在某家付费、不想换 key 时用这个。右列按能力升序排列，它同时就是你的回退链。',
         groupRows: [
-          { group: 'Anthropic', fast: 'sonnet-5', smart: 'opus-5 / fable-5' },
-          { group: 'OpenAI', fast: 'gpt-5.6-luna', smart: 'gpt-5.6-sol' },
-          { group: 'Google', fast: 'gemini-3.5-flash-lite', smart: 'gemini-3.6-flash' },
-          { group: 'Qwen（阿里）', fast: 'qwen3.7-plus', smart: 'qwen3.8-max' },
-          { group: 'DeepSeek', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
-          { group: 'Z.AI（GLM）', fast: 'glm-5 / glm-5-turbo', smart: 'glm-5.2' },
-          { group: 'xAI（Grok）', fast: 'grok-4.5-fast', smart: 'grok-4.5' },
+          { group: 'Anthropic', fast: 'Haiku', smart: 'Sonnet → Opus → Fable' },
+          { group: 'OpenAI', fast: 'Luna', smart: 'Terra → Sol → Astra' },
+          { group: 'Google', fast: 'Flash-Lite', smart: 'Flash → Pro' },
+          { group: '阿里（Qwen）', fast: 'Plus / Flash', smart: 'Max' },
+          { group: 'DeepSeek', fast: 'Flash', smart: 'Pro' },
+          { group: 'Z.AI（GLM）', fast: 'Flash / Highspeed', smart: '主线' },
+          { group: '月之暗面（Kimi）', fast: 'K2.x / K2.7-Code', smart: 'K3' },
+          { group: '小米（MiMo）', fast: 'Flash', smart: 'Pro / UltraSpeed' },
+          { group: 'xAI（Grok）', fast: 'Fast', smart: '主线' },
         ],
-        bestFor: '从零到路由最快 —— 只需两个模型 ID。',
+        bestFor: '从零到路由最快 —— 一家、一个账单、一个额度池。',
       },
       {
         title: '跨 Provider 混合',
-        summary: '每档取各家最强。默认：Fast 走 deepseek-v4-flash，Smart 走 claude-opus-5。要加固再加 fallback。',
+        summary: '每档取各家最强。路由真正体现价值的地方就在这里：成本的不对称负责省钱，厂商家族的不对称负责抗故障 —— 跨两个家族的链能熬过任何单点故障。',
         groupRows: [
-          { group: 'DeepSeek Harness（DSH）', fast: 'deepseek-v4-flash', smart: 'deepseek-v4-pro' },
-          { group: '最低成本', fast: 'deepseek-v4-flash', smart: 'claude-opus-5' },
-          { group: '多 provider 备份', fast: 'deepseek-v4-flash + glm-5.2', smart: 'claude-opus-5 + gpt-5.6-sol + kimi-k3' },
-          { group: '包月', fast: 'opencode-go/deepseek-v4-flash', smart: 'opencode-go/glm-5.2' },
-          { group: '1 M 上下文、长仓库', fast: 'deepseek-v4-flash', smart: 'gemini-3.6-pro / kimi-k3' },
-          { group: '多模态', fast: 'deepseek-v4-flash', smart: 'claude-opus-5（视觉） / gemini-3.6-pro' },
-          { group: '多语种 / 中文优先', fast: 'deepseek-v4-flash', smart: 'qwen3.8-max' },
-          { group: 'GDPR / 欧洲', fast: 'deepseek-v4-flash（经 OpenRouter）', smart: 'mistral-medium-2604' },
+          { group: '编码 · 最低成本', fast: '任意 DeepSeek V4 Flash', smart: '任意 Anthropic Opus 级' },
+          { group: '编码 · 多 provider 备份', fast: 'DeepSeek V4 Flash + GLM-5.x-Flash', smart: 'Anthropic Opus + GPT-5.x Sol + Kimi K3' },
+          { group: '编码 · 包月（性价比最高）', fast: 'OpenCode Go 的 Flash 类', smart: 'OpenCode Go 最强（Grok / GPT Luna / Kimi K3）' },
+          { group: '1 M 上下文 · 长仓库或 PDF 研究', fast: '任意带 1 M 上下文的 Flash 类', smart: 'Kimi K3 或 Gemini Pro' },
+          { group: '多模态（图 / 视频）', fast: '任意 Flash 类', smart: 'Anthropic Opus（视觉）或 Gemini Pro' },
+          { group: '多语种 / 中文优先', fast: '任意 Flash 类', smart: 'Qwen Max' },
+          { group: '欧洲 / GDPR 优先', fast: 'DeepSeek Flash（经 OpenRouter）', smart: 'Mistral medium' },
         ],
         bestFor: '每档选最强，不管谁卖。',
       },
     ],
-    note: '价格与可用模型每月变一次 —— `curl -s https://models.dev/api.json | jq` 可看最新。完整 provider 目录在 models.dev。',
+    note: '裁判还需要一个支持 JSON 模式的端点：任意现代 Flash 类模型都行（Qwen 3.5+、Gemma 4、MiMo V2.x）；本地裁判每轮会多花约 0.5–2 秒。一个稳妥的起点是：Fast 档本地、Smart 档云端，裁判跑在你最信任的那类工作对应的 Smart 模型上。模型 ID 和价格每月变 —— 上游文档用 `curl -s https://models.dev/api.json | jq` 跟踪，完整的 provider 目录在 models.dev。',
   },
   faq: {
     label: '常见问题',
@@ -345,7 +383,7 @@ export const zh: Translations = {
       },
       {
         q: '试一下安全吗？',
-        a: '完全安全。配置前路由器什么都不做；纯 TypeScript、零运行时依赖；/router off 可立即停用。没有任何绑定。',
+        a: '完全安全。配置前路由器什么都不做；纯 TypeScript、只依赖一个宿主提供的包；/router off 可立即停用。没有任何绑定。',
       },
       {
         q: 'Smart 层到底做什么？',
@@ -373,7 +411,15 @@ export const zh: Translations = {
       },
       {
         q: '能强制指定某一轮用某个模型吗？',
-        a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定具体模型。/route-force auto 清除覆盖。',
+        a: '可以。/route-force <tier> 为下一轮锁定 Smart 或 Fast；/route-force <provider>/<model> 锁定具体模型；/route-force auto 清除覆盖。注意路由开启时路由器拥有模型选择权：用 pi 自带的 /model 切换只对当轮生效，下一个路由点会重新确立该层的模型链。要完全手动控制就跑 /router off。',
+      },
+      {
+        q: '和 OpenRouter Auto Router 有什么区别？',
+        a: 'OpenRouter Auto Router 零配置、市场驱动 —— 很适合裸 API 调用，而且它优化的是质量而不是你的账单（他们文档明说路由到贵模型是「working as designed」）。你不能自己定义分层、看不到结论、也不能控制故障行为。Shift Router 按任务形状路由、在 agent 内部、在你定义的两条链之间切换，而且每个结论都能在 /router status 里看到。Cloudflare AI Gateway Dynamic Routing 是第三种选择：带配额和回退的版本化路由流，但你要为每个 gateway 画图，而且它看到的是请求而不是任务 —— 它没有「这一轮是架构工作」的概念。手动切换则是免费的，直到你第一次忘了切回来。',
+      },
+      {
+        q: '和其他 pi 路由器有什么区别？',
+        a: 'pi-bifrost 用 7 步规则加历史启发式、4 个档位决策 —— 覆盖更多场景但更难推演，而且它省的是订阅额度不是钱。pi-smart-router 跑 12 步本地管线、没有 LLM，用公式估算成本，需要本地 DB 和 ML 模型。Shift Router 把决策收敛到一份可读的 prompt（或一个决策模型）、两档一个心智模型、Smart CTO 委派 Fast 子代理的编排、省了多少钱的遥测，以及一条「不卡死」而是逐级退到无路由的裁判链。CC-Switch 是另一个类别：桌面应用，在会话之间手动切换 provider 配置 —— 可以共存。',
       },
       {
         q: '能混用不同 provider 的模型吗？',
@@ -381,23 +427,31 @@ export const zh: Translations = {
       },
       {
         q: '可以监控运行情况吗？',
-        a: '可以。/router stats 显示每档花费与节省、窗口大小、置信度分布（高/中/低/无）、累计升级/降级次数、tokens-per-second。它还会报告成本遥测：每档花了多少，以及一个基线 —— 如果每一轮都跑你的 Smart 模型（即不装路由器）会花多少钱。例如 Spend: fast $0.045 (9 calls) · smart $0.42 (3 calls) · total $0.465，基线 $3.21，省下 $2.74。状态栏也会显示实时吞吐：[🧠 kimi-k3 • 23 tok/s]。',
+        a: '可以。`/router status` 会打开一个 TUI 仪表盘：当前模型、上一轮决策及其理由、带内联冷却的两条层链、每个模型的上下文占用与缓存命中率，以及一个 Money 区块（每档花费、节省基线，发生委派时还有一行 orchestration $0.0689 · 5 workers）。基线回答的是「如果每轮都跑你的 Smart 模型（即不装路由器）会花多少」；价格缺失时它显示 unavailable，而不是编一个数字。',
       },
       {
         q: '怎么调节降级行为？',
-        a: '两个阈值：`threshold`（默认 0.6）控制最近 5 轮分类中要多大比例倾向 Fast 才触发降级；`minConfidence`（默认 0.5）设了一个门槛，低于它的票直接忽略。把 `threshold` 调到 0.8 能让 Smart 档停留更久。升级始终是即时的 —— 只有降级会等。',
+        a: '就一个旋钮：`reworkPenalty`（R，默认 3）—— 门槛是 θ = 1/R，即「跑 Smart 在期望成本上划算」的临界点。R 调低（2）更保守更便宜；R 调高（5）更积极，对架构密集的活更安全。你不必碰这些数学：`/router eco`、`/router default`、`/router sport` 会帮你设好，而且可以 tab 补全。另外 `minConfidence`（默认 0.5）是置信度地板，低于它的结论直接作废，路由器保持不动。升级始终是即时的 —— 只有降级要等，而且要等 `downgradeMemory`（默认 2）次连续的确定性 fast 判定。',
       },
       {
-        q: '和 pi-bifrost、pi-smart-router 有什么区别？',
-        a: '两者都是同类 pi 路由器。@tenchi4u/pi-bifrost 用 7 步规则 + 历史技巧、4 个档位决策 —— 覆盖更多场景，但更难推演；它省的是订阅额度而不是钱，故障时断路器还可能跨档切换。pi-smart-router 跑一条 12 步本地管线（无 LLM），3 个档位还带本地档，用公式估算成本，需要本地 DB + ML 模型（约 2.5 MB 加下载）和 15+ 个环境变量。Shift Router 把决策收敛到一份可读的 LLM prompt（纯文本可审计、JSON 模式强制）、两档一个心智模型、任务级编排（Smart CTO 委派给 Fast 子代理）、省了多少钱的成本遥测、与 Judge 共用冷却的同档故障转移，以及零依赖约 409 KB。CC-Switch 是另一个类别：桌面应用，在会话之间手动切换 provider 配置 —— 可以和逐轮路由共存。',
+        q: '裁判本身不可用时会怎样？',
+        a: '先保持，再逐级下调 —— 它从不通猜。裁判调用失败不再伪造一个 fast 判定（那过去会在连续两次故障后静默把一个 Smart 会话降级）。现在路由器走一条可用性阶梯：配置的裁判链 → LLM 裁判 → 完全不路由。最后一档的行为等于「插件没装」：不切模型、清编排、恢复你的会话模型 —— 并且每个会话只提醒一次。某个裁判源 429 时会立即落到下一个，而不是硬撑。',
+      },
+      {
+        q: '什么是决策模型，该拿它当裁判吗？',
+        a: '常规做法是问语言模型要 JSON 再解析它；决策模型（TypeSafe Jev / System One 类）则是你给它一个结构化问题，它直接返回带概率的结构化答案。路由器拿这个概率直接和 θ 比，所以没有解析步骤，也没有「回复格式不对」这一整类故障；而且只计输入 token，单次判定约 $0.0001。LiteLLM 在他们自己的 Auto Router 里实测：jev 分类器比 Haiku 级快 5.43×、便宜 96%。但要诚实地说：它单次判定目前较慢（1.4–6.6 秒，供给侧产能爬坡中），且 2026 年 9 月一份独立评测发现决策模型在 15 个标注任务中有 14 个落后于最优 LLM —— 所以它默认关闭、标为 Beta、排在菜单第三位。批量和后台路由很适合它；交互式轮次里 LLM 裁判仍是更好的默认。如果它不应答，路由器会退到你的 LLM 裁判。',
+      },
+      {
+        q: '服务商欠费了，路由器会发现吗？',
+        a: '会。HTTP 402（包括 "Insufficient Balance" 和「余额不足」）以及 Codex 用量上限耗尽（"The usage limit has been reached"）都被识别为限流类故障，那个欠费模型会进入 16m 冷却，同层下一个健康模型接管 —— 就在这一轮里，你不用手动切。',
       },
       {
         q: '有 DeepSeek Harness 版本吗？',
-        a: '有 —— dsh-shift-router（v0.5.0），同一个路由器的 DSH 适配版。通过 cordis.patch.yml 接入 harness，走它自己的 agent/request 管线，配置有两种实时方式：完整的 GUI 卡片（Settings → Plugins → Plugin configuration 里的 “Shift-Router” 卡片，两档模型链都能直接编辑）和交互式 /router config 编辑器（get / set / unset / diff）。能力和 pi 版一致：LLM 裁判、缓存感知路由、运行时故障转移、任务级编排、成本遥测 —— 而且编排硬上限由插件强制，不只是提示。109 个单元测试加一个免凭据的 headless e2e。安装：git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build，然后 dsh plugin --profile web add <路径>。',
+        a: '有 —— dsh-shift-router（v0.6.0），同一个路由器的 DSH 适配版，已对齐到上游 v1.6.0。通过 cordis.patch.yml 接入 harness，走它自己的 agent/request 管线，自身零运行时依赖。配置有两种方式：完整的 GUI 卡片（Settings → Plugins → Plugin configuration 里的 “Shift-Router” 卡片，两档模型链都能直接编辑）和交互式 /router config 编辑器（get / set / unset / diff）。能力和 pi 版一致，包括验收审计和三种裁判模式，另外还有 /router allow-workers on|off —— 它把你的 Fast 链写进 harness 自己的 subagent 白名单，让委派出去的 worker 真的跑在 Fast 上。424 个单元测试加一个免凭据的 headless e2e。安装：git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build，然后 dsh plugin --profile web add <路径>。',
       },
       {
         q: '在 DeepSeek Harness 上，子代理也会被路由吗？',
-        a: '不会。subagent 工具派生的子代理带有 origin === \'subagent\' 标记，保持它们被钉住的模型 —— 路由器只驱动顶层 agent。编排时 CTO 委派给 Fast 子代理，其模型由部署配置钉住（tool-subagent 的 agentOptions），所以子代理永远按 Fast 层的价格运行。',
+        a: '不会。subagent 工具派生的子代理带有 origin === \'subagent\' 标记，保持它们自己的模型 —— 路由器只驱动顶层 agent。worker 的模型由部署配置钉住（tool-subagent 的 agentOptions），默认会继承父 agent 的模型。从 v0.6.0 起可以用 /router allow-workers on 修正：它把你的 Fast 层模型链写进 harness 的 subagent-model-selection 白名单，让编排器把 worker 钉在 Fast 上。/router status 会显示实时计数（round x/max, esc y/threshold）。',
       },
     ],
   },
