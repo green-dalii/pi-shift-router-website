@@ -14,6 +14,8 @@ export default defineConfig({
         defaultLocale: 'en',
         locales: { en: 'en', zh: 'zh' },
       },
+      // /og/ is the source page for public/og-image.png, not a destination.
+      filter: (page) => !page.includes('/og/') && !page.includes('/404'),
     }),
   ],
   vite: {

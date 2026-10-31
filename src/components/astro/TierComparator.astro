@@ -1,0 +1,295 @@
+---
+/**
+ * TierComparator — the concept, made operable.
+ *
+ * The static pair of Fast/Smart cards described the two registers. This lets
+ * the reader move between them: one surface, one divider, the same two tiers
+ * rendered in their own register on either side. Dragging right gives the CTO
+ * more room; dragging left gives it back to the engineer.
+ *
+ * The copy is unchanged — this reuses the tier `desc` and `bullets` that the
+ * cards already carried, so nothing is invented and both locales get it free.
+ *
+ * Accessibility: the divider is a real `<input type="range">` underneath, so
+ * it is focusable, arrow-key operable and announced. Both layers stay in the
+ * accessibility tree; only the paint is clipped.
+ */
+import { getTranslations, type Locale } from '../../content/locales';
+import TierIcon from './TierIcon.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getTranslations(locale);
+const fast = t.models.fast;
+const smart = t.models.smart;
+---
+
+<div class="cmp" data-cmp style="--split: 50%">
+  <div class="cmp-stage">
+    <!-- CHEAP register -->
+    <article class="cmp-layer cmp-layer--fast">
+      <div class="cmp-head">
+        <span class="cmp-role">
+          <TierIcon tier="fast" size={17} />
+          {fast.role}
+        </span>
+        <h3 class="cmp-title">{fast.tier}</h3>
+      </div>
+      <p class="cmp-desc">{fast.desc}</p>
+      <ul class="cmp-list">
+        {fast.bullets.map((b) => (
+          <li>{b}</li>
+        ))}
+      </ul>
+    </article>
+
+    <!-- STRONG register, painted over the cheap one from the divider rightwards -->
+    <article class="cmp-layer cmp-layer--smart" data-cmp-top>
+      <div class="cmp-head">
+        <span class="cmp-role">
+          <TierIcon tier="smart" size={17} />
+          {smart.role}
+        </span>
+        <h3 class="cmp-title">{smart.tier}</h3>
+      </div>
+      <p class="cmp-desc">{smart.desc}</p>
+      <ul class="cmp-list">
+        {smart.bullets.map((b) => (
+          <li>{b}</li>
+        ))}
+      </ul>
+    </article>
+
+    <input
+      class="cmp-range"
+      data-cmp-range
+      type="range"
+      min="8"
+      max="92"
+      value="50"
+      step="1"
+      aria-label={`${fast.tier} / ${smart.tier} — drag to compare`}
+    />
+
+    <div class="cmp-handle" data-cmp-handle aria-hidden="true">
+      <span class="cmp-grip">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 6 3 12 9 18" />
+          <polyline points="15 6 21 12 15 18" />
+        </svg>
+      </span>
+    </div>
+  </div>
+
+  <div class="cmp-legend">
+    <span class="cmp-legend-side cmp-legend-side--fast">
+      <TierIcon tier="fast" size={14} />
+      {fast.tier}
+    </span>
+    <span class="cmp-legend-hint">drag</span>
+    <span class="cmp-legend-side cmp-legend-side--smart">
+      {smart.tier}
+      <TierIcon tier="smart" size={14} />
+    </span>
+  </div>
+</div>
+
+<script>
+  (() => {
+    document.querySelectorAll<HTMLElement>('[data-cmp]').forEach((root) => {
+      const range = root.querySelector<HTMLInputElement>('[data-cmp-range]');
+      const top = root.querySelector<HTMLElement>('[data-cmp-top]');
+      const handle = root.querySelector<HTMLElement>('[data-cmp-handle]');
+      if (!range || !top || !handle) return;
+
+      const paint = (pct: number) => {
+        const p = `${pct}%`;
+        root.style.setProperty('--split', p);
+        top.style.clipPath = `inset(0 0 0 ${p})`;
+        handle.style.left = p;
+      };
+
+      range.addEventListener('input', () => paint(Number(range.value)));
+      paint(Number(range.value));
+    });
+  })();
+</script>
+
+<style>
+  .cmp {
+    --rail: color-mix(in srgb, var(--color-ink) 14%, transparent);
+  }
+
+  .cmp-stage {
+    position: relative;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 1px solid var(--color-ink);
+    min-height: 22rem;
+  }
+
+  .cmp-layer {
+    position: absolute;
+    inset: 0;
+    padding: 1.75rem 1.9rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* CHEAP: sage, weight 600, tight tracking — the engineer's register. */
+  .cmp-layer--fast {
+    background: var(--color-tone-2);
+    color: var(--color-ink);
+  }
+
+  /* STRONG: deep forest, lime, weight 800, open — the CTO's register.
+     Mirror-aligned: the visible half has to be the half with the text in it,
+     so the strong side reads from the divider rightwards. */
+  .cmp-layer--smart {
+    background: var(--color-deep);
+    color: var(--color-canvas);
+    will-change: clip-path;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .cmp-layer--smart .cmp-head { align-items: flex-end; }
+  .cmp-layer--smart .cmp-list li { flex-direction: row-reverse; }
+
+  .cmp-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+  }
+
+  .cmp-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .cmp-layer--fast .cmp-role { color: var(--color-positive-deep); }
+  .cmp-layer--smart .cmp-role { color: var(--color-primary); }
+
+  .cmp-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+  .cmp-layer--smart .cmp-title {
+    font-weight: 800;
+    color: var(--color-canvas);
+  }
+
+  .cmp-desc {
+    font-size: var(--text-body-md);
+    line-height: 1.6;
+    max-width: 30rem;
+  }
+  .cmp-layer--fast .cmp-desc { color: var(--color-body); }
+  .cmp-layer--smart .cmp-desc { color: color-mix(in srgb, var(--color-canvas) 90%, transparent); }
+
+  .cmp-list {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: var(--text-body-sm);
+  }
+  .cmp-list li {
+    display: flex;
+    gap: 0.625rem;
+    align-items: baseline;
+  }
+  .cmp-list li::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 9999px;
+    flex: none;
+    transform: translateY(-0.2em);
+  }
+  .cmp-layer--fast .cmp-list li { color: var(--color-body); }
+  .cmp-layer--fast .cmp-list li::before { background: var(--color-positive); }
+  .cmp-layer--smart .cmp-list li { color: color-mix(in srgb, var(--color-canvas) 88%, transparent); }
+  .cmp-layer--smart .cmp-list li::before { background: var(--color-primary); }
+
+  /* Divider */
+  .cmp-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 2px solid var(--color-primary);
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  .cmp-grip {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    background: var(--color-primary);
+    color: var(--color-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-ink);
+  }
+  .cmp-grip svg { width: 1rem; height: 1rem; }
+
+  /* The real control: an invisible range laid over the whole stage, so the
+     comparator can be grabbed anywhere and still answers to arrow keys. */
+  .cmp-range {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 3;
+  }
+  .cmp-range:focus-visible {
+    opacity: 1;
+    background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+    outline: 2px solid var(--color-primary);
+    outline-offset: -4px;
+  }
+
+  .cmp-legend {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.875rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-mute);
+  }
+  .cmp-legend-side { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .cmp-legend-hint { opacity: 0.7; }
+
+  /* Focused, the handle should read as the active control. */
+  .cmp-range:focus-visible ~ .cmp-legend .cmp-legend-hint { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .cmp-layer { padding: 1.25rem; }
+    .cmp-title { font-size: 1.5rem; }
+  }
+</style>

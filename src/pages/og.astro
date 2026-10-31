@@ -1,0 +1,118 @@
+---
+/**
+ * Social card source. Rendered at 1200×630 and screenshotted to
+ * `public/og-image.png` — social platforms do not accept SVG for `og:image`,
+ * which the previous `/og-image.svg` silently relied on.
+ *
+ * Keep this page out of the sitemap and out of nav.
+ */
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>og card source</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <style>
+      @import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/800.css');
+      @import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/400.css');
+      @import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/greek-400.css');
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #e8ebe6;
+        font-family: 'Manrope', system-ui, sans-serif;
+        color: #0e0f0c;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(14,15,12,.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(14,15,12,.05) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      .pad { position: absolute; inset: 0; padding: 68px 76px; display: flex; flex-direction: column; }
+
+      .top { display: flex; align-items: center; gap: 14px; }
+      .mark {
+        width: 40px; height: 40px; border-radius: 9999px; background: #0e0f0c;
+        display: flex; align-items: center; justify-content: center;
+      }
+      .mark i { display: block; width: 18px; height: 2px; background: #9fe870; box-shadow: 0 6px 0 #9fe870, 0 -6px 0 #9fe870; }
+      .brand { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; }
+      .tag {
+        margin-left: auto;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: #454745; border: 1px solid rgba(14,15,12,.2); border-radius: 9999px;
+        padding: 7px 14px; background: #fff;
+      }
+
+      h1 {
+        margin-top: auto;
+        font-size: 76px;
+        line-height: 0.98;
+        letter-spacing: -0.035em;
+        font-weight: 800;
+        max-width: 900px;
+      }
+      h1 .close { display: block; font-size: 52px; letter-spacing: -0.03em; margin-top: 10px; }
+
+      .bar {
+        margin-top: 46px;
+        display: flex;
+        height: 40px;
+        align-items: stretch;
+        border: 1px solid #0e0f0c;
+        border-radius: 6px;
+        overflow: hidden;
+        width: 560px;
+      }
+      .bar .cheap { flex: 1; background: #d8ded3; display: flex; align-items: center; padding: 0 14px;
+        font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #454745; }
+      .bar .strong { width: 34%; background: #163300; display: flex; align-items: center; justify-content: flex-end; padding: 0 14px;
+        font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: #9fe870; }
+
+      .foot {
+        margin-top: auto;
+        display: flex; align-items: baseline; gap: 18px;
+        font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #454745;
+      }
+      .foot b { color: #0e0f0c; font-weight: 400; }
+      .foot .v { color: #054d28; }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <div class="pad">
+      <div class="top">
+        <span class="mark"><i></i></span>
+        <span class="brand">Shift Router</span>
+        <span class="tag">pi-coding-agent · DeepSeek Harness</span>
+      </div>
+
+      <h1>
+        Never let the CTO do the engineer’s job.
+        <span class="close">And vice versa.</span>
+      </h1>
+
+      <div class="bar">
+        <span class="cheap">cheap</span>
+        <span class="strong">strong</span>
+      </div>
+
+      <div class="foot">
+        <span class="v">bar at 0.33</span>
+        <span>one message in three clears it</span>
+        <span style="margin-left:auto"><b>shiftrouter.greenerai.top</b></span>
+      </div>
+    </div>
+  </body>
+</html>

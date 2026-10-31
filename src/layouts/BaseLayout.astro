@@ -11,6 +11,8 @@ interface Props {
   locale?: Locale;
   /** Pathname of the current page (used by Header / Footer language switcher). */
   pathname?: string;
+  /** Keep a page out of the index and out of the sitemap-facing metadata. */
+  noindex?: boolean;
 }
 
 const {
@@ -19,6 +21,7 @@ const {
   keywords = '',
   locale = 'en',
   pathname = '/',
+  noindex = false,
 } = Astro.props;
 
 const t = getTranslations(locale);
@@ -33,7 +36,7 @@ const hreflangEntries = (['en', 'zh'] as const).map((code) => ({
 const xDefault = hreflangEntries.find((h) => h.code === 'en')?.href ?? siteUrl.href;
 
 const ogLocale = locale === 'zh' ? 'zh_CN' : 'en_US';
-const ogImage = new URL('/og-image.svg', siteUrl).href;
+const ogImage = new URL('/og-image.png', siteUrl).href;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -120,6 +123,31 @@ const jsonLd = {
       <slot />
     </main>
     <Footer locale={locale} pathname={pathname} />
+
+    <script>
+      /* ── Magnetic CTA ───────────────────────────────────────────────────────
+         The one pointer-following element on the site, and only the primary
+         action. Disabled entirely under reduced motion or a coarse pointer —
+         it is a flourish, not an interaction the site depends on. */
+      (() => {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const fine = window.matchMedia('(pointer: fine)');
+        if (reduced.matches || !fine.matches) return;
+
+        document.querySelectorAll<HTMLElement>('a.btn-primary').forEach((el) => {
+          const strength = 6;
+          el.addEventListener('pointermove', (e) => {
+            const r = el.getBoundingClientRect();
+            const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+            const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+            el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+          });
+          el.addEventListener('pointerleave', () => {
+            el.style.transform = '';
+          });
+        });
+      })();
+    </script>
 
     <script>
       /* ── Reveal system ─────────────────────────────────────────────────────

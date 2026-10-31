@@ -86,7 +86,7 @@ sections sharing an identical flat background without a seam; page height
 **Acceptance:** motion is observer-driven and seek-safe; reduced-motion leaves
 nothing hidden; no animation runs off-screen or after the reader has passed.
 
-## T3 — Concept
+## T3 — Concept — ✅ done
 
 - [x] **T3.1 Draggable two-state comparator.** Replaces the static Fast/Smart
       card pair with a divider you drag: the same task description, written in
