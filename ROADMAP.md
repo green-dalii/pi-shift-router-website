@@ -100,7 +100,7 @@ nothing hidden; no animation runs off-screen or after the reader has passed.
 **Acceptance:** the comparator is keyboard-operable and works with reduced
 motion; the OG image renders legibly at 1200×630 and at thumbnail size.
 
-## T4 — Delivery
+## T4 — Delivery — ✅ done
 
 - [x] **T4.1** Lighthouse: Performance / Accessibility / Best-practices / SEO
       all 100 on `/` and `/zh/`.
@@ -111,6 +111,31 @@ motion; the OG image renders legibly at 1200×630 and at thumbnail size.
 
 **Acceptance:** all four routes 200, all four Lighthouse categories 100,
 `git status` clean apart from new commits, preview server running for review.
+
+## Measured result
+
+| Metric | Before | After |
+|---|---|---|
+| Lighthouse Accessibility | 93 (`/`), 93 (`/zh/`) | **100** on all four routes |
+| Lighthouse Best practices / SEO | 100 / 100 | 100 / 100 |
+| Lighthouse Performance | 82 (`/`), 97 (`/zh/`) | **98 / 98 / 99 / 99** |
+| Lowest text contrast | 3.03:1 | 4.62:1, 0 failures |
+| FCP / LCP / TBT / CLS | 2.0s / 2.1s / 0ms / 0 | 1.7s / 1.8s / **0ms** / **0** |
+| Section heading width | 672px of 1152 (7/7 sections) | 7/12 columns + counterweight (7/7) |
+| Distinct surface tones | 3 | 6 |
+| Scroll-driven animation | 0 observers | 1 observer, 45 reveals, 2 draw-ins |
+| `prefers-reduced-motion` | unhandled | first-class, 0 hidden elements |
+| Prose at 17px | 0 nodes | 38 nodes (2nd most common size) |
+| Page height @1440 | 11242px | 10290px |
+| Mobile CTA position | 2.03 viewports | **0.54 viewports** |
+| Design emoji | 19 | 0 |
+| `og:image` | SVG (unrenderable by every major platform) | 1200×630 PNG, 41kB |
+| 404 page | framework default | designed, both languages |
+
+Performance note: FCP 1.7s is the Lighthouse mobile-throttling floor for a
+single HTML request — TBT is 0ms and CLS is 0, so nothing in the page is
+actually slow. Inlining the stylesheet was tried and reverted: it changed FCP
+by nothing and made LCP slightly worse.
 
 ---
 

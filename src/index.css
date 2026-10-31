@@ -1,18 +1,31 @@
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/400.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/500.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/600.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/700.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/manrope@5.1.0/800.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/400.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/500.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/600.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/700.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/400.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/500.css');
-/* Greek subset carries θ, which the latin subset does not — without it the
-   threshold glyph falls back to a different face and the notation drifts. */
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/greek-400.css');
-@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/greek-500.css');
+/* ──────────────────────────────────────────────────────────────────────────
+   Fonts — self-hosted via @fontsource, bundled by Vite.
+
+   These used to be eleven `@import url(https://cdn.jsdelivr.net/...)` calls at
+   the top of the stylesheet, which is the worst possible shape for a render
+   path: the browser had to fetch our CSS, then eleven more stylesheets, then
+   the woff2 files — three serial round trips to a third party before any text
+   could paint. Lighthouse measured FCP 2.0s and LCP 2.1s because of it.
+
+   Now the font files are part of the build, served from our own origin, and
+   have no effect on first paint beyond one cached request.
+
+   Subsets: latin only, plus the greek subset for JetBrains Mono — θ (U+03B8)
+   is the site's threshold notation and the latin subset does not carry it.
+   ────────────────────────────────────────────────────────────────────────── */
+@import "@fontsource/manrope/latin-400.css";
+@import "@fontsource/manrope/latin-500.css";
+@import "@fontsource/manrope/latin-600.css";
+@import "@fontsource/manrope/latin-700.css";
+@import "@fontsource/manrope/latin-800.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-500.css";
+@import "@fontsource/jetbrains-mono/greek-400.css";
+@import "@fontsource/jetbrains-mono/greek-500.css";
 
 @import "tailwindcss";
 
@@ -76,8 +89,15 @@
   --radius-pill: 9999px;
 
   /* Font families — Manrope for display, Inter for body, JetBrains Mono for code */
-  --font-display: 'Manrope', 'Inter', system-ui, -apple-system, sans-serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Manrope / Inter / JetBrains Mono carry no CJK glyphs, so a Chinese heading
+     fell through to the system face and the browser *synthesised* the 800
+     weight — a smeared fake bold on the site's largest type. The CJK faces are
+     now named explicitly so each script gets a real weight, and synthesis is
+     disabled outright below as a safety net. */
+  --font-display: 'Manrope', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC',
+    'Source Han Sans SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Inter', 'PingFang SC', 'Hiragino Sans GB', 'Noto Sans SC',
+    'Source Han Sans SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 
   /* Display scale (DESIGN.md typography) */
@@ -149,6 +169,16 @@
     font-weight: 800;
     line-height: 1.04;
     letter-spacing: -0.025em;
+    /* Never fake a weight. If the face has no 800, use the nearest real one. */
+    font-synthesis: none;
+  }
+
+  /* CJK has no italic and does not want the Latin optical tracking — pull the
+     negative tracking back so 中文 does not collide. */
+  :lang(zh) h1,
+  :lang(zh) h2,
+  :lang(zh) h3 {
+    letter-spacing: -0.01em;
   }
 
   code, pre, .font-mono {

@@ -41,6 +41,7 @@ export interface Translations {
       statusTier: string;
       statusTierValue: string;
       statusMode: string;
+      statusModeLabel: string;
       judgeLabel: string;
       judgeValue: string;
       windowLabel: string;

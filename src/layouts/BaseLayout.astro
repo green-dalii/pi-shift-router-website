@@ -38,6 +38,12 @@ const xDefault = hreflangEntries.find((h) => h.code === 'en')?.href ?? siteUrl.h
 const ogLocale = locale === 'zh' ? 'zh_CN' : 'en_US';
 const ogImage = new URL('/og-image.png', siteUrl).href;
 
+// Resolved through Vite so the hashed asset path stays correct after a build.
+import manrope800Url from '@fontsource/manrope/files/manrope-latin-800-normal.woff2?url';
+import inter400Url from '@fontsource/inter/files/inter-latin-400-normal.woff2?url';
+const manrope800 = manrope800Url;
+const inter400 = inter400Url;
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -63,18 +69,19 @@ const jsonLd = {
       codeRepository: 'https://github.com/green-dalii/pi-shift-router',
       downloadUrl: 'https://www.npmjs.com/package/pi-shift-router',
     },
-    ...(locale === 'en'
-      ? [
-          {
-            '@type': 'FAQPage',
-            mainEntity: t.faq.items.map((item) => ({
-              '@type': 'Question',
-              name: item.q,
-              acceptedAnswer: { '@type': 'Answer', text: item.a },
-            })),
-          },
-        ]
-      : []),
+    /* Emitted for both locales, each declaring its own language: the ZH page
+       carries nine real FAQ entries and was shipping without any structured
+       data for them. `inLanguage` is what keeps the two entities distinct. */
+    {
+      '@type': 'FAQPage',
+      '@id': `${siteUrl.href}#faq-${locale}`,
+      inLanguage: locale === 'zh' ? 'zh-CN' : 'en',
+      mainEntity: t.faq.items.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: { '@type': 'Answer', text: item.a },
+      })),
+    },
   ],
 };
 ---
@@ -99,6 +106,13 @@ const jsonLd = {
     ))}
     <link rel="alternate" hreflang="x-default" href={xDefault} />
     <link rel="alternate" type="text/markdown" title="LLMs.txt (GEO)" href="/llms.txt" />
+
+    <!-- The hero paints in Manrope 800 and body in Inter 400: preload both so
+         the first text paint never waits for a CSS-discovered font. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href={manrope800} />
+    <link rel="preload" as="font" type="font/woff2" crossorigin
+      href={inter400} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

@@ -31,11 +31,12 @@ export const zh: Translations = {
     ctaTertiary: 'dsh-shift-router 文档',
     terminal: {
       title: 'pi-shift-router — 在 pi 中',
-      subtitle: '状态栏 · toast · 自动',
+      subtitle: '状态栏 · 提示 · 自动',
       statusLabel: 'router',
       statusModel: 'deepseek-flash',
       statusTier: '档位',
       statusTierValue: 'fast',
+      statusModeLabel: '模式',
       statusMode: 'auto',
       judgeLabel: 'judge',
       judgeValue: '🧭 judging…',

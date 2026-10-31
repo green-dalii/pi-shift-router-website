@@ -52,7 +52,7 @@ const t = getTranslations(locale);
 
         <!-- CTAs sit directly under the subhead: the action comes before the
              explanation, and on mobile this is what keeps the fold usable. -->
-        <div class="mt-8 flex flex-wrap items-center gap-3 reveal" data-delay="3">
+        <div class="mt-8 flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 reveal [&>a]:justify-center sm:[&>a]:justify-start [&>a]:w-full sm:[&>a]:w-auto" data-delay="3">
           <a href="#quick-start" class="btn-primary">
             <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             {t.hero.ctaPrimary}
@@ -110,7 +110,7 @@ const t = getTranslations(locale);
                 <span class="hero-tier" data-demo-tier>{t.hero.terminal.statusTierValue}</span>
               </div>
               <div class="flex items-center gap-1.5">
-                <span class="text-canvas-soft/70">mode:</span>
+                <span class="text-canvas-soft/70">{t.hero.terminal.statusModeLabel}:</span>
                 <span class="text-primary">{t.hero.terminal.statusMode}</span>
               </div>
             </div>

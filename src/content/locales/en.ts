@@ -37,6 +37,7 @@ export const en: Translations = {
       statusTier: 'tier',
       statusTierValue: 'fast',
       statusMode: 'auto',
+      statusModeLabel: 'mode',
       judgeLabel: 'judge',
       judgeValue: '🧭 judging…',
       windowLabel: 'gear',

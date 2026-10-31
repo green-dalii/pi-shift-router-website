@@ -283,10 +283,11 @@ const smart = t.models.smart;
     color: var(--color-mute);
   }
   .cmp-legend-side { display: inline-flex; align-items: center; gap: 0.4rem; }
-  .cmp-legend-hint { opacity: 0.7; }
+  .cmp-legend-hint { opacity: 1; }
 
   /* Focused, the handle should read as the active control. */
-  .cmp-range:focus-visible ~ .cmp-legend .cmp-legend-hint { opacity: 1; }
+  /* The hint brightens to the accent while the control has focus. */
+  .cmp-range:focus-visible ~ .cmp-legend .cmp-legend-hint { color: var(--color-positive-deep); }
 
   @media (max-width: 640px) {
     .cmp-layer { padding: 1.25rem; }
