@@ -4,7 +4,7 @@
 
 ## About
 
-shift-router is a family of task-level model routers — **pi-shift-router** (v1.7.0, pi-coding-agent extension) and **dsh-shift-router** (v0.6.0, DeepSeek Harness plugin). Both classify every turn and route between two roles:
+shift-router is a family of task-level model routers — **pi-shift-router** (v1.8.0, pi-coding-agent extension) and **dsh-shift-router** (v0.7.5, DeepSeek Harness plugin). Both classify every turn and route between two roles:
 
 - **Fast = Engineer** — handles the workload: writes code, runs tests, fixes bugs, follows established patterns. For routine, well-defined, low-stakes work.
 - **Smart = CTO** — for the work that matters: sets direction, corrects course, reviews results, and takes on the hard problems itself — architecture, design review, security audit, multi-step planning, irrecoverable actions.
@@ -13,9 +13,9 @@ shift-router is a family of task-level model routers — **pi-shift-router** (v1
 
 **Gear presets (v1.4.0):** `/router eco` (R=2, θ=0.5 — conservative and cheap), `/router default` (R=3, θ≈0.33), `/router sport` (R=5, θ=0.2 — eager, any real chance escalates). Top-level, tab-completable, persisted.
 
-**Three judge modes (v1.7.0):** `fast-chain` (default — reuse the Fast tier chain), `custom` (a dedicated judge chain), `decision` (a decision model such as TypeSafe Jev / System One class, Beta opt-in — returns a typed choice with a probability instead of prose, so there is no JSON parse step and no malformed-reply failure class; ~$0.0001 per turn). Jev is opt-in and labelled Beta because it is currently slow per verdict (1.4–6.6 s while provider capacity ramps) and a September 2026 independent evaluation found decision models behind the best LLM on 14 of 15 annotation tasks; it suits batch and background routing, while interactive turns are still better served by the LLM judge.
+**Three judge modes:** `fast-chain` (default — reuse the Fast tier chain), `custom` (a dedicated judge chain), `decision` (a decision model, Beta opt-in — returns a typed choice with a probability instead of prose, so there is no JSON parse step and no malformed-reply failure class; ~$0.0001 per turn). Since pi 1.8.0 the decision path runs through pi's own classifier layer, which carries 53 decision models (TypeSafe Jev, OpenAI Decisions, Cloudflare Clef, Perplexity Decider, gateways) with credentials, retries and pricing handled by pi. The mode is labelled `🧮 Decision model (Beta)` and stays third in the picker: a verdict measures 1.4–6.6 s against TypeSafe and the evidence is still mixed across tasks, so it suits batch and background routing while interactive turns are better served by the LLM judge.
 
-**Judge availability ladder (v1.7.0):** judge chain → LLM judge → no routing at all. It covers both a rotted config and call-time failures (429/5xx/timeout) in the same turn, for every mode. The last rung behaves as if the plugin were not installed — no model switch, orchestration cleared, session model restored — and it says so once per session. A failed judge call never fabricates a verdict (v1.4.2 fixed a bug where two consecutive judge outages silently downgraded a Smart session).
+**Judge availability ladder (v1.8.0):** judge chain → LLM judge → no routing at all. It covers both a rotted config and call-time failures (429/5xx/timeout) in the same turn, for every mode. The last rung behaves as if the plugin were not installed — no model switch, orchestration cleared, session model restored — and it says so once per session. A failed judge call never fabricates a verdict (v1.4.2 fixed a bug where two consecutive judge outages silently downgraded a Smart session).
 
 **Runtime failover:** on 429/402/5xx — including "Insufficient Balance" / 余额不足 and Codex usage-limit exhaustion — the failing model enters exponential-backoff cooldown (5xx starts at 1m: 1m → 4m → 16m → 1h → 4h… capped 6h; a failover-worthy 4xx starts at 16m) and the next healthy model in the same tier takes over, mid-turn. Auth/config errors (400/401) never trigger failover.
 
@@ -26,16 +26,16 @@ shift-router is a family of task-level model routers — **pi-shift-router** (v1
 | | pi-shift-router | dsh-shift-router |
 |---|---|---|
 | Runtime | pi-coding-agent extension | DeepSeek Harness plugin |
-| Version | v1.7.0 | v0.6.0 |
+| Version | v1.8.0 | v0.7.5 |
 | Install | `pi install npm:pi-shift-router` | `git clone …/dsh-shift-router && npm install && npm run build` + `dsh plugin --profile web add <path>` |
 | Config | `/router config` wizard | GUI "Shift-Router" card + `/router config` (get/set/unset/diff) |
 | Capabilities | expected-cost routing, three judge modes, judge ladder, cache-aware routing, failover, orchestration, TUI status dashboard | same, plus `/router allow-workers` to pin delegated workers to the Fast chain |
-| Tests | 577 unit tests | 424 unit tests + credential-free headless e2e |
+| Tests | 641 unit tests | 443 unit tests + credential-free headless e2e |
 
 ## Key facts
 
 - Runtime: Node.js ≥ 24 (pi), Node.js ≥ 22 (DSH)
-- Dependencies: pi-shift-router declares one host-provided dependency (`@earendil-works/pi-tui`, bundled by pi); dsh-shift-router has zero runtime dependencies
+- Dependencies: neither package has runtime dependencies of its own. pi-shift-router declares `@earendil-works/pi-tui` as a peerDependency provided by the pi host; dsh-shift-router declares three host peerDependencies (`@deepseek-ai/cordis`, `@deepseek-ai/dsh-llm`, `@deepseek-ai/schemastery`)
 - License: MIT
 - Author: green-dalii
 - Repositories: https://github.com/green-dalii/pi-shift-router · https://github.com/green-dalii/dsh-shift-router

@@ -21,9 +21,13 @@ export interface Translations {
   };
   hero: {
     badge: string;
-    slogan: string;
-    title1: string;
-    title2: string;
+    // The line rendered directly under the two-line headline, above the
+    // paragraph. Not a brand tagline — it is the summary of the claim.
+    subhead: string;
+    // The two-line display headline. Rendered last-80px, one span per line,
+    // with line 2 tinted lighter to create the emphasis break.
+    headline1: string;
+    headline2: string;
     subtitle: string;
     ctaPrimary: string;
     ctaSecondary: string;
