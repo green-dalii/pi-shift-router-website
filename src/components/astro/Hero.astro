@@ -24,7 +24,7 @@ const t = getTranslations(locale);
   </div>
 
   <div class="relative max-w-6xl mx-auto px-5 sm:px-8">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-start">
 
       <!-- Left: headline + CTAs -->
       <div class="lg:col-span-7">
@@ -43,7 +43,7 @@ const t = getTranslations(locale);
           <span class="block text-[clamp(2.25rem,6.2vw,5rem)]">{t.hero.headline1}</span>
           <!-- Line 2 is the turn, not a fourth line: same voice, set back slightly
                so the pair reads as claim → close instead of a four-line block. -->
-          <span class="block text-[clamp(1.75rem,4.6vw,3.6rem)] text-ink/85 tracking-[-0.03em] mt-1">{t.hero.headline2}</span>
+          <span class="block text-[clamp(1.75rem,4.6vw,3.6rem)] text-ink tracking-[-0.03em] mt-1">{t.hero.headline2}</span>
         </h1>
 
         <p class="mt-5 font-mono text-sm sm:text-base text-ink/70 tracking-tight balance reveal" data-delay="2">
@@ -86,7 +86,7 @@ const t = getTranslations(locale);
       </div>
 
       <!-- Right: terminal mockup -->
-      <div class="lg:col-span-5 reveal" data-delay="3">
+      <div class="lg:col-span-5 lg:pt-16 reveal" data-delay="3">
         <TerminalWindow title={t.hero.terminal.title} class="shadow-2xl shadow-ink/20 ring-1 ring-white/5">
 
           <!-- Status panel -->
@@ -103,11 +103,11 @@ const t = getTranslations(locale);
             <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-mono">
               <div class="flex items-center gap-1.5">
                 <span class="text-canvas-soft/70">{t.hero.terminal.statusLabel}:</span>
-                <span class="text-canvas-soft">{t.hero.terminal.statusModel}</span>
+                <span class="text-canvas-soft" data-demo-model>{t.hero.terminal.statusModel}</span>
               </div>
               <div class="flex items-center gap-1.5">
                 <span class="text-canvas-soft/70">{t.hero.terminal.statusTier}:</span>
-                <span class="px-2 py-0.5 bg-primary text-ink font-bold rounded-pill">{t.hero.terminal.statusTierValue}</span>
+                <span class="hero-tier" data-demo-tier>{t.hero.terminal.statusTierValue}</span>
               </div>
               <div class="flex items-center gap-1.5">
                 <span class="text-canvas-soft/70">mode:</span>
@@ -118,7 +118,7 @@ const t = getTranslations(locale);
             <div class="mt-3 grid grid-cols-2 gap-3 text-[11px] font-mono">
               <div class="flex flex-col gap-0.5">
                 <span class="text-canvas-soft/70 uppercase tracking-wider">{t.hero.terminal.judgeLabel}</span>
-                <span class="text-primary">{t.hero.terminal.judgeValue}</span>
+                <span class="text-primary" data-demo-judge>{t.hero.terminal.judgeValue}</span>
               </div>
               <div class="flex flex-col gap-0.5">
                 <span class="text-canvas-soft/70 uppercase tracking-wider">{t.hero.terminal.windowLabel}</span>
@@ -127,12 +127,13 @@ const t = getTranslations(locale);
             </div>
           </div>
 
-          <!-- Log lines -->
-          <div class="px-5 py-4 text-[11px] leading-relaxed space-y-1.5 max-h-44 overflow-hidden">
-            {t.hero.terminal.logLines.map((line) => (
-              <div class="flex gap-3">
+          <!-- Log lines. Each one is a beat in the demo script below; the
+               terminal tells the switch instead of the copy describing it. -->
+          <div class="hero-log px-5 py-4 text-[11px] leading-relaxed space-y-1.5" data-demo-log>
+            {t.hero.terminal.logLines.map((line, i) => (
+              <div class="hero-log-line flex gap-3" data-beat={i}>
                 <span class="text-canvas-soft/74 shrink-0">{line.time}</span>
-                <span class="text-canvas-soft/88">{line.text}</span>
+                <span class="hero-log-text text-canvas-soft/88 transition-colors duration-300">{line.text}</span>
               </div>
             ))}
           </div>
@@ -141,7 +142,7 @@ const t = getTranslations(locale);
     </div>
 
     <!-- Scroll hint -->
-    <div class="mt-16 sm:mt-24 flex justify-center reveal" data-delay="5">
+    <div class="mt-10 sm:mt-14 flex justify-center reveal" data-delay="5">
       <div class="flex flex-col items-center gap-2 opacity-50">
         <span class="text-[10px] font-mono uppercase tracking-[0.2em] text-ink/60">{t.hero.scrollHint || 'See how'}</span>
         <div class="w-px h-8 bg-gradient-to-b from-ink/40 to-transparent"></div>
@@ -151,14 +152,143 @@ const t = getTranslations(locale);
 </section>
 
 <style>
-  .reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* ── Live two-state demo ────────────────────────────────────────────────
+     The hero's job is to show the switch, not describe it. Five beats, one
+     loop, ~11s: cheap work runs → the judge reads it → the turn upgrades → the
+     strong model hits a rate limit → the strong tier fails over. Every beat is
+     real log text from the locale file; only its timing is authored. */
+
+  .hero-tier {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    background: var(--color-primary);
+    color: var(--color-ink);
+    transition: background 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                color 320ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .reveal[data-delay="1"] { animation-delay: 0.05s; }
-  .reveal[data-delay="2"] { animation-delay: 0.18s; }
-  .reveal[data-delay="3"] { animation-delay: 0.32s; }
-  .reveal[data-delay="4"] { animation-delay: 0.46s; }
-  .reveal[data-delay="5"] { animation-delay: 0.6s; }
+  .hero-tier.is-smart {
+    background: var(--color-deep);
+    color: var(--color-primary);
+  }
+
+  .hero-log-line {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 300ms ease-out, transform 300ms ease-out;
+  }
+  .hero-log-line.is-on {
+    opacity: 1;
+    transform: none;
+  }
+  /* The upgraded line is the moment the page is about — let it read louder. */
+  .hero-log-line[data-beat="2"].is-on .hero-log-text,
+  .hero-log-line[data-beat="4"].is-on .hero-log-text {
+    color: var(--color-primary);
+  }
+  .hero-log-line[data-beat="3"].is-on .hero-log-text {
+    color: var(--color-accent-orange);
+  }
+
+  /* No JS / reduced motion: every line visible, tier shown as smart. */
+  .no-motion .hero-log-line,
+  :global(.no-motion) .hero-log-line {
+    opacity: 1;
+    transform: none;
+  }
 </style>
+
+<script>
+  /* ── The demo loop ──────────────────────────────────────────────────────
+     Runs only when motion is allowed and the hero is on screen. Stops
+     permanently once the reader scrolls past it, so nothing animates
+     off-screen or competes with the content below. */
+  (() => {
+    const root = document.querySelector<HTMLElement>('[data-demo-log]');
+    if (!root) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const lines = Array.from(root.querySelectorAll<HTMLElement>('.hero-log-line'));
+    const tier = document.querySelector<HTMLElement>('[data-demo-tier]');
+    const model = document.querySelector<HTMLElement>('[data-demo-model]');
+    const judge = document.querySelector<HTMLElement>('[data-demo-judge]');
+
+    // Beat script: [delay before this beat, line index to light, tier state].
+    // Tier flips on beat 2 (the upgrade) and stays smart — a cross-tier
+    // failover would contradict the product's own guarantee.
+    const beats: Array<{ at: number; on: number; smart: boolean }> = [
+      { at: 0, on: 0, smart: false },
+      { at: 1400, on: 1, smart: false },
+      { at: 2600, on: 2, smart: true },
+      { at: 4400, on: 3, smart: true },
+      { at: 5800, on: 4, smart: true },
+    ];
+
+    const fastModel = model?.dataset.fast ?? model?.textContent ?? '';
+    const smartModel = 'Claude Opus';
+    const fastTierLabel = tier?.textContent ?? 'fast';
+    const smartTierLabel = 'smart';
+
+    let timers: number[] = [];
+    const clear = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+    };
+
+    const settle = () => {
+      clear();
+      lines.forEach((l) => l.classList.add('is-on'));
+      tier?.classList.add('is-smart');
+      if (tier) tier.textContent = 'smart';
+      if (model) model.textContent = 'Claude Opus';
+      if (judge) judge.textContent = '✓ smart';
+    };
+
+    const play = () => {
+      clear();
+      lines.forEach((l) => l.classList.remove('is-on'));
+      tier?.classList.remove('is-smart');
+      if (model) model.textContent = fastModel;
+      if (tier) tier.textContent = fastTierLabel;
+      if (judge) judge.textContent = '🧭 judging…';
+
+      beats.forEach((b) => {
+        timers.push(
+          window.setTimeout(() => {
+            lines[b.on]?.classList.add('is-on');
+            tier?.classList.toggle('is-smart', b.smart);
+            if (tier) tier.textContent = b.smart ? smartTierLabel : fastTierLabel;
+            if (model) model.textContent = b.smart ? smartModel : fastModel;
+            if (judge) judge.textContent = b.on >= 2 ? '✓ smart' : '🧭 judging…';
+          }, b.at)
+        );
+      });
+
+      // Rest at the end state for a beat, then run again.
+      timers.push(window.setTimeout(play, 11000));
+    };
+
+    if (reduced.matches) {
+      settle();
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.some((e) => e.isIntersecting);
+        if (visible) play();
+        else clear();
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(root);
+
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) {
+        io.disconnect();
+        settle();
+      }
+    });
+  })();
+</script>

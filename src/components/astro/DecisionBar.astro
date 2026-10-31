@@ -35,7 +35,7 @@ const {
 } = Astro.props;
 ---
 
-<figure class:list={['decision-bar', className]}>
+<figure class:list={['decision-bar', className]} data-draw>
   <div class="db-track" role="img" aria-label={`${left} vs ${right}, threshold ${theta}`}>
     <div class="db-side db-side--cheap" style={`width:${100 - strongPct}%`}>
       <span class="db-label">{left}</span>
@@ -81,6 +81,8 @@ const {
   }
 
   /* Strong side: deep forest with lime label — the site's signature pairing. */
+  /* The strong side grows to its share when the bar enters view: the decision
+     is drawn, not asserted. */
   .db-side--strong {
     background: var(--color-deep);
     border: 1px solid var(--color-ink);
@@ -103,6 +105,13 @@ const {
   }
 
   /* The threshold: the one line that decides, drawn as a real rule. */
+  .db-track .db-side--strong {
+    transform-origin: right center;
+    transform: scaleX(0);
+    transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+  }
+  .is-drawn .db-side--strong { transform: scaleX(1); }
+
   .db-threshold {
     position: absolute;
     top: -0.4rem;
@@ -112,13 +121,20 @@ const {
     transform: translateX(-1px);
   }
 
+  .is-drawn .db-threshold { animation: db-drop 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes db-drop {
+    from { transform: translate(-1px, -0.75rem); opacity: 0; }
+    to   { transform: translate(-1px, 0); opacity: 1; }
+  }
+  .db-threshold { opacity: 0; }
+
   .db-theta {
     position: absolute;
-    top: -1.15rem;
+    top: -1.25rem;
     left: 50%;
     transform: translateX(-50%);
     font-family: var(--font-mono);
-    font-size: 0.6875rem;
+    font-size: 0.8125rem;
     font-weight: 500;
     color: var(--color-ink);
     white-space: nowrap;

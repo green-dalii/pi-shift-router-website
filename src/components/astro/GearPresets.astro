@@ -24,7 +24,7 @@ const barShare: Record<string, number> = {
     <!-- Counterweight: the three θ values the gears actually set, drawn to
          scale — the same bar as above, at three positions. -->
     <SectionHeader label={gp.label} title={gp.title} subtitle={gp.subtitle} class="mb-10 sm:mb-12">
-      <div slot="counter" class="gear-scale">
+      <div slot="counter" class="gear-scale" data-draw>
         {gp.gears.map((g, i) => (
           <div class="gear-scale-row">
             <span class="gear-scale-name">{g.name}</span>
@@ -87,7 +87,18 @@ const barShare: Record<string, number> = {
   .gear-scale-track { position: relative; height: 1.5rem; background: var(--color-tone-2); border: 1px solid var(--color-ink); border-radius: 3px; display: block; }
   /* Deep fill = the share that clears the bar, so it anchors right and grows
      with eagerness: eco is mostly cheap, sport is mostly strong. */
-  .gear-scale-fill { position: absolute; inset: 0 0 0 auto; background: var(--color-deep); border-radius: 0 2px 2px 0; }
+  .gear-scale-fill {
+    position: absolute;
+    inset: 0 0 0 auto;
+    background: var(--color-deep);
+    border-radius: 0 2px 2px 0;
+    transform-origin: right center;
+    transform: scaleX(0);
+    transition: transform 640ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+  }
+  .is-drawn .gear-scale-fill { transform: scaleX(1); }
+  .gear-scale-row:nth-child(2) .gear-scale-fill { transition-delay: 220ms; }
+  .gear-scale-row:nth-child(3) .gear-scale-fill { transition-delay: 320ms; }
   /* The mark is the threshold: left of it = cheap, right = strong. */
   .gear-scale-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--color-primary); }
   .gear-scale-fill--eco { width: 50%; }     .gear-scale-mark--eco { left: 50%; }

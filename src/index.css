@@ -290,11 +290,25 @@
   .code-block .tok-com { color: #868685; font-style: italic; }
   .code-block .tok-pun { color: #868685; }
 
-  /* Reveal animation */
+  /* Reveal — observer-driven, so content animates when it is read rather than
+     before. `.is-in` is added by the IntersectionObserver in BaseLayout. */
   .reveal {
     opacity: 0;
-    transform: translateY(14px);
-    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(12px);
+    transition:
+      opacity 520ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 520ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.is-in {
+    opacity: 1;
+    transform: none;
+  }
+  /* Reduced motion: everything is already at its final state — never hidden. */
+  .no-motion .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 
   /* Horizontal overflow with a fading right edge — reads as "there is more"
@@ -329,4 +343,26 @@
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Reduced motion — a first-class state, not a fallback. Nothing transforms,
+   nothing staggers, nothing loops; every element renders at its final state.
+   ────────────────────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .db-side--strong,
+  .gear-scale-fill,
+  .db-threshold { transform: none !important; opacity: 1 !important; animation: none !important; }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  html { scroll-behavior: auto; }
 }

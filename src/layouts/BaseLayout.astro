@@ -120,5 +120,80 @@ const jsonLd = {
       <slot />
     </main>
     <Footer locale={locale} pathname={pathname} />
+
+    <script>
+      /* ── Reveal system ─────────────────────────────────────────────────────
+         Every `.reveal` used to run a CSS animation on page load, which meant
+         anything below the fold had already finished animating before the
+         reader arrived. One observer now drives the lot, so the page moves as
+         it is read. Stagger comes from `data-delay`; reduced motion renders
+         everything immediately at its final state. */
+      (() => {
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+        const show = (el: HTMLElement) => el.classList.add('is-in');
+        const all = () => Array.from(document.querySelectorAll<HTMLElement>('.reveal'));
+
+        if (reduced.matches || !('IntersectionObserver' in window)) {
+          all().forEach(show);
+          document.documentElement.classList.add('no-motion');
+          return;
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            const batch = entries
+              .filter((e) => e.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+            batch.forEach((entry, i) => {
+              const el = entry.target as HTMLElement;
+              el.style.transitionDelay = `${Math.min(i, 5) * 60}ms`;
+              show(el);
+              io.unobserve(el);
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+        );
+
+        all().forEach((el) => io.observe(el));
+
+        /* Draw-in objects (the decision bar, the gear scale) animate their
+           geometry when they enter view, so the threshold is seen arriving
+           rather than found already drawn. */
+        const drawables = Array.from(document.querySelectorAll<HTMLElement>('[data-draw]'));
+        if ('IntersectionObserver' in window) {
+          const dio = new IntersectionObserver(
+            (entries) => {
+              entries
+                .filter((e) => e.isIntersecting)
+                .forEach((e) => {
+                  (e.target as HTMLElement).classList.add('is-drawn');
+                  dio.unobserve(e.target);
+                });
+            },
+            { threshold: 0.35 }
+          );
+          drawables.forEach((el) => dio.observe(el));
+        } else {
+          drawables.forEach((el) => el.classList.add('is-drawn'));
+        }
+
+        /* Late content (tab panels that were hidden) can still need revealing. */
+        document.addEventListener('qs:panel-shown', () => {
+          // Only the newly-visible panel: everything still un-revealed inside
+          // it is by definition not yet in the viewport observer's hands.
+          all()
+            .filter((el) => !el.classList.contains('is-in'))
+            .forEach((el) => {
+              const r = el.getBoundingClientRect();
+              if (r.width > 0 && r.height > 0) show(el);
+            });
+        });
+
+        reduced.addEventListener('change', () => {
+          if (reduced.matches) all().forEach(show);
+        });
+      })();
+    </script>
   </body>
 </html>

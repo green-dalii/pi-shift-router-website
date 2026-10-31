@@ -157,6 +157,9 @@ const activeId = runtimes[0]?.id ?? 'pi';
       var on = panel.getAttribute('data-qs-panel') === id;
       panel.classList.toggle('hidden', !on);
     });
+    // Reveals inside a hidden panel never intersect, so they would stay at
+    // opacity 0 forever. Announce the switch; the layout script catches up.
+    document.dispatchEvent(new CustomEvent('qs:panel-shown', { detail: { id: id } }));
   }
 
   tabs.forEach(function (tab) {

@@ -65,7 +65,7 @@ counterweight in 7/7 sections; ≥ 40 nodes in the 20–40px band; no two adjace
 sections sharing an identical flat background without a seam; page height
 ≤ 9000px.
 
-## T2 — Motion
+## T2 — Motion — ✅ done
 
 - [x] **T2.1 Reveal system.** One `IntersectionObserver` drives staged reveals
       (60ms stagger, `cubic-bezier(.16,1,.3,1)`), so the page animates as it is
@@ -73,8 +73,13 @@ sections sharing an identical flat background without a seam; page height
 - [x] **T2.2 Live two-state hero demo.** The hero demonstrates the switch
       instead of describing it: the same task, rendered in the cheap register
       and the strong register, cycling with the terminal log.
-- [x] **T2.3 Decision spine.** A 1px vertical line that forks at each decision
-      point, labelled with `θ` / `p`. Makes the invisible decision structural.
+- [x] **T2.3 Decision spine — reframed.** A page-long decorative rule was
+      drafted and rejected: once the counterweights landed, a stray vertical
+      line down the gutter added ornament, not meaning. The spine is instead
+      the *threshold itself, drawn on arrival* — the DecisionBar's strong side
+      scales in and its θ marker drops into place when the section is read,
+      and the gear bars fill to their θ in sequence. Same intent (make the
+      invisible decision visible), executed as geometry rather than decoration.
 - [x] **T2.4 Reduced-motion parity.** `prefers-reduced-motion: reduce` disables
       every transform and loop while keeping all content visible and static.
 
