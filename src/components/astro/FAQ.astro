@@ -31,12 +31,12 @@ const t = getTranslations(locale);
           data-delay={idx * 2}
           open={idx === 0}
         >
-          <summary class="flex items-center justify-between gap-4 cursor-pointer select-none list-none">
-            <h3 class="text-base sm:text-lg font-extrabold tracking-tight text-ink pr-2">
+          <summary class="flex items-start justify-between gap-4 cursor-pointer select-none list-none w-full min-w-0">
+            <h3 class="text-base sm:text-lg font-extrabold tracking-tight text-ink pr-2 flex-1 min-w-0">
               {item.q}
             </h3>
-            <span class="shrink-0 w-8 h-8 rounded-full bg-canvas border border-ink/10 flex items-center justify-center transition-transform duration-200 group-open:rotate-45">
-              <svg class="w-4 h-4 text-ink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <span class="shrink-0 w-8 h-8 rounded-full bg-canvas border border-ink/10 flex items-center justify-center">
+              <svg class="w-4 h-4 text-ink transition-transform duration-200 group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </span>
           </summary>
           <div class="mt-4 pt-4 border-t border-ink/10">
@@ -51,6 +51,10 @@ const t = getTranslations(locale);
 </section>
 
 <style>
+  /* Chrome keeps a details marker glyph that `list-none` does not remove;
+     it adds ~7px and makes the row overflow its own box. */
+  summary::-webkit-details-marker { display: none; }
+  summary { list-style: none; }
   .reveal {
     opacity: 0;
     transform: translateY(14px);

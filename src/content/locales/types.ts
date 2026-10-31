@@ -95,14 +95,12 @@ export interface Translations {
     fast: {
       tier: string;
       role: string;
-      emoji: string;
       desc: string;
       bullets: string[];
     };
     smart: {
       tier: string;
       role: string;
-      emoji: string;
       desc: string;
       bullets: string[];
     };

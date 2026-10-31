@@ -542,3 +542,146 @@ The brand uses surface contrast (`{colors.canvas-soft}` background vs `{colors.c
 - Don't render CTAs as sharp rectangles. The 24 px pill geometry is non-negotiable.
 - Don't pair the green CTA with a green background. The brand always sits Wise green on neutral surfaces (sage / white / ink).
 - Don't replace Wise Sans with a generic geometric sans for hero typography — the proprietary face IS the brand's voice.
+
+---
+
+# Shift Router adaptations
+
+The Wise system above is the *source*. This section is how the site applies it —
+and where it deliberately extends it. Everything below is normative: a component
+that violates it is wrong, not eccentric.
+
+The organising idea is **two states, one surface**. The product routes every
+message to either a *cheap* (Fast / engineer) or a *strong* (Smart / CTO) model.
+That distinction is not a feature list — it is the design language. Every visual
+element is allowed to exist in a cheap register and a strong register; switching
+between them is the site's only motion.
+
+## 1. The two registers
+
+| | **Cheap** | **Strong** |
+|---|---|---|
+| Role word | Engineer | CTO |
+| Surface | `canvas-soft` sage, or white | `deep` `#163300` / `ink` `#0e0f0c` |
+| Type weight | 600 | 800 |
+| Type tracking | `-0.01em`, tight | `-0.03em`, tighter |
+| Density | dense, small gaps | open, generous gaps |
+| Accent | `primary` lime on light | `primary` lime on dark |
+| Icon weight | 1.5px stroke | solid fill |
+| Motion | 120ms, linear-ish | 320ms, `cubic-bezier(.16,1,.3,1)` |
+
+Rule: a cheap element may never be rendered on a strong surface without inverting
+its accent, and vice versa. Lime `#9fe870` on `#163300` is 9.45:1 — it is the one
+pairing that is always safe.
+
+## 2. Tonal scale (replaces the 3-tone flat palette)
+
+The old site used three flat tones and hard-cut between them. Six steps, always
+in this order, so consecutive sections can advance by one step instead of jumping:
+
+| Token | Value | Use |
+|---|---|---|
+| `--color-canvas-soft` | `#e8ebe6` | Default page field (sage) |
+| `--color-tone-1` | `#f6f8f4` | Half-step lighter — section breathing band |
+| `--color-tone-2` | `#d8ded3` | Half-step darker — inset wells, table rows |
+| `--color-tone-3` | `#cfd6c9` | Darkest light tone — pressed / selected |
+| `--color-deep` | `#163300` | Strong-tier surface (deep forest) |
+| `--color-ink` | `#0e0f0c` | Terminal chrome, footer |
+
+Adjacency rule: sections may advance at most **two** steps in one seam. `sage`
+next to `ink` is permitted only at the footer, where the cut is the point.
+
+## 3. Type scale — with the middle register restored
+
+The source system jumps 32 → 47 → 64. In practice the site shipped 80px displays
+next to 13px captions, with almost nothing between. Add the middle register:
+
+| Token | Size | LH | Weight | Use |
+|---|---|---|---|---|
+| `--text-display-md` | 40px | 44px | 800 | Section headlines (was 64px) |
+| `--text-display-sm` | 32px | 38px | 800 | Sub-section headlines |
+| `--text-display-xs` | 24px | 31px | 700 | Card headlines |
+| `--text-body-lg` | 20px | 32px | 400 | Lead paragraphs |
+| `--text-body-md` | 17px | 27px | 400 | **Default body — was 13px** |
+| `--text-body-sm` | 15px | 24px | 400 | Secondary body |
+| `--text-caption` | 13px | 20px | 400 | Fine print only |
+
+Rules:
+- **Body copy is 17px, not 13px.** Anything a reader is expected to read in
+  paragraphs sits at `body-md`.
+- **Display headline is 40px, not 64–80px.** Oversized type was doing the work
+  that composition should do. The hero keeps a single large moment; every other
+  section speaks at 40px.
+- **Minimum readable size is 13px.** 11px and 12px are banned for prose; they may
+  appear only inside terminal mock chrome, where they are authentic.
+
+## 4. Grid and the counterweight rule
+
+Container: 1200px, 12 columns, 24px gutter.
+
+**The rule:** no section heading may sit alone in a left column with the right
+side empty. Every heading occupies 7 columns and pairs with a counterweight in
+the remaining 5 — a decision-spine fork, a stat, a diagram, or a live element.
+This is the single largest fix from the pre-rebuild site, where 7 of 7 headings
+left 39% of the container empty.
+
+Full-bleed bands are permitted (hero, footer). Everything else is gridded.
+
+## 5. Motion system
+
+One observer, one curve, one stagger.
+
+- Easing: `cubic-bezier(.16, 1, .3, 1)` for entrances; `ease-out` 120ms for
+  hover colour only.
+- Stagger: 60ms between siblings, max 6 per group.
+- Reveal: `opacity 0 → 1`, `translateY(12px) → 0`, 520ms.
+- The **only** looping animation on the site is the hero's two-state demo.
+  Nothing else loops.
+
+**Reduced motion is a first-class state, not a fallback.** Under
+`prefers-reduced-motion: reduce`: no transforms, no stagger, no loop; every
+element renders at its final state immediately. The hero demo freezes on the
+strong state with both registers visible side by side.
+
+## 6. Icons
+
+One family, two weights, drawn to a 24px box with 1.5px stroke:
+
+- **Cheap-state icon:** open stroke, rounded caps.
+- **Strong-state icon:** same silhouette, solid fill.
+
+Emoji are **not** icons. They appear only inside terminal output, where they are
+genuine product output (`🦾` / `🧠` / `🧭` in pi's status bar), and there they stay
+at terminal size and terminal weight.
+
+## 7. Accessibility floor (non-negotiable)
+
+- Body and caption text: ≥ 4.5:1 against its actual background.
+  `--color-mute` `#868685` on sage measured **3.03:1** and is therefore
+  **non-text only**. Text uses `--color-mute-aa` `#676963` (4.62:1).
+- Every interactive element is keyboard-reachable with a visible focus ring
+  (`2px solid primary`, 2px offset).
+- Nothing is communicated by colour alone; the cheap/strong distinction always
+  carries a word or an icon weight as well.
+- Content is never clipped at a container edge. Overflow scrolls with a fade
+  mask, never disappears.
+
+## 8. Do's and Don'ts (site-specific)
+
+### Do
+- Pair every section heading with a counterweight in the right columns.
+- Advance the tonal scale by one step between adjacent sections.
+- Render the strong state on `deep` `#163300` with lime accent — that pairing is
+  the site's signature.
+- Keep exactly one looping animation: the hero two-state demo.
+- Let the decision spine fork visibly at each decision point.
+
+### Don't
+- Don't leave the right 5 columns of a section empty.
+- Don't set prose below 13px, and don't set body copy below 17px.
+- Don't use emoji as icons.
+- Don't hard-cut between two flat tones when one intermediate step exists.
+- Don't animate anything that is already off-screen or that the reader has
+  scrolled past.
+- Don't add a second accent colour. Lime is the only one; `#163300` is its
+  substrate, not a competitor.

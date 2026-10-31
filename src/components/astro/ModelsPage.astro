@@ -1,5 +1,6 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import TierIcon from './TierIcon.astro';
 
 interface Props {
   locale: Locale;
@@ -32,7 +33,7 @@ const t = getTranslations(locale);
       {t.modelsPage.patterns.map((pattern, idx) => (
         <article class="card-sage p-7 sm:p-10 reveal border border-ink/10" data-delay={idx}>
           <div class="flex items-center gap-3 mb-4">
-            <span class="font-mono text-xs text-primary uppercase tracking-[0.15em]">
+            <span class="font-mono text-xs text-positive-deep uppercase tracking-[0.15em]">
               {String(idx + 1).padStart(2, '0')}
             </span>
           </div>
@@ -45,13 +46,13 @@ const t = getTranslations(locale);
 
           {pattern.groupRows && (
             <!-- Grouped rows: each row = group (memory / provider / scenario) with fast + smart -->
-            <div class="mb-5 overflow-x-auto">
+            <div class="mb-5 scroll-fade-x">
               <table class="w-full text-left border-collapse">
                 <thead>
                   <tr class="border-b border-ink/10">
                     <th class="py-2.5 pr-4 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Setup</th>
-                    <th class="py-2.5 pr-4 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Fast 🦾</th>
-                    <th class="py-2.5 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Smart 🧠</th>
+                    <th class="py-2.5 pr-4 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Fast</th>
+                    <th class="py-2.5 text-[11px] font-mono uppercase tracking-[0.15em] text-mute font-medium">Smart</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -72,7 +73,7 @@ const t = getTranslations(locale);
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
               <div class="bg-canvas rounded-2xl p-5 sm:p-6 border border-ink/10">
                 <div class="flex items-center gap-2 mb-3">
-                  <span class="text-base" aria-hidden="true">🦾</span>
+                  <TierIcon tier="fast" size={16} class="text-positive-deep" />
                   <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-positive-deep font-bold">Fast</span>
                 </div>
                 <ul class="space-y-2 text-[13px] font-mono text-ink/85">
@@ -83,7 +84,7 @@ const t = getTranslations(locale);
               </div>
               <div class="bg-canvas rounded-2xl p-5 sm:p-6 border border-ink/10">
                 <div class="flex items-center gap-2 mb-3">
-                  <span class="text-base" aria-hidden="true">🧠</span>
+                  <TierIcon tier="smart" size={16} class="text-positive-deep" />
                   <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-positive-deep font-bold">Smart</span>
                 </div>
                 <ul class="space-y-2 text-[13px] font-mono text-ink/85">

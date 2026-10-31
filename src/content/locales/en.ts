@@ -189,7 +189,6 @@ export const en: Translations = {
     fast: {
       tier: 'Fast',
       role: 'Engineer',
-      emoji: '🦾',
       desc: 'Code, tests, bug fixes, the same edit across a hundred files. The answer is already decided; someone just has to carry it out accurately. A rename should not cost flagship prices.',
       bullets: [
         'Code, tests, bug fixes',
@@ -200,7 +199,6 @@ export const en: Translations = {
     smart: {
       tier: 'Smart',
       role: 'CTO',
-      emoji: '🧠',
       desc: 'Less of your work, and none of it safe to get wrong. Architecture, security, the review that changes what you build next, the decision you would rather not make twice. It runs the whole message, so the code is its own.',
       bullets: [
         'Architecture and design calls',

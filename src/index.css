@@ -45,7 +45,9 @@
   --color-ink: #0e0f0c;
   --color-ink-deep: #163300;
   --color-body: #454745;
-  --color-mute: #868685;
+  --color-mute: #676963;
+  /* Non-text ornament only — 3.03:1 on sage, fails WCAG AA for text. */
+  --color-mute-2: #868685;
 
   /* Semantic */
   --color-positive: #2ead4b;
@@ -270,6 +272,32 @@
     opacity: 0;
     transform: translateY(14px);
     animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Horizontal overflow with a fading right edge — reads as "there is more"
+     instead of "this is broken". Never leaves content clipped invisibly. */
+  .scroll-fade-x {
+    overflow-x: auto;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+  }
+  .scroll-fade-x:not(:hover):focus-within {
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent 100%);
+  }
+  /* Once scrolled to the end the fade is wrong — drop it. */
+  .scroll-fade-x.is-end {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  /* Balance multi-line headlines — no orphan word on its own line. */
+  .balance {
+    text-wrap: balance;
+  }
+  .pretty {
+    text-wrap: pretty;
   }
 
   /* Focus ring */

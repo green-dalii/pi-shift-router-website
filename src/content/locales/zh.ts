@@ -189,7 +189,6 @@ export const zh: Translations = {
     fast: {
       tier: 'Fast',
       role: '工程师',
-      emoji: '🦾',
       desc: '写代码、加测试、修 bug、同一个改动铺到一百个文件上。答案已经定了，剩下的是准确执行。一次重命名不该让你付旗舰模型的钱。',
       bullets: [
         '写代码、跑测试、修 bug',
@@ -200,7 +199,6 @@ export const zh: Translations = {
     smart: {
       tier: 'Smart',
       role: 'CTO',
-      emoji: '🧠',
       desc: '占的量少，但错了都难受。架构、安全、会改变你下一步做什么的那次评审、你不愿意做两遍的决定。它跑的是完整的一轮，所以代码是它自己写的。',
       bullets: [
         '架构和技术选型',
