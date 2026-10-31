@@ -27,7 +27,7 @@ shift-router is a family of task-level model routers — **pi-shift-router** (v1
 |---|---|---|
 | Runtime | pi-coding-agent extension | DeepSeek Harness plugin |
 | Version | v1.8.0 | v0.7.5 |
-| Install | `pi install npm:pi-shift-router` | `git clone …/dsh-shift-router && npm install && npm run build` + `dsh plugin --profile web add <path>` |
+| Install | `pi install npm:pi-shift-router` | add the plugin in the app by package name / repo URL / local path, or `dsh plugin --profile web add dsh-shift-router` |
 | Config | `/router config` wizard | GUI "Shift-Router" card + `/router config` (get/set/unset/diff) |
 | Capabilities | expected-cost routing, three judge modes, judge ladder, cache-aware routing, failover, orchestration, TUI status dashboard | same, plus `/router allow-workers` to pin delegated workers to the Fast chain |
 | Tests | 641 unit tests | 443 unit tests + credential-free headless e2e |
@@ -57,11 +57,13 @@ pi install npm:pi-subagents
 
 ## Install (DeepSeek Harness)
 
+Add it in the app's plugin page — enter the package name, the repo address,
+or a local folder path — or run the same thing from a shell:
+
 ```bash
-git clone https://github.com/green-dalii/dsh-shift-router.git
-cd dsh-shift-router
-npm install && npm run build
-dsh plugin --profile web add /path/to/dsh-shift-router
+dsh plugin --profile web add dsh-shift-router                                  # prebuilt release, nothing builds locally
+dsh plugin --profile web add github:green-dalii/dsh-shift-router#v0.7.5        # source; pin a tag and allow the build
+dsh plugin --profile web add /path/to/dsh-shift-router                          # a checkout you ran npm run build in
 ```
 
 The bundle's cordis.patch.yml inserts the plugin into any profile that lists it. Tier models come from the settings panel or the patch row. Configuration is editable live (GUI panel + `/router config`; code changes still need a restart).

@@ -1,6 +1,7 @@
 import type { Translations } from './types';
 
 export const en: Translations = {
+  axis: { cheap: 'stays cheap', strong: 'goes strong' },
   meta: {
     title: 'Shift Router — The right model for every message',
     description:
@@ -27,8 +28,8 @@ export const en: Translations = {
     subtitle:
       'You name two models: a cheap, fast one and a strong one. Before each message runs, a smaller model reads it and picks which one handles it. The cheap one takes code, tests, and small fixes. The strong one takes architecture, security, and the decisions you would rather not make twice. Judging costs a few thousand tokens and about a second.',
     ctaPrimary: 'Get Started',
-    ctaSecondary: 'pi-shift-router docs',
-    ctaTertiary: 'dsh-shift-router docs',
+    ctaSecondary: 'pi-shift-router on GitHub',
+    ctaTertiary: 'dsh-shift-router on GitHub',
     terminal: {
       title: 'pi-shift-router — in pi',
       subtitle: 'status bar · toasts · auto',
@@ -135,12 +136,12 @@ export const en: Translations = {
         steps: [
           {
             title: 'Install',
-            desc: 'Clone it, build it, register it in your harness profile. No credentials needed, and the defaults are safe.',
-            hintTitle: 'The bundle',
+            desc: 'Add it in the app the same way you add any plugin: give it the package name, the repo address, or a folder on disk. One command does the same thing. Nothing builds on your machine, and no credentials are needed.',
+            hintTitle: 'What you can type in',
             hintItems: [
-              { label: 'Prepare', desc: 'git clone …/dsh-shift-router && npm install && npm run build' },
-              { label: 'Register', desc: 'dsh plugin --profile web add /path/to/dsh-shift-router' },
-              { label: 'Live config', desc: 'Settings → shift-router, or /router config — saved on the spot, no restart' },
+              { label: 'The package name', desc: 'dsh-shift-router — pulls the prebuilt release' },
+              { label: 'The repo address', desc: 'github:green-dalii/dsh-shift-router#v0.7.5 — pin a tag, and allow the build when pnpm asks' },
+              { label: 'A local folder', desc: 'a checkout you ran npm run build in, if you are working on it' },
             ],
           },
           {
@@ -269,10 +270,12 @@ export const en: Translations = {
     label: 'Gear presets',
     title: 'One knob, three speeds',
     subtitle: 'Take a speed. The presets set the knob for you.',
+    knob: 'spend knob',
+    bar: 'bar',
     gears: [
-      { id: 'eco', name: 'eco', threshold: 'θ 0.5', desc: 'Uses the strong model less. Only messages that clearly need it get it. Cheapest.' },
-      { id: 'default', name: 'default', threshold: 'θ 0.33', desc: 'Where it starts. When the two look about equal, it takes the strong one.' },
-      { id: 'sport', name: 'sport', threshold: 'θ 0.2', desc: 'Uses the strong model freely. Any real chance a message needs it, it goes. For mostly architecture and planning.' },
+      { id: 'eco', name: 'eco', threshold: 'θ 0.5', r: 'R = 2', desc: 'Uses the strong model less. Only messages that clearly need it get it. Cheapest.' },
+      { id: 'default', name: 'default', threshold: 'θ 0.33', r: 'R = 3', desc: 'Where it starts. When the two look about equal, it takes the strong one.' },
+      { id: 'sport', name: 'sport', threshold: 'θ 0.2', r: 'R = 5', desc: 'Uses the strong model freely. Any real chance a message needs it, it goes. For mostly architecture and planning.' },
     ],
   },
   useCases: {
@@ -406,7 +409,7 @@ export const en: Translations = {
       },
       {
         q: 'Is there a version for DeepSeek Harness?',
-        a: 'Yes — dsh-shift-router (v0.7.5), the same router on the harness, with no dependencies of its own. Install it as a plugin, then set both lists in the Settings card or with /router config. Everything here carries over, plus /router allow-workers on, which puts your cheap list in the harness\'s subagent allowlist so delegated workers really do run on the cheap model. 443 unit tests and a credential-free e2e. To install: git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build, then dsh plugin --profile web add <path>.',
+        a: 'Yes — dsh-shift-router (v0.7.5), the same router on the harness, with no dependencies of its own. Install it as a plugin, then set both lists in the Settings card or with /router config. Everything here carries over, plus /router allow-workers on, which puts your cheap list in the harness\'s subagent allowlist so delegated workers really do run on the cheap model. 443 unit tests and a credential-free e2e. To install: add it as a plugin in the app and enter the package name, dsh-shift-router — or the repo address github:green-dalii/dsh-shift-router#v0.7.5, or a local path.',
       },
     ],
   },

@@ -27,8 +27,8 @@ interface Props {
 
 const {
   theta = '0.33',
-  left = 'cheap',
-  right = 'strong',
+  left = '',
+  right,
   caption,
   strongPct = 34,
   class: className = '',
@@ -107,10 +107,11 @@ const {
   /* The threshold: the one line that decides, drawn as a real rule. */
   .db-track .db-side--strong {
     transform-origin: right center;
-    transform: scaleX(0);
     transition: transform 620ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
   }
-  .is-drawn .db-side--strong { transform: scaleX(1); }
+  /* Only armed by the script, and only while the bar is below the fold. */
+  .db-armed .db-side--strong { transform: scaleX(0); }
+  .db-armed.is-drawn .db-side--strong { transform: scaleX(1); }
 
   .db-threshold {
     position: absolute;
@@ -121,12 +122,13 @@ const {
     transform: translateX(-1px);
   }
 
-  .is-drawn .db-threshold { animation: db-drop 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  /* The θ marker is always visible; the drop is decoration, not a reveal. */
+  .db-armed .db-threshold { opacity: 0; }
+  .db-armed.is-drawn .db-threshold { animation: db-drop 520ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   @keyframes db-drop {
     from { transform: translate(-1px, -0.75rem); opacity: 0; }
     to   { transform: translate(-1px, 0); opacity: 1; }
   }
-  .db-threshold { opacity: 0; }
 
   .db-theta {
     position: absolute;

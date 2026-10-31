@@ -1,6 +1,7 @@
 import type { Translations } from './types';
 
 export const zh: Translations = {
+  axis: { cheap: '继续用便宜的', strong: '换强的' },
   meta: {
     title: 'Shift Router — 每条消息都用对的模型',
     description:
@@ -27,8 +28,8 @@ export const zh: Translations = {
     subtitle:
       '你指定两个模型：一个便宜快的，一个强的。每条消息开始前，一个更小的模型先读一遍，决定这轮用哪个。便宜的跑代码、测试和小修。强的跑架构、安全，还有那些你不愿意做两遍的决定。判断本身是几千个 token、一秒左右。',
     ctaPrimary: '快速上手',
-    ctaSecondary: 'pi-shift-router 文档',
-    ctaTertiary: 'dsh-shift-router 文档',
+    ctaSecondary: 'pi-shift-router（GitHub）',
+    ctaTertiary: 'dsh-shift-router（GitHub）',
     terminal: {
       title: 'pi-shift-router — 在 pi 中',
       subtitle: '状态栏 · 提示 · 自动',
@@ -135,12 +136,12 @@ export const zh: Translations = {
         steps: [
           {
             title: '安装',
-            desc: '克隆、构建、注册到你的 harness profile。不需要任何凭据，默认值都是安全的。',
-            hintTitle: 'bundle 方式',
+            desc: '跟装别的插件一样，在应用里加：填包名、填仓库地址，或者指一个本地文件夹。一条命令做的是同一件事。本机不跑构建，也不需要任何凭据。',
+            hintTitle: '可以填什么',
             hintItems: [
-              { label: '准备', desc: 'git clone … && npm install && npm run build' },
-              { label: '注册', desc: 'dsh plugin --profile web add /path/to/dsh-shift-router' },
-              { label: '改配置', desc: '设置里的卡片，或者 /router config —— 存下就生效，不用重启' },
+              { label: '包名', desc: 'dsh-shift-router —— 直接拉现成的发布版' },
+              { label: '仓库地址', desc: 'github:green-dalii/dsh-shift-router#v0.7.5 —— 锁一个 tag，pnpm 问的时候放行构建' },
+              { label: '本地文件夹', desc: '你自己改过、跑过 npm run build 的那份' },
             ],
           },
           {
@@ -269,10 +270,12 @@ export const zh: Translations = {
     label: '档位预设',
     title: '一个旋钮，三挡',
     subtitle: '选个挡位就行，预设会替你把旋钮调好。',
+    knob: '花费旋钮',
+    bar: '门槛',
     gears: [
-      { id: 'eco', name: 'eco', threshold: 'θ 0.5', desc: '更省。只有明确需要的消息才用强的。最便宜。' },
-      { id: 'default', name: 'default', threshold: 'θ 0.33', desc: '默认。两个都像的时候，它选强的。' },
-      { id: 'sport', name: 'sport', threshold: 'θ 0.2', desc: '更放开。只要有实打实的可能需要，就用强的。适合以架构和规划为主的活。' },
+      { id: 'eco', name: 'eco', threshold: 'θ 0.5', r: 'R = 2', desc: '更省。只有明确需要的消息才用强的。最便宜。' },
+      { id: 'default', name: 'default', threshold: 'θ 0.33', r: 'R = 3', desc: '默认。两个都像的时候，它选强的。' },
+      { id: 'sport', name: 'sport', threshold: 'θ 0.2', r: 'R = 5', desc: '更放开。只要有实打实的可能需要，就用强的。适合以架构和规划为主的活。' },
     ],
   },
   useCases: {
@@ -406,7 +409,7 @@ export const zh: Translations = {
       },
       {
         q: '有 DeepSeek Harness 版吗？',
-        a: '有 —— dsh-shift-router（v0.7.5），同一个路由器跑在 harness 上，自己不带任何依赖。作为插件装上，然后在设置里的卡片或者用 /router config 把两边的列表配好。这里说的能力它都有，另外多一个 /router allow-workers on：把你的便宜列表写进 harness 的子代理白名单，这样派出去的 worker 真的跑在便宜模型上。443 个单元测试，加一个免凭据的 e2e。安装：git clone https://github.com/green-dalii/dsh-shift-router && npm install && npm run build，然后 dsh plugin --profile web add <路径>。',
+        a: '有 —— dsh-shift-router（v0.7.5），同一个路由器跑在 harness 上，自己不带任何依赖。作为插件装上，然后在设置里的卡片或者用 /router config 把两边的列表配好。这里说的能力它都有，另外多一个 /router allow-workers on：把你的便宜列表写进 harness 的子代理白名单，这样派出去的 worker 真的跑在便宜模型上。443 个单元测试，加一个免凭据的 e2e。安装：在应用里加插件，填包名 dsh-shift-router 就行 —— 也可以填 github:green-dalii/dsh-shift-router#v0.7.5 或一个本地路径。',
       },
     ],
   },

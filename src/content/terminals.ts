@@ -87,14 +87,14 @@ export const quickStartTerminals: Record<'pi' | 'dsh', StepTerminal[]> = {
   ],
   dsh: [
     {
-      title: 'zsh — dsh-shift-router',
-      prompt: '$',
-      command: 'dsh plugin --profile web add /path/to/dsh-shift-router',
+      title: 'dsh — plugins',
+      prompt: '>',
+      command: 'dsh-shift-router',
       output: [
-        '✔ Cloned and built dist/ via prepare script',
+        '✔ resolved dsh-shift-router@0.7.5 — prebuilt, no build script ran',
         '✔ shift-router added to profile web',
         'ℹ cordis.patch.yml inserts the plugin — loads with safe defaults',
-        'ℹ Tier models come from Settings → shift-router or the patch row.',
+        'ℹ The same field takes a repo URL or a local path',
       ],
     },
     {

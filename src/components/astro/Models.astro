@@ -27,7 +27,7 @@ const orch = t.models.orchestration;
     <!-- Counterweight: the mechanism itself. This is the section that explains
          the bar, so it is the bar that answers the heading. -->
     <SectionHeader label={t.models.label} title={t.models.title} subtitle={t.models.subtitle} class="mb-10 sm:mb-12">
-      <DecisionBar slot="counter" theta="0.33" left="cheap" right="strong" strongPct={33}
+      <DecisionBar slot="counter" theta="0.33" left={t.axis.cheap} right={t.axis.strong} strongPct={33}
         caption="One message in three clears the bar. Below it, nothing changes." />
     </SectionHeader>
 
@@ -62,9 +62,9 @@ const orch = t.models.orchestration;
     </div>
 
     <!-- Three feature cards (judge / window / fallback) -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
       {features.map((f, idx) => (
-        <div class="card-canvas p-7 reveal" data-delay={idx * 2}>
+        <div class="card-canvas p-7 reveal flex flex-col h-full" data-delay={idx * 2}>
 
           <div class="flex items-center justify-between mb-5">
             <span class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute">
@@ -89,7 +89,7 @@ const orch = t.models.orchestration;
           <p class="text-body-md text-body leading-relaxed mb-5">
             {f.data.desc}
           </p>
-          <pre class="code-block text-[11px] py-3 px-4">{f.data.code}</pre>
+          <pre class="code-block mt-auto text-[11px] py-3 px-4 whitespace-pre-wrap break-words">{f.data.code}</pre>
         </div>
       ))}
     </div>

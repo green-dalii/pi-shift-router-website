@@ -1,4 +1,15 @@
 ---
+/**
+ * GearPresets — the spend knob, as an instrument you can turn.
+ *
+ * The previous version was three static cards. A gear is a control, so it is
+ * now a control: pick one and the threshold axis, the θ value and the R value
+ * all move together. That is the whole product idea in one widget — one number
+ * sets how eager it is to spend, and everything else follows from it.
+ *
+ * No-JS / SSR: the default gear's panel is rendered visible, so the section
+ * still reads without scripting; the buttons simply do nothing.
+ */
 import { getTranslations, type Locale } from '../../content/locales';
 import SectionHeader from './SectionHeader.astro';
 
@@ -10,108 +21,327 @@ const { locale } = Astro.props;
 const t = getTranslations(locale);
 const gp = t.gearPresets;
 
-/** Filled-share of the bar per gear — visual echo of θ (lower θ = more eager). */
-const barShare: Record<string, number> = {
-  eco: 40,
-  default: 62,
-  sport: 88,
-};
+/** θ as a number, for positioning the marker along the 0→1 axis. */
+const thetaPct: Record<string, number> = { eco: 50, default: 33, sport: 20 };
+const active = gp.gears.find((g) => g.id === 'default') ?? gp.gears[0];
 ---
 
 <section id="gear-presets" class="relative py-14 sm:py-20 bg-tone-1">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Counterweight: the three θ values the gears actually set, drawn to
-         scale — the same bar as above, at three positions. -->
+    <!-- Counterweight: the three commands, so the header does not repeat what
+         the instrument below already shows. -->
     <SectionHeader label={gp.label} title={gp.title} subtitle={gp.subtitle} class="mb-10 sm:mb-12">
-      <div slot="counter" class="gear-scale" data-draw>
-        {gp.gears.map((g, i) => (
-          <div class="gear-scale-row">
-            <span class="gear-scale-name">{g.name}</span>
-            <span class="gear-scale-track">
-              <span class={`gear-scale-fill gear-scale-fill--${g.id}`}></span>
-              <span class={`gear-scale-mark gear-scale-mark--${g.id}`}></span>
-            </span>
-            <span class="gear-scale-theta">{g.threshold}</span>
-          </div>
+      <ul slot="counter" class="gear-cmds">
+        {gp.gears.map((g) => (
+          <li class="gear-cmd-row">
+            <span class="gear-cmd">/router {g.name}</span>
+            <span class="gear-cmd-meta">{g.threshold}</span>
+          </li>
         ))}
-      </div>
+      </ul>
     </SectionHeader>
 
-    <!-- Gears -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-      {gp.gears.map((gear, idx) => {
-        const isDefault = gear.id === 'default';
-        const share = barShare[gear.id] ?? 60;
-        return (
-          <div class={`rounded-2xl border p-6 sm:p-7 reveal ${isDefault ? 'border-ink bg-ink text-canvas' : 'border-ink/10 bg-canvas'}`} data-delay={idx * 2}>
-            <div class="flex items-baseline gap-3 mb-1">
-              <code class={`text-lg font-extrabold tracking-tight ${isDefault ? 'text-primary' : 'text-ink'}`}>
-                /router {gear.name}
-              </code>
-              {isDefault && (
-                <span class="text-[10px] font-mono uppercase tracking-[0.12em] px-2 py-0.5 rounded-full bg-primary/15 text-primary">
-                  {locale === 'zh' ? '默认' : 'default'}
-                </span>
-              )}
-            </div>
-            <div class={`font-mono text-xs mb-4 ${isDefault ? 'text-canvas-soft/74' : 'text-mute'}`}>
-              {gear.threshold}
-            </div>
+    <div class="gear-ui reveal" data-gear-ui>
+      <!-- The control -->
+      <div class="gear-picker" role="tablist" aria-label={gp.label}>
+        {gp.gears.map((g) => (
+          <button
+            type="button"
+            role="tab"
+            id={`gear-tab-${g.id}`}
+            aria-controls={`gear-panel-${g.id}`}
+            aria-selected={g.id === active.id ? 'true' : 'false'}
+            data-gear-tab={g.id}
+            class:list={['gear-tab', g.id === active.id && 'is-active']}
+          >
+            <span class="gear-tab-name">{g.name}</span>
+            <span class="gear-tab-theta">{g.threshold}</span>
+          </button>
+        ))}
+      </div>
 
-            <!-- Eagerness bar: higher θ = more turns stay cheap -->
-            <div class={`h-1.5 rounded-full overflow-hidden mb-4 ${isDefault ? 'bg-canvas-soft/15' : 'bg-canvas-soft'}`} aria-hidden="true">
-              <div
-                class="h-full rounded-full"
-                style={`width: ${share}%; background: ${isDefault ? '#9fe870' : '#454745'};`}
-              ></div>
+      <!-- The readout -->
+      {gp.gears.map((g) => (
+        <div
+          role="tabpanel"
+          id={`gear-panel-${g.id}`}
+          aria-labelledby={`gear-tab-${g.id}`}
+          data-gear-panel={g.id}
+          class:list={['gear-panel', g.id !== active.id && 'hidden']}
+        >
+          <div class="gear-readout">
+            <span class="gear-name">{g.name}</span>
+            <div class="gear-figures">
+              <div class="gear-figure">
+                <span class="gear-figure-value">{g.r}</span>
+                <span class="gear-figure-label">{gp.knob}</span>
+              </div>
+              <div class="gear-figure">
+                <span class="gear-figure-value">{g.threshold}</span>
+                <span class="gear-figure-label">{gp.bar}</span>
+              </div>
             </div>
-
-            <p class={`text-sm leading-relaxed ${isDefault ? 'text-canvas-soft/88' : 'text-body'}`}>
-              {gear.desc}
-            </p>
           </div>
-        );
-      })}
+
+          <!-- Threshold axis: 0 → 1. Left of the marker stays cheap, right of
+               it goes strong. Lower θ pushes the marker left. -->
+          <div class="gear-axis" aria-hidden="true">
+            <span class="gear-axis-cheap">{t.axis.cheap}</span>
+            <span class="gear-axis-strong">{t.axis.strong}</span>
+            <span class="gear-axis-strongfill" style={`width:${100 - (thetaPct[g.id] ?? 33)}%`}></span>
+            <span class="gear-axis-mark" style={`left:${thetaPct[g.id] ?? 33}%`}>
+              <span class="gear-axis-theta">{g.threshold}</span>
+            </span>
+            <span class="gear-axis-zero">0</span>
+            <span class="gear-axis-one">1</span>
+          </div>
+
+          <p class="gear-desc">{g.desc}</p>
+        </div>
+      ))}
     </div>
 
   </div>
 </section>
 
-<style>
+<script>
+  (() => {
+    document.querySelectorAll<HTMLElement>('[data-gear-ui]').forEach((root) => {
+      const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-gear-tab]'));
+      const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-gear-panel]'));
+      if (!tabs.length) return;
 
-  /* Counterweight — θ at three positions. Lower θ = more eager to escalate. */
-  .gear-scale { display: flex; flex-direction: column; gap: 0.85rem; padding-top: 0.5rem; }
-  .gear-scale-row { display: grid; grid-template-columns: 4.25rem 1fr 3.5rem; align-items: center; gap: 0.75rem; }
-  .gear-scale-name { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-ink); }
-  .gear-scale-track { position: relative; height: 1.5rem; background: var(--color-tone-2); border: 1px solid var(--color-ink); border-radius: 3px; display: block; }
-  /* Deep fill = the share that clears the bar, so it anchors right and grows
-     with eagerness: eco is mostly cheap, sport is mostly strong. */
-  .gear-scale-fill {
+      const select = (id: string) => {
+        tabs.forEach((tab) => {
+          const on = tab.dataset.gearTab === id;
+          tab.classList.toggle('is-active', on);
+          tab.setAttribute('aria-selected', on ? 'true' : 'false');
+          tab.tabIndex = on ? 0 : -1;
+        });
+        panels.forEach((panel) => {
+          panel.classList.toggle('hidden', panel.dataset.gearPanel !== id);
+        });
+      };
+
+      tabs.forEach((tab, i) => {
+        tab.tabIndex = tab.classList.contains('is-active') ? 0 : -1;
+        tab.addEventListener('click', () => select(tab.dataset.gearTab!));
+        // Roving focus: arrow keys move between gears like a segmented control.
+        tab.addEventListener('keydown', (e) => {
+          const dir = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? -1 : 0;
+          if (!dir) return;
+          e.preventDefault();
+          const next = tabs[(i + dir + tabs.length) % tabs.length];
+          next.focus();
+          select(next.dataset.gearTab!);
+        });
+      });
+    });
+  })();
+</script>
+
+<style>
+  /* Counterweight — the three commands. */
+  .gear-cmds { display: flex; flex-direction: column; border-top: 1px solid var(--color-ink); }
+  .gear-cmd-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+  .gear-cmd { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-ink); }
+  .gear-cmd-meta { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-mute); }
+
+  /* ── Instrument ───────────────────────────────────────────────────────── */
+  .gear-ui {
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-xl);
+    background: var(--color-canvas);
+    overflow: hidden;
+  }
+
+  .gear-picker {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid var(--color-ink);
+  }
+
+  .gear-tab {
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid color-mix(in srgb, var(--color-ink) 14%, transparent);
+    padding: 1rem 1.25rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: background 220ms ease, color 220ms ease;
+    position: relative;
+  }
+  .gear-tab:last-child { border-right: 0; }
+  .gear-tab:hover { background: var(--color-tone-1); }
+  .gear-tab:focus-visible { outline: 2px solid var(--color-primary); outline-offset: -4px; }
+
+  .gear-tab-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.375rem;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    line-height: 1.1;
+  }
+  .gear-tab-theta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.04em;
+    color: var(--color-mute);
+  }
+
+  /* Selected gear inverts to the strong register. */
+  .gear-tab.is-active {
+    background: var(--color-deep);
+  }
+  .gear-tab.is-active .gear-tab-name { color: var(--color-primary); }
+  .gear-tab.is-active .gear-tab-theta { color: color-mix(in srgb, var(--color-canvas) 72%, transparent); }
+  .gear-tab.is-active::after {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    right: 1.25rem;
+    bottom: 0.5rem;
+    height: 2px;
+    background: var(--color-primary);
+  }
+
+  .gear-panel { padding: 1.75rem 1.75rem 2rem; }
+  .gear-panel.hidden { display: none; }
+
+  .gear-readout {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1.75rem;
+  }
+  .gear-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+  }
+  .gear-figures { display: flex; align-items: flex-end; gap: 2rem; }
+  .gear-figure { display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-end; }
+  .gear-figure-value {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(1.125rem, 2.1vw, 1.5rem);
+    line-height: 1;
+    color: var(--color-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .gear-figure-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-mute);
+    white-space: nowrap;
+  }
+
+  /* ── Threshold axis ───────────────────────────────────────────────────── */
+  .gear-axis {
+    position: relative;
+    height: 4.25rem;
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-sm);
+    background: var(--color-tone-2);
+    margin-bottom: 1.75rem;
+    overflow: visible;
+  }
+
+  /* Strong region: everything from θ to 1. */
+  .gear-axis-strongfill {
     position: absolute;
     inset: 0 0 0 auto;
     background: var(--color-deep);
-    border-radius: 0 2px 2px 0;
-    transform-origin: right center;
-    transform: scaleX(0);
-    transition: transform 640ms cubic-bezier(0.16, 1, 0.3, 1) 120ms;
+    border-radius: 0 3px 3px 0;
+    transition: width 560ms cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .is-drawn .gear-scale-fill { transform: scaleX(1); }
-  .gear-scale-row:nth-child(2) .gear-scale-fill { transition-delay: 220ms; }
-  .gear-scale-row:nth-child(3) .gear-scale-fill { transition-delay: 320ms; }
-  /* The mark is the threshold: left of it = cheap, right = strong. */
-  .gear-scale-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--color-primary); }
-  .gear-scale-fill--eco { width: 50%; }     .gear-scale-mark--eco { left: 50%; }
-  .gear-scale-fill--default { width: 67%; } .gear-scale-mark--default { left: 33%; }
-  .gear-scale-fill--sport { width: 80%; }   .gear-scale-mark--sport { left: 20%; }
-  .gear-scale-theta { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-body); text-align: right; }
 
-  .reveal {
-    opacity: 0;
-    transform: translateY(14px);
-    animation: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  .gear-axis-mark {
+    position: absolute;
+    top: -0.55rem;
+    bottom: -0.55rem;
+    width: 3px;
+    background: var(--color-primary);
+    border-top: 1px solid var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
+    transition: left 560ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 2;
   }
-  .reveal[data-delay="0"] { animation-delay: 0.05s; }
-  .reveal[data-delay="2"] { animation-delay: 0.18s; }
-  .reveal[data-delay="4"] { animation-delay: 0.32s; }
+  .gear-axis-theta {
+    position: absolute;
+    top: -1.55rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-ink);
+    white-space: nowrap;
+    background: var(--color-canvas);
+    padding: 0 0.3rem;
+    border-radius: 3px;
+  }
+
+  .gear-axis-cheap,
+  .gear-axis-strong {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .gear-axis-cheap { left: 0.75rem; color: var(--color-body); }
+  .gear-axis-strong { right: 0.75rem; color: var(--color-primary); }
+
+  .gear-axis-zero,
+  .gear-axis-one {
+    position: absolute;
+    bottom: -1.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-mute);
+  }
+  .gear-axis-zero { left: 0; }
+  .gear-axis-one { right: 0; }
+
+  .gear-desc {
+    font-size: var(--text-body-md);
+    line-height: 1.6;
+    color: var(--color-body);
+    max-width: 42rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .gear-panel { padding: 1.25rem; }
+    .gear-readout { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+    .gear-axis-cheap, .gear-axis-strong { display: none; }
+  }
+
+  /* Reduced motion: the axis simply is where it is. */
+  @media (prefers-reduced-motion: reduce) {
+    .gear-axis-mark, .gear-axis-strongfill { transition: none; }
+  }
 </style>

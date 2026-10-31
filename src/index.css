@@ -387,6 +387,9 @@
   .db-side--strong,
   .gear-scale-fill,
   .db-threshold { transform: none !important; opacity: 1 !important; animation: none !important; }
+  .db-armed .db-side--strong,
+  .db-armed .gear-scale-fill,
+  .db-armed .db-threshold { transform: none !important; opacity: 1 !important; }
   .reveal {
     opacity: 1 !important;
     transform: none !important;

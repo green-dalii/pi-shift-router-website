@@ -199,42 +199,41 @@ const jsonLd = {
 
         all().forEach((el) => io.observe(el));
 
-        /* Draw-in objects (the decision bar, the gear scale) animate their
-           geometry when they enter view, so the threshold is seen arriving
-           rather than found already drawn. */
+        /* Draw-in objects animate their geometry when they enter view, so the
+           threshold is seen arriving rather than found already drawn.
+
+           Progressive enhancement, not a reveal: fully drawn is the CSS
+           default. Only elements still below the fold at load are armed into
+           the collapsed start state. Resolution is geometric — `top` has
+           entered or passed the viewport — rather than intersection-only,
+           because a jump-to-anchor can teleport past an element and an
+           IntersectionObserver never fires for it. A reader who scrolls fast
+           therefore cannot leave one collapsed, and with JS off the bar is
+           simply already drawn. */
         const drawables = Array.from(document.querySelectorAll<HTMLElement>('[data-draw]'));
-        if ('IntersectionObserver' in window) {
-          const dio = new IntersectionObserver(
-            (entries) => {
-              entries
-                .filter((e) => e.isIntersecting)
-                .forEach((e) => {
-                  (e.target as HTMLElement).classList.add('is-drawn');
-                  dio.unobserve(e.target);
-                });
-            },
-            { threshold: 0.35 }
-          );
-          drawables.forEach((el) => dio.observe(el));
-        } else {
-          drawables.forEach((el) => el.classList.add('is-drawn'));
-        }
+        if (drawables.length) {
+          drawables.forEach((el) => {
+            if (el.getBoundingClientRect().top > window.innerHeight) el.classList.add('db-armed');
+          });
 
-        /* Late content (tab panels that were hidden) can still need revealing. */
-        document.addEventListener('qs:panel-shown', () => {
-          // Only the newly-visible panel: everything still un-revealed inside
-          // it is by definition not yet in the viewport observer's hands.
-          all()
-            .filter((el) => !el.classList.contains('is-in'))
-            .forEach((el) => {
-              const r = el.getBoundingClientRect();
-              if (r.width > 0 && r.height > 0) show(el);
+          const resolveDrawn = () => {
+            drawables.forEach((el) => {
+              if (el.classList.contains('is-drawn')) return;
+              // `top < innerHeight` covers both "scrolled into view" and
+              // "already scrolled past" in one monotonic test.
+              if (el.getBoundingClientRect().top < window.innerHeight * 0.94) {
+                el.classList.add('is-drawn');
+              }
             });
-        });
+          };
 
-        reduced.addEventListener('change', () => {
-          if (reduced.matches) all().forEach(show);
-        });
+          resolveDrawn();
+          window.addEventListener('scroll', resolveDrawn, { passive: true });
+          window.addEventListener('resize', resolveDrawn, { passive: true });
+          document.addEventListener('qs:panel-shown', resolveDrawn);
+          // One late pass for layout that settles after fonts/images land.
+          window.setTimeout(resolveDrawn, 1200);
+        }
       })();
     </script>
   </body>

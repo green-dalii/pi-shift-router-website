@@ -3,6 +3,9 @@
 // its own copy).
 
 export interface Translations {
+  /** Axis labels shared by the threshold bar and the gear instrument. */
+  axis: { cheap: string; strong: string };
+
   meta: {
     title: string;
     description: string;
@@ -146,10 +149,15 @@ export interface Translations {
     label: string;
     title: string;
     subtitle: string;
+    /** Labels for the two figures in the gear instrument. */
+    knob: string;
+    bar: string;
     gears: {
       id: string;
       name: string;
       threshold: string;
+      /** The R value this gear sets, e.g. "R = 3". */
+      r: string;
       desc: string;
     }[];
   };
