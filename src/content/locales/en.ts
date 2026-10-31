@@ -261,7 +261,7 @@ export const en: Translations = {
         id: 'decision',
         name: 'A model built for decisions',
         badge: 'Beta',
-        desc: 'Built to do exactly this: give it a question, it returns an answer and how sure it is. It cannot return a broken reply, and it costs about $0.0001 a message. Since pi 1.8 it runs through pi\'s own classifier layer, which carries 53 of them — Jev, OpenAI Decisions, Cloudflare Clef, Perplexity Decider. It is marked Beta because it is still slow.',
+        desc: 'Built to do only this: hand it a typed question, get back the answer and a probability. Nothing to parse, so nothing can arrive broken — about $0.0001 a message. pi 1.8 carries 53 of them.',
       },
     ],
     honest: 'Decision models are off by default, and that is a decision rather than caution. They are slow right now — 1.4 to 6.6 seconds a verdict, which is the provider still ramping up capacity. They suit batch work and background tasks. For a message you are sitting and waiting on, use the LLM judge. If one stops answering, the router falls back to your LLM judge.',
