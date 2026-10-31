@@ -1,0 +1,113 @@
+---
+/**
+ * SectionHeader — the grid fix, in one component.
+ *
+ * Before: every heading was 672px inside a 1152px container, leaving 448px
+ * (39%) of dead air on the right, in 7 of 7 sections. That single fact is why
+ * the page read as a document rather than a composition.
+ *
+ * Now: the heading takes 7 of 12 columns and always carries a counterweight in
+ * the remaining 5. The counterweight is not decoration — it is either the
+ * section's own mechanism (a DecisionBar) or a compact fact block derived from
+ * existing copy.
+ *
+ * Usage:
+ *   <SectionHeader label={t.x.label} title={t.x.title} subtitle={t.x.subtitle}>
+ *     <DecisionBar slot="counter" theta="0.33" />
+ *   </SectionHeader>
+ */
+interface Props {
+  label: string;
+  title: string;
+  subtitle?: string;
+  /** Small mono line rendered under the counterweight. */
+  counterNote?: string;
+  /** Vertical alignment of heading vs counterweight. */
+  align?: 'end' | 'center';
+  class?: string;
+}
+
+const {
+  label,
+  title,
+  subtitle,
+  counterNote,
+  align = 'end',
+  class: className = '',
+} = Astro.props;
+
+const hasCounter = Astro.slots.has('counter');
+---
+
+<header class:list={['sh', className]}>
+  <span class="eyebrow">{label}</span>
+
+  <div class:list={['sh-grid', align === 'center' ? 'items-center' : 'items-end']}>
+    <div class="sh-head">
+      <h2 class="sh-title balance">{title}</h2>
+      {subtitle && <p class="sh-sub pretty">{subtitle}</p>}
+    </div>
+
+    {
+      hasCounter && (
+        <div class="sh-counter">
+          <slot name="counter" />
+          {counterNote && <p class="sh-note">{counterNote}</p>}
+        </div>
+      )
+    }
+  </div>
+</header>
+
+<style>
+  .sh {
+    margin-bottom: 2.75rem;
+  }
+
+  .sh-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem 3rem;
+  }
+
+  /* The rule: heading never takes the full width alone. */
+  @media (min-width: 900px) {
+    .sh-grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      align-items: end;
+    }
+    .sh-head {
+      grid-column: span 7;
+    }
+    .sh-counter {
+      grid-column: span 5;
+    }
+  }
+
+  .sh-title {
+    margin-top: 1rem;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.875rem, 3.1vw, 2.5rem);
+    line-height: 1.08;
+    letter-spacing: -0.028em;
+    color: var(--color-ink);
+  }
+
+  .sh-sub {
+    margin-top: 1.125rem;
+    font-size: var(--text-body-md);
+    line-height: 1.6;
+    color: var(--color-body);
+    max-width: 34rem;
+  }
+
+  .sh-note {
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: var(--color-mute);
+  }
+</style>

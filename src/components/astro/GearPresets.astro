@@ -1,5 +1,6 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import SectionHeader from './SectionHeader.astro';
 
 interface Props {
   locale: Locale;
@@ -17,19 +18,25 @@ const barShare: Record<string, number> = {
 };
 ---
 
-<section id="gear-presets" class="relative py-20 sm:py-24 bg-canvas-soft">
+<section id="gear-presets" class="relative py-14 sm:py-20 bg-tone-1">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="max-w-2xl mb-10 sm:mb-12">
-      <span class="eyebrow">{gp.label}</span>
-      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.08]">
-        {gp.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
-        {gp.subtitle}
-      </p>
-    </div>
+    <!-- Counterweight: the three θ values the gears actually set, drawn to
+         scale — the same bar as above, at three positions. -->
+    <SectionHeader label={gp.label} title={gp.title} subtitle={gp.subtitle} class="mb-10 sm:mb-12">
+      <div slot="counter" class="gear-scale">
+        {gp.gears.map((g, i) => (
+          <div class="gear-scale-row">
+            <span class="gear-scale-name">{g.name}</span>
+            <span class="gear-scale-track">
+              <span class={`gear-scale-fill gear-scale-fill--${g.id}`}></span>
+              <span class={`gear-scale-mark gear-scale-mark--${g.id}`}></span>
+            </span>
+            <span class="gear-scale-theta">{g.threshold}</span>
+          </div>
+        ))}
+      </div>
+    </SectionHeader>
 
     <!-- Gears -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -72,6 +79,22 @@ const barShare: Record<string, number> = {
 </section>
 
 <style>
+
+  /* Counterweight — θ at three positions. Lower θ = more eager to escalate. */
+  .gear-scale { display: flex; flex-direction: column; gap: 0.85rem; padding-top: 0.5rem; }
+  .gear-scale-row { display: grid; grid-template-columns: 4.25rem 1fr 3.5rem; align-items: center; gap: 0.75rem; }
+  .gear-scale-name { font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-ink); }
+  .gear-scale-track { position: relative; height: 1.5rem; background: var(--color-tone-2); border: 1px solid var(--color-ink); border-radius: 3px; display: block; }
+  /* Deep fill = the share that clears the bar, so it anchors right and grows
+     with eagerness: eco is mostly cheap, sport is mostly strong. */
+  .gear-scale-fill { position: absolute; inset: 0 0 0 auto; background: var(--color-deep); border-radius: 0 2px 2px 0; }
+  /* The mark is the threshold: left of it = cheap, right = strong. */
+  .gear-scale-mark { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--color-primary); }
+  .gear-scale-fill--eco { width: 50%; }     .gear-scale-mark--eco { left: 50%; }
+  .gear-scale-fill--default { width: 67%; } .gear-scale-mark--default { left: 33%; }
+  .gear-scale-fill--sport { width: 80%; }   .gear-scale-mark--sport { left: 20%; }
+  .gear-scale-theta { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-body); text-align: right; }
+
   .reveal {
     opacity: 0;
     transform: translateY(14px);

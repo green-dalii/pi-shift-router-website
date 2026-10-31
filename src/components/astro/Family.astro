@@ -1,5 +1,7 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import SectionHeader from './SectionHeader.astro';
+import TierIcon from './TierIcon.astro';
 
 interface Props {
   locale: Locale;
@@ -9,19 +11,21 @@ const { locale } = Astro.props;
 const t = getTranslations(locale);
 ---
 
-<section id="family" class="relative py-24 sm:py-32 bg-canvas-soft/40">
+<section id="family" class="relative py-14 sm:py-20 bg-tone-1">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="max-w-2xl mb-14 sm:mb-20">
-      <span class="eyebrow">{t.family.label}</span>
-      <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
-        {t.family.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
-        {t.family.subtitle}
-      </p>
-    </div>
+    <!-- Counterweight: the family at a glance, built from the card data itself. -->
+    <SectionHeader label={t.family.label} title={t.family.title} subtitle={t.family.subtitle}>
+      <ul slot="counter" class="fam-index">
+        {t.family.products.map((p, i) => (
+          <li class="fam-index-row">
+            <TierIcon tier={i === 0 ? 'fast' : 'smart'} size={18} />
+            <span class="fam-index-name">{p.name}</span>
+            <span class="fam-index-meta">{p.version}</span>
+          </li>
+        ))}
+      </ul>
+    </SectionHeader>
 
     <!-- Two product cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
@@ -38,7 +42,7 @@ const t = getTranslations(locale);
           <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-positive-deep mb-4">
             {p.edition}
           </div>
-          <p class="text-[15px] text-body leading-relaxed mb-6">
+          <p class="text-body-md text-body leading-relaxed mb-6">
             {p.desc}
           </p>
 
@@ -80,6 +84,21 @@ const t = getTranslations(locale);
 </section>
 
 <style>
+
+  /* Counterweight — the family index. */
+  .fam-index { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--color-ink); }
+  .fam-index-row {
+    display: grid;
+    grid-template-columns: 1.5rem 1fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+    color: var(--color-ink);
+  }
+  .fam-index-name { font-family: var(--font-mono); font-size: 0.8125rem; font-weight: 500; }
+  .fam-index-meta { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-mute); letter-spacing: 0.02em; }
+
   .reveal {
     opacity: 0;
     transform: translateY(14px);

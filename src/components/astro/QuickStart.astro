@@ -2,6 +2,7 @@
 import { getTranslations, type Locale } from '../../content/locales';
 import { quickStartTerminals } from '../../content/terminals';
 import TerminalWindow from './TerminalWindow.astro';
+import SectionHeader from './SectionHeader.astro';
 
 interface Props {
   locale: Locale;
@@ -14,19 +15,22 @@ const runtimes = t.quickStart.runtimes;
 const activeId = runtimes[0]?.id ?? 'pi';
 ---
 
-<section id="quick-start" class="relative py-24 sm:py-32 bg-canvas">
+<section id="quick-start" class="relative py-14 sm:py-20 bg-canvas">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="max-w-2xl mb-10 sm:mb-14">
-      <span class="eyebrow">{t.quickStart.label}</span>
-      <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
-        {t.quickStart.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
-        {t.quickStart.subtitle}
-      </p>
-    </div>
+    <!-- Counterweight: the three steps as a numbered spine, taken from the
+         step titles themselves — nothing invented. -->
+    <SectionHeader label={t.quickStart.label} title={t.quickStart.title} subtitle={t.quickStart.subtitle} class="mb-10 sm:mb-14">
+      <ol slot="counter" class="step-spine">
+        {runtimes[0]?.steps.map((st, i) => (
+          <li class="step-spine-row">
+            <span class="step-spine-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="step-spine-dot" aria-hidden="true"></span>
+            <span class="step-spine-title">{st.title}</span>
+          </li>
+        ))}
+      </ol>
+    </SectionHeader>
 
     <!-- Browser-style tabs: a chrome strip on top, active tab fused with the panel below -->
     <div class="qs-window mb-10 sm:mb-14">
@@ -76,22 +80,22 @@ const activeId = runtimes[0]?.id ?? 'pi';
                   </div>
 
                   <!-- Two-column on md+: description + terminal -->
-                  <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-7">
+                  <div class="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-7 md:items-center">
 
                     <!-- Description -->
                     <div class="md:col-span-5">
-                      <p class="text-[15px] text-body leading-relaxed">
+                      <p class="text-body-md text-body leading-relaxed">
                         {step.desc}
                       </p>
 
                       {step.hintTitle && step.hintItems && (
                         <div class="mt-5 rounded-xl bg-canvas-soft/50 border border-ink/8 p-4">
-                          <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2.5">
+                          <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-3">
                             {step.hintTitle}
                           </div>
                           <ul class="space-y-2">
                             {step.hintItems.map((item) => (
-                              <li class="flex items-start gap-2 text-[13px] text-body leading-relaxed">
+                              <li class="flex items-start gap-2 text-[15px] text-body leading-relaxed">
                                 <svg class="w-3.5 h-3.5 mt-0.5 text-positive shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                 <span><strong class="font-semibold text-ink">{item.label}</strong> — {item.desc}</span>
                               </li>
@@ -164,6 +168,21 @@ const activeId = runtimes[0]?.id ?? 'pi';
 </script>
 
 <style>
+
+  /* Counterweight — the step spine. */
+  .step-spine { display: flex; flex-direction: column; border-top: 1px solid var(--color-ink); }
+  .step-spine-row {
+    display: grid;
+    grid-template-columns: 2rem 1.25rem 1fr;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+  .step-spine-num { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-mute); }
+  .step-spine-dot { width: 7px; height: 7px; border-radius: 9999px; background: var(--color-primary); border: 1px solid var(--color-ink); justify-self: center; }
+  .step-spine-title { font-size: var(--text-body-sm); font-weight: 600; color: var(--color-ink); }
+
   .terminal-body {
     padding: 1.125rem 1.25rem 1.25rem;
     overflow-x: auto;

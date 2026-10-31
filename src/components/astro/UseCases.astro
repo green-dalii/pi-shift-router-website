@@ -1,5 +1,6 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import SectionHeader from './SectionHeader.astro';
 
 interface Props {
   locale: Locale;
@@ -9,19 +10,20 @@ const { locale } = Astro.props;
 const t = getTranslations(locale);
 ---
 
-<section id="use-cases" class="relative py-24 sm:py-32 bg-canvas-soft/40">
+<section id="use-cases" class="relative py-14 sm:py-20 bg-tone-2">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="max-w-2xl mb-14 sm:mb-20">
-      <span class="eyebrow">{t.useCases.label}</span>
-      <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
-        {t.useCases.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
-        {t.useCases.subtitle}
-      </p>
-    </div>
+    <!-- Counterweight: the three scenario classes, indexed. -->
+    <SectionHeader label={t.useCases.label} title={t.useCases.title} subtitle={t.useCases.subtitle}>
+      <ol slot="counter" class="sc-index">
+        {t.useCases.scenarios.map((s, i) => (
+          <li class="sc-index-row">
+            <span class="sc-index-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="sc-index-title">{s.title}</span>
+          </li>
+        ))}
+      </ol>
+    </SectionHeader>
 
     <!-- 3 scenario cards: white surface on tinted section bg, border + soft shadow -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
@@ -38,7 +40,7 @@ const t = getTranslations(locale);
           <h3 class="text-[1.15rem] font-bold text-ink leading-snug mb-4">
             {scenario.title}
           </h3>
-          <p class="text-[15px] text-body leading-relaxed">
+          <p class="text-body-md text-body leading-relaxed">
             {scenario.desc}
           </p>
         </article>
@@ -58,3 +60,20 @@ const t = getTranslations(locale);
 
   </div>
 </section>
+
+<style>
+
+  /* Counterweight — scenario index. */
+  .sc-index { display: flex; flex-direction: column; border-top: 1px solid var(--color-ink); }
+  .sc-index-row {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 18%, transparent);
+  }
+  .sc-index-num { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-positive-deep); }
+  .sc-index-title { font-size: var(--text-body-sm); font-weight: 600; color: var(--color-ink); }
+
+</style>

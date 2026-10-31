@@ -9,6 +9,10 @@
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/700.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/400.css');
 @import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/500.css');
+/* Greek subset carries θ, which the latin subset does not — without it the
+   threshold glyph falls back to a different face and the notation drifts. */
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/greek-400.css');
+@import url('https://cdn.jsdelivr.net/npm/@fontsource/jetbrains-mono@5.1.0/greek-500.css');
 
 @import "tailwindcss";
 
@@ -37,9 +41,13 @@
   --color-primary-neutral: #c5edab;
   --color-primary-pale: #e2f6d5;
 
-  /* Surface */
+  /* Surface — six steps so adjacent bands can advance one at a time */
   --color-canvas: #ffffff;
   --color-canvas-soft: #e8ebe6;
+  --color-tone-1: #f6f8f4;
+  --color-tone-2: #d8ded3;
+  --color-tone-3: #cfd6c9;
+  --color-deep: #163300;
 
   /* Ink (text + dark sections) */
   --color-ink: #0e0f0c;
@@ -87,6 +95,19 @@
   --text-display-xs: 1.5rem;         /* 24px */
   --text-display-xs--line-height: 1.95rem;
 
+  /* Middle register — the sizes the first build never used, which is why the
+     page had 80px displays sitting next to 13px captions with nothing between. */
+  --text-lead: 1.375rem;             /* 22px */
+  --text-lead--line-height: 1.75rem;
+  --text-body-lg: 1.25rem;           /* 20px */
+  --text-body-lg--line-height: 2rem;
+  --text-body-md: 1.0625rem;         /* 17px — default prose size */
+  --text-body-md--line-height: 1.6875rem;
+  --text-body-sm: 0.9375rem;         /* 15px */
+  --text-body-sm--line-height: 1.5rem;
+  --text-caption: 0.8125rem;         /* 13px — minimum readable prose */
+  --text-caption--line-height: 1.25rem;
+
   /* Animations */
   --animate-pulse-soft: pulse-soft 2.4s ease-in-out infinite;
   --animate-fade-slide: fade-slide 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -116,8 +137,10 @@
     font-family: var(--font-sans);
     background: var(--color-canvas-soft);
     color: var(--color-ink);
-    line-height: 1.5;
+    font-size: var(--text-body-md);
+    line-height: 1.6;
     letter-spacing: 0.005em;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, h5, h6 {

@@ -41,7 +41,9 @@ const t = getTranslations(locale);
 
         <h1 class="font-display font-extrabold text-ink tracking-tight leading-[1.02] balance reveal" data-delay="1">
           <span class="block text-[clamp(2.25rem,6.2vw,5rem)]">{t.hero.headline1}</span>
-          <span class="block text-[clamp(2.25rem,6.2vw,5rem)] text-ink">{t.hero.headline2}</span>
+          <!-- Line 2 is the turn, not a fourth line: same voice, set back slightly
+               so the pair reads as claim → close instead of a four-line block. -->
+          <span class="block text-[clamp(1.75rem,4.6vw,3.6rem)] text-ink/85 tracking-[-0.03em] mt-1">{t.hero.headline2}</span>
         </h1>
 
         <p class="mt-5 font-mono text-sm sm:text-base text-ink/70 tracking-tight balance reveal" data-delay="2">

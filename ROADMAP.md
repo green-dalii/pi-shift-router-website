@@ -48,7 +48,7 @@ Anything here would fail a technical/accessibility review regardless of taste.
 **Acceptance:** axe-equivalent contrast pass; zero `scrollWidth > clientWidth`
 overflow on any card; mobile hero ≤ 1.3 viewports to CTA; zero design emoji.
 
-## T1 — System (grid, scale, tone)
+## T1 — System (grid, scale, tone) — ✅ done
 
 - [x] **T1.1 Twelve-column grid + counterweight rule.** No section heading may
       occupy a lone left column. Each heading pairs with a right-hand

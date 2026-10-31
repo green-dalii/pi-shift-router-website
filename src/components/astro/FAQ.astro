@@ -1,5 +1,6 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import SectionHeader from './SectionHeader.astro';
 
 interface Props {
   locale: Locale;
@@ -9,19 +10,16 @@ const { locale } = Astro.props;
 const t = getTranslations(locale);
 ---
 
-<section id="faq" class="relative py-24 sm:py-32 bg-canvas">
-  <div class="max-w-3xl mx-auto px-5 sm:px-8">
+<section id="faq" class="relative py-14 sm:py-20 bg-canvas">
+  <div class="max-w-4xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="text-center mb-12 sm:mb-16">
-      <span class="eyebrow">{t.faq.label}</span>
-      <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
-        {t.faq.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg mx-auto leading-relaxed">
-        {t.faq.subtitle}
-      </p>
-    </div>
+    <SectionHeader label={t.faq.label} title={t.faq.title} subtitle={t.faq.subtitle}
+      counterNote="Ordered the way a first-time reader asks them.">
+      <div slot="counter" class="faq-count">
+        <span class="faq-count-num">{String(t.faq.items.length).padStart(2, '0')}</span>
+        <span class="faq-count-label">questions</span>
+      </div>
+    </SectionHeader>
 
     <!-- Accordion -->
     <div class="space-y-3">
@@ -40,7 +38,7 @@ const t = getTranslations(locale);
             </span>
           </summary>
           <div class="mt-4 pt-4 border-t border-ink/10">
-            <p class="text-[15px] text-body leading-relaxed">
+            <p class="text-body-md text-body leading-relaxed">
               {item.a}
             </p>
           </div>
@@ -51,6 +49,12 @@ const t = getTranslations(locale);
 </section>
 
 <style>
+
+  /* Counterweight — the count, at display scale. */
+  .faq-count { display: flex; align-items: baseline; gap: 0.75rem; border-top: 1px solid var(--color-ink); padding-top: 0.875rem; }
+  .faq-count-num { font-family: var(--font-display); font-size: 3.5rem; font-weight: 800; line-height: 1; letter-spacing: -0.04em; color: var(--color-ink); }
+  .faq-count-label { font-family: var(--font-mono); font-size: 0.6875rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--color-mute); }
+
   /* Chrome keeps a details marker glyph that `list-none` does not remove;
      it adds ~7px and makes the row overflow its own box. */
   summary::-webkit-details-marker { display: none; }

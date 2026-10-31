@@ -1,0 +1,137 @@
+---
+/**
+ * DecisionBar — the site's signature annotation.
+ *
+ * Every section heading used to sit alone in the left half of a 1152px
+ * container, leaving 39% of the page empty. Rather than fill that space with
+ * decoration, each section gets the product's actual mechanism: a two-sided
+ * bar with the expected-cost threshold drawn where it sits.
+ *
+ * The bar is the same object everywhere, so it also does the teaching — a
+ * reader meets it six times before the FAQ explains it in prose.
+ *
+ * Usage:
+ *   <DecisionBar theta="0.33" left="cheap" right="strong" caption="..." />
+ */
+interface Props {
+  /** Threshold position, 0–1. Rendered as a marked line. */
+  theta?: string;
+  left?: string;
+  right?: string;
+  /** One line of mono annotation under the bar. */
+  caption?: string;
+  /** Segments to draw on the strong side, to suggest a probability spread. */
+  strongPct?: number;
+  class?: string;
+}
+
+const {
+  theta = '0.33',
+  left = 'cheap',
+  right = 'strong',
+  caption,
+  strongPct = 34,
+  class: className = '',
+} = Astro.props;
+---
+
+<figure class:list={['decision-bar', className]}>
+  <div class="db-track" role="img" aria-label={`${left} vs ${right}, threshold ${theta}`}>
+    <div class="db-side db-side--cheap" style={`width:${100 - strongPct}%`}>
+      <span class="db-label">{left}</span>
+    </div>
+    <div class="db-side db-side--strong" style={`width:${strongPct}%`}>
+      <span class="db-label db-label--strong">{right}</span>
+    </div>
+    <div class="db-threshold" style={`left:${100 - strongPct}%`}>
+      <span class="db-theta">θ {theta}</span>
+    </div>
+  </div>
+  {caption && <figcaption class="db-caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .decision-bar {
+    display: block;
+    margin: 0;
+  }
+
+  .db-track {
+    position: relative;
+    display: flex;
+    height: 2.75rem;
+    border-radius: var(--radius-sm);
+    overflow: visible;
+  }
+
+  .db-side {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 0 0.75rem;
+    min-width: 0;
+  }
+
+  /* Cheap side: sage-tinted recess — the "less" side is quieter. */
+  .db-side--cheap {
+    background: var(--color-tone-2);
+    border: 1px solid var(--color-ink);
+    border-right: none;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  }
+
+  /* Strong side: deep forest with lime label — the site's signature pairing. */
+  .db-side--strong {
+    background: var(--color-deep);
+    border: 1px solid var(--color-ink);
+    border-left: none;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    justify-content: flex-end;
+  }
+
+  .db-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .db-label--strong {
+    color: var(--color-primary);
+  }
+
+  /* The threshold: the one line that decides, drawn as a real rule. */
+  .db-threshold {
+    position: absolute;
+    top: -0.4rem;
+    bottom: -0.4rem;
+    width: 2px;
+    background: var(--color-ink);
+    transform: translateX(-1px);
+  }
+
+  .db-theta {
+    position: absolute;
+    top: -1.15rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--color-ink);
+    white-space: nowrap;
+    background: var(--color-canvas-soft);
+    padding: 0 0.25rem;
+  }
+
+  .db-caption {
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+    color: var(--color-mute);
+  }
+</style>

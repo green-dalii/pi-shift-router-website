@@ -1,5 +1,6 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
+import SectionHeader from './SectionHeader.astro';
 
 interface Props {
   locale: Locale;
@@ -28,19 +29,22 @@ const modeStyles: Record<string, { ring: string; chip: string; icon: string }> =
 };
 ---
 
-<section id="judge-modes" class="relative py-20 sm:py-24 bg-canvas">
+<section id="judge-modes" class="relative py-14 sm:py-20 bg-tone-1">
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="max-w-2xl mb-10 sm:mb-12">
-      <span class="eyebrow">{jm.label}</span>
-      <h2 class="mt-4 text-[clamp(2rem,4vw,3.25rem)] font-extrabold tracking-tight text-ink leading-[1.08]">
-        {jm.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
-        {jm.subtitle}
-      </p>
-    </div>
+    <!-- Counterweight: the availability ladder, top to bottom. The order is
+         the product's own fallback order, so it teaches while it fills. -->
+    <SectionHeader label={jm.label} title={jm.title} subtitle={jm.subtitle} class="mb-10 sm:mb-12">
+      <ol slot="counter" class="ladder">
+        {jm.modes.map((mode, i) => (
+          <li class:list={['ladder-row', mode.id === 'decision' && 'ladder-row--beta']}>
+            <span class="ladder-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="ladder-name">{mode.name}</span>
+            {mode.badge && <span class="ladder-badge">{mode.badge}</span>}
+          </li>
+        ))}
+      </ol>
+    </SectionHeader>
 
     <!-- Three modes -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -61,7 +65,7 @@ const modeStyles: Record<string, { ring: string; chip: string; icon: string }> =
                 </span>
               )}
             </div>
-            <p class="text-sm text-body leading-relaxed">
+            <p class="text-body-md text-body leading-relaxed">
               {mode.desc}
             </p>
           </div>
@@ -79,7 +83,7 @@ const modeStyles: Record<string, { ring: string; chip: string; icon: string }> =
           <div class="text-[11px] font-mono uppercase tracking-[0.15em] text-mute mb-2">
             {locale === 'zh' ? '为什么默认是关着的' : 'Why it is off by default'}
           </div>
-          <p class="text-sm text-body leading-relaxed max-w-3xl">
+          <p class="text-body-md text-body leading-relaxed max-w-3xl">
             {jm.honest}
           </p>
         </div>
@@ -90,6 +94,32 @@ const modeStyles: Record<string, { ring: string; chip: string; icon: string }> =
 </section>
 
 <style>
+
+  /* Counterweight — the availability ladder. Ordered top to bottom, and it is
+     also the product's own fallback order. */
+  .ladder { display: flex; flex-direction: column; border-top: 1px solid var(--color-ink); }
+  .ladder-row {
+    display: grid;
+    grid-template-columns: 2rem 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+  .ladder-num { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--color-mute); }
+  .ladder-name { font-size: var(--text-body-sm); color: var(--color-ink); }
+  .ladder-row--beta .ladder-name { font-weight: 700; }
+  .ladder-badge {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    background: var(--color-deep);
+    color: var(--color-primary);
+    padding: 0.125rem 0.4rem;
+    border-radius: 3px;
+  }
+
   .reveal {
     opacity: 0;
     transform: translateY(14px);

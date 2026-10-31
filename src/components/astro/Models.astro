@@ -1,6 +1,8 @@
 ---
 import { getTranslations, type Locale } from '../../content/locales';
 import TierIcon from './TierIcon.astro';
+import SectionHeader from './SectionHeader.astro';
+import DecisionBar from './DecisionBar.astro';
 
 interface Props {
   locale: Locale;
@@ -17,23 +19,19 @@ const features = [
 const orch = t.models.orchestration;
 ---
 
-<section id="how-it-works" class="relative py-24 sm:py-32 bg-canvas-soft">
+<section id="how-it-works" class="relative py-14 sm:py-20 bg-canvas-soft">
 
   <div class="max-w-6xl mx-auto px-5 sm:px-8">
 
-    <!-- Section header -->
-    <div class="max-w-2xl mb-10 sm:mb-12">
-      <span class="eyebrow">{t.models.label}</span>
-      <h2 class="mt-4 text-[clamp(2.5rem,5vw,4.25rem)] font-extrabold tracking-tight text-ink leading-[1.05]">
-        {t.models.title}
-      </h2>
-      <p class="mt-4 text-lg text-body max-w-lg leading-relaxed">
-        {t.models.subtitle}
-      </p>
-    </div>
+    <!-- Counterweight: the mechanism itself. This is the section that explains
+         the bar, so it is the bar that answers the heading. -->
+    <SectionHeader label={t.models.label} title={t.models.title} subtitle={t.models.subtitle} class="mb-10 sm:mb-12">
+      <DecisionBar slot="counter" theta="0.33" left="cheap" right="strong" strongPct={33}
+        caption="One message in three clears the bar. Below it, nothing changes." />
+    </SectionHeader>
 
     <!-- The philosophy: plain-language explanation -->
-    <div class="mb-14 sm:mb-16 max-w-3xl reveal" data-delay="0">
+    <div class="mb-10 sm:mb-12 max-w-3xl reveal" data-delay="0">
       <p class="text-lg sm:text-xl font-medium text-ink leading-relaxed">
         {t.models.intro}
       </p>
@@ -49,7 +47,7 @@ const orch = t.models.orchestration;
           <h3 class="text-base font-extrabold tracking-tight text-ink mb-2">
             {v.title}
           </h3>
-          <p class="text-sm text-body leading-relaxed">
+          <p class="text-body-md text-body leading-relaxed">
             {v.desc}
           </p>
         </div>
@@ -70,7 +68,7 @@ const orch = t.models.orchestration;
         <div class="text-sm font-mono uppercase tracking-[0.15em] text-mute mb-5">
           {t.models.fast.role}
         </div>
-        <p class="text-[15px] text-body leading-relaxed mb-6">
+        <p class="text-body-md text-body leading-relaxed mb-6">
           {t.models.fast.desc}
         </p>
         <ul class="space-y-2.5">
@@ -133,7 +131,7 @@ const orch = t.models.orchestration;
           <h3 class="text-xl font-extrabold tracking-tight text-ink mb-3">
             {f.data.title}
           </h3>
-          <p class="text-sm text-body leading-relaxed mb-5">
+          <p class="text-body-md text-body leading-relaxed mb-5">
             {f.data.desc}
           </p>
           <pre class="code-block text-[11px] py-3 px-4">{f.data.code}</pre>
